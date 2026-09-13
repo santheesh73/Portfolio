@@ -15,5 +15,5 @@ export const profile: Profile = {
     expectedGraduation: "2029",
   },
   github: "https://github.com/santheesh73",
-  email: "",
+  email: "santheesh737@gmail.com",
 };
