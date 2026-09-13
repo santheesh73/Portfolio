@@ -59,3 +59,21 @@ export interface EngineeringPrinciple {
   title: string;
   description: string;
 }
+
+
+export interface SkillItem {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  projects?: string[];
+  featured?: boolean;
+}
+
+export interface SkillGroupData {
+  id: string;
+  index: string;
+  title: string;
+  tagline: string;
+  items: SkillItem[];
+}
