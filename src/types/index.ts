@@ -77,3 +77,20 @@ export interface SkillGroupData {
   tagline: string;
   items: SkillItem[];
 }
+
+export type ProofCategory = "hackathon" | "open-source" | "milestone";
+
+export interface ProofItem {
+  id: string;
+  category: ProofCategory;
+  title: string;
+  /** Year or event label, only when verified. Omitted otherwise. */
+  year?: string;
+  organization?: string;
+  theme?: string;
+  description: string;
+  /** References an existing project — never duplicated content. */
+  relatedProject?: ProjectId;
+  /** Verified URLs only. */
+  href?: string;
+}
