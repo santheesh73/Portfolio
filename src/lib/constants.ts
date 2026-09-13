@@ -16,10 +16,3 @@ export const NAV_ITEMS: NavigationItem[] = [
 export const SOCIAL_LINKS = {
   github: "https://github.com/santheesh73",
 } as const;
-
-export const ANIMATION = {
-  durationFast: 0.15,
-  durationBase: 0.25,
-  durationSlow: 0.42,
-  easeOut: [0.22, 1, 0.36, 1] as const,
-} as const;

@@ -16,11 +16,6 @@ export interface NavigationItem {
   href: string;
 }
 
-export interface Technology {
-  label: string;
-  category?: string;
-}
-
 export type ProjectId =
   | "orion"
   | "hearttune"
