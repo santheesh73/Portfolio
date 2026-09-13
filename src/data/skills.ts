@@ -3,8 +3,9 @@ import type { SkillGroupData } from "@/types";
 /**
  * Phase 5 — Technical Stack structured data.
  * Only verified technologies from the profile, hero, and project
- * context. Project associations reference names used in
- * `src/data/projects.ts`. No proficiency percentages.
+ * context. Project associations use the project names from
+ * `src/data/projects.ts` and follow the owner-verified
+ * project–technology mapping. No proficiency percentages.
  */
 export const SKILL_GROUPS: SkillGroupData[] = [
   {
@@ -19,12 +20,14 @@ export const SKILL_GROUPS: SkillGroupData[] = [
         description: "LLM-powered features designed into real product flows.",
         icon: "sparkles",
         featured: true,
+        projects: ["NISF"],
       },
       {
         id: "llms",
         name: "LLMs",
         description: "Working with large language models for text and analysis.",
         icon: "brain",
+        projects: ["NISF", "AHAL AI"],
       },
       {
         id: "rag",
@@ -77,14 +80,14 @@ export const SKILL_GROUPS: SkillGroupData[] = [
         name: "React",
         description: "Component-driven interfaces with clear state flow.",
         icon: "atom",
-        projects: ["BHOOMI"],
+        projects: ["HeartTune", "BHOOMI"],
       },
       {
         id: "nextjs",
         name: "Next.js",
         description: "Full product surface — routing, rendering, delivery.",
         icon: "globe",
-        projects: ["NISF"],
+        projects: ["HeartTune", "NISF"],
         featured: true,
       },
       {
@@ -92,6 +95,7 @@ export const SKILL_GROUPS: SkillGroupData[] = [
         name: "TypeScript",
         description: "Type-safe code that stays readable as it grows.",
         icon: "file-code",
+        projects: ["HeartTune"],
       },
       {
         id: "javascript",
@@ -120,6 +124,7 @@ export const SKILL_GROUPS: SkillGroupData[] = [
         description: "AI, automation, backend, and data-driven applications.",
         icon: "code",
         featured: true,
+        projects: ["MINCHAL"],
       },
       {
         id: "fastapi",

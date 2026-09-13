@@ -29,7 +29,13 @@ export function SkillsSection() {
         {/* System map — how the layers connect */}
         <Reveal delay={0.05}>
           <p className="flex flex-wrap items-center gap-x-2 gap-y-1 rounded-lg border border-border-subtle bg-surface-muted/60 px-4 py-3 font-mono text-[0.7rem] tracking-[0.04em] text-text-muted">
-            <span className="text-text-secondary">python · typescript</span>
+            <span className="text-text-secondary">
+              python · typescript · javascript · sql
+            </span>
+            <span aria-hidden="true" className="text-accent">
+              →
+            </span>
+            <span className="text-text-secondary">generative ai · llms</span>
             <span aria-hidden="true" className="text-accent">
               →
             </span>
@@ -48,10 +54,10 @@ export function SkillsSection() {
               →
             </span>
             <span className="text-text-secondary">docker · vercel</span>
-            <span aria-hidden="true" className="text-text-muted">
-              —
+            <span aria-hidden="true" className="text-accent">
+              →
             </span>
-            <span>generative ai across the stack</span>
+            <span>product</span>
           </p>
         </Reveal>
 
