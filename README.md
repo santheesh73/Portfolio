@@ -1,11 +1,11 @@
-# SANTHEESH S — Portfolio (Phase 1: Premium Foundation)
+# SANTHEESH S — Portfolio
 
-Premium light portfolio foundation for **Santheesh S — AI Software Engineer,
-Full-Stack Developer, Generative AI Enthusiast**.
+Personal portfolio for **Santheesh S — AI Software Engineer, Full-Stack
+Developer, Generative AI Enthusiast**.
 
-Phase 1 establishes the design system, application structure, navigation,
-motion, accessibility, and SEO foundations. Content sections (hero, projects,
-about, skills, experience, contact) arrive in later phases.
+Single-page Next.js site: Hero → Projects → About → Technical Stack →
+Proof of Work → Contact, in a premium light theme with strict TypeScript,
+server components, and reduced-motion-aware animation.
 
 ## Stack
 
@@ -14,7 +14,7 @@ about, skills, experience, contact) arrive in later phases.
 - Motion for React (`motion`)
 - Lucide React icons
 
-## Getting started
+## Local development
 
 ```bash
 npm install
@@ -23,23 +23,37 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
+## Production
+
+```bash
+npm run lint
+npx tsc --noEmit
+npm run build
+npm run start
+```
+
+Deploys as a standard Next.js app (e.g. connect the repo on Vercel —
+no environment variables required). The canonical site URL lives in
+`src/lib/constants.ts` (`SITE_URL`) and feeds metadata, sitemap, and
+robots.
+
 ## Structure
 
 ```text
 src/
-├── app/            # layout, foundation preview page, globals.css, icon.svg
+├── app/            # layout, page, globals.css, icon.svg, not-found, error,
+│                   # opengraph-image, sitemap, robots
 ├── components/
-│   ├── layout/     # Navbar, Footer, PageContainer
+│   ├── layout/     # Navbar, Footer
+│   ├── home/       # Hero + HeroVisual
+│   ├── projects/   # ProjectsSection, FeaturedProject, ProjectCard
+│   ├── about/      # AboutSection, EngineeringPrinciples, EducationCard
+│   ├── skills/     # SkillsSection, SkillGroup, SkillCard
+│   ├── proof/      # ProofSection, ProofTimeline, ProofCard
+│   ├── contact/    # ContactSection, CopyEmailButton (client island)
 │   ├── ui/         # Button, Badge, Card, Container, SectionHeading
-│   └── motion/     # FadeIn, Reveal, Stagger
-├── data/           # profile.ts (single source of truth)
+│   └── motion/     # FadeIn, Reveal, Stagger (reduced-motion aware)
+├── data/           # profile, projects, about, skills, proof
 ├── lib/            # constants.ts, utils.ts (cn)
-└── types/          # Profile, Project, Technology, NavigationItem
-```
-
-## Quality
-
-```bash
-npm run lint
-npm run build
+└── types/          # Profile, Project, Skill*, Proof* models
 ```
