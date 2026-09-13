@@ -51,3 +51,11 @@ export interface Project {
   /** Only populated with real destinations. */
   links?: ProjectLinks;
 }
+
+
+export interface EngineeringPrinciple {
+  index: string;
+  label: string;
+  title: string;
+  description: string;
+}
