@@ -1,4 +1,5 @@
 import { Hero } from "@/components/home/Hero";
+import { IdentityNarrative } from "@/components/home/IdentityNarrative";
 import { ProjectsSection } from "@/components/projects/ProjectsSection";
 import { AboutSection } from "@/components/about/AboutSection";
 import { SkillsSection } from "@/components/skills/SkillsSection";
@@ -9,6 +10,7 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       <Hero />
+      <IdentityNarrative />
       <ProjectsSection />
       <AboutSection />
       <SkillsSection />
