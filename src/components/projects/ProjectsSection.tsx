@@ -40,6 +40,43 @@ export function ProjectsSection() {
 
         {/* Editorial Project Showcase Sequence */}
         <ProjectShowcase projects={projects} />
+
+        {/* Project → About Transition Bridge */}
+        <div className="relative pt-6 sm:pt-10">
+          {/* Subtle atmospheric ambient fade */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 -top-6 h-20 bg-gradient-to-b from-transparent to-surface-muted/20 opacity-60"
+          />
+
+          <Reveal delay={0.1}>
+            <div className="flex flex-col items-start justify-between gap-4 border-t border-border-subtle/50 pt-8 sm:flex-row sm:items-center">
+              <div className="flex items-center gap-2.5">
+                <span
+                  aria-hidden="true"
+                  className="size-1.5 rounded-full bg-accent"
+                />
+                <p className="font-mono text-xs tracking-[0.14em] uppercase text-text-muted">
+                  07 / 07 Projects Complete
+                </p>
+              </div>
+
+              <a
+                href="#about"
+                className="group inline-flex items-center gap-2 font-mono text-xs tracking-[0.14em] uppercase text-text-muted transition-colors duration-200 hover:text-text-primary focus-visible:text-accent focus-visible:outline-none"
+                aria-label="Continue downward to About section"
+              >
+                <span>Continue to Engineering Philosophy</span>
+                <span
+                  aria-hidden="true"
+                  className="transition-transform duration-200 ease-out group-hover:translate-y-0.5 group-focus-visible:translate-y-0.5"
+                >
+                  ↓
+                </span>
+              </a>
+            </div>
+          </Reveal>
+        </div>
       </Container>
     </section>
   );

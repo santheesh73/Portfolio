@@ -50,6 +50,32 @@ export function ProjectRow({
     return () => query.removeEventListener("change", onChange);
   }, []);
 
+  // Mobile/touch viewport tracking: gently activate project as it scrolls into center view
+  useEffect(() => {
+    if (finePointer || reduce) return;
+    const el = rowRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            onActivate();
+          } else if (isActive) {
+            onDeactivate();
+          }
+        });
+      },
+      {
+        rootMargin: "-25% 0px -25% 0px",
+        threshold: 0.2,
+      }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [finePointer, reduce, isActive, onActivate, onDeactivate]);
+
   // Subtle pointer-based parallax for preview card (heavily restrained: ±4px)
   const px = useMotionValue(0);
   const py = useMotionValue(0);
@@ -99,7 +125,8 @@ export function ProjectRow({
       onFocus={onActivate}
       onBlur={onDeactivate}
       className={cn(
-        "group relative border-t border-border-subtle py-8 sm:py-12 transition-[opacity,background-color,border-color] duration-250 ease-out outline-none",
+        "group relative border-t border-border-subtle py-8 sm:py-12 transition-[opacity,background-color,border-color,transform] duration-200 ease-out outline-none",
+        !reduce && "active:scale-[0.999]",
         isActive
           ? "opacity-100 bg-surface-muted/25"
           : isMuted
@@ -112,7 +139,7 @@ export function ProjectRow({
       <span
         aria-hidden="true"
         className={cn(
-          "absolute left-0 top-0 bottom-0 w-1 bg-accent transition-all duration-250 ease-out",
+          "absolute left-0 top-0 bottom-0 w-1 bg-accent transition-all duration-200 ease-out",
           isActive ? "opacity-100 scale-y-100" : "opacity-0 scale-y-75"
         )}
       />
@@ -124,11 +151,11 @@ export function ProjectRow({
           <div className="flex items-center gap-3">
             <span
               className={cn(
-                "font-mono text-xs font-semibold tracking-[0.16em] transition-transform duration-200 ease-out",
+                "font-mono text-xs font-semibold tracking-[0.16em] transition-[color,transform] duration-200 ease-out",
                 isActive ? "text-accent translate-x-0.5" : "text-text-muted"
               )}
             >
-              {number}
+              {number} / 07
             </span>
             <span
               aria-hidden="true"
@@ -185,7 +212,7 @@ export function ProjectRow({
             </ul>
           ) : null}
 
-          {/* Project Links / Actions */}
+          {/* Project Links / Actions with tactile micro-motion */}
           {links && (links.liveUrl || links.github || links.caseStudyHref) ? (
             <div className="mt-6 flex flex-wrap items-center gap-2.5">
               {links.liveUrl ? (
@@ -199,7 +226,7 @@ export function ProjectRow({
                 >
                   Live Demo
                   <ArrowUpRight
-                    className="size-3.5 transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5"
+                    className="size-3.5 transition-transform duration-200 ease-out group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 group-focus-visible/btn:translate-x-0.5 group-focus-visible/btn:-translate-y-0.5"
                     aria-hidden="true"
                   />
                 </Button>
@@ -216,7 +243,7 @@ export function ProjectRow({
                 >
                   GitHub
                   <ArrowUpRight
-                    className="size-3.5 transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5"
+                    className="size-3.5 transition-transform duration-200 ease-out group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5 group-focus-visible/btn:translate-x-0.5 group-focus-visible/btn:-translate-y-0.5"
                     aria-hidden="true"
                   />
                 </Button>
@@ -230,7 +257,7 @@ export function ProjectRow({
                 >
                   Case Study
                   <ArrowRight
-                    className="size-3.5 transition-transform duration-200 group-hover/btn:translate-x-0.5"
+                    className="size-3.5 transition-transform duration-200 ease-out group-hover/btn:translate-x-0.5 group-focus-visible/btn:translate-x-0.5"
                     aria-hidden="true"
                   />
                 </Button>
@@ -243,7 +270,7 @@ export function ProjectRow({
         <motion.div
           style={enableTilt ? { x: previewX, y: previewY } : undefined}
           className={cn(
-            "relative aspect-[16/10] w-full overflow-hidden rounded-xl border transition-[border-color,box-shadow,transform] duration-300 ease-out",
+            "relative aspect-[16/10] w-full overflow-hidden rounded-xl border transition-[border-color,box-shadow,transform] duration-200 ease-out",
             isActive
               ? "border-border shadow-card bg-surface/70"
               : "border-border-subtle bg-surface/40"
