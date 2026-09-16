@@ -209,7 +209,7 @@ export function ProjectVisual({ id, className }: ProjectVisualProps) {
     <div
       aria-hidden="true"
       className={cn(
-        "relative overflow-hidden bg-[radial-gradient(28rem_16rem_at_50%_0%,rgba(15,118,110,0.07),transparent_70%)]",
+        "relative overflow-hidden bg-[radial-gradient(28rem_16rem_at_50%_0%,rgba(20,184,166,0.08),transparent_70%)]",
         className
       )}
     >

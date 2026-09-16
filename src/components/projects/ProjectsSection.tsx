@@ -1,68 +1,45 @@
 import { Container } from "@/components/ui/Container";
-import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Reveal } from "@/components/motion/Reveal";
-import { Stagger, StaggerItem } from "@/components/motion/Stagger";
-import { FeaturedProject } from "@/components/projects/FeaturedProject";
-import { ProjectCard } from "@/components/projects/ProjectCard";
-import { getFeaturedProject, getProject } from "@/data/projects";
+import { ProjectShowcase } from "@/components/projects/ProjectShowcase";
+import { projects } from "@/data/projects";
 
 /**
- * Phase 3 — Projects showcase.
- * Server component: featured treatment + editorial secondary grid.
- * Order: ORION (featured) → HeartTune → NISF → AHAL AI → PRYSM → BHOOMI → MINCHAL.
+ * Phase 5 — Cinematic Projects Showcase.
+ * Server component: renders section structure, editorial opening, and delegates
+ * interactive row states to ProjectShowcase.
  */
 export function ProjectsSection() {
-  const featured = getFeaturedProject();
-  const hearttune = getProject("hearttune");
-  const nisf = getProject("nisf");
-  const ahal = getProject("ahal");
-  const prysm = getProject("prysm");
-  const bhoomi = getProject("bhoomi");
-  const minchal = getProject("minchal");
-
   return (
     <section
       id="projects"
       aria-label="Selected work"
       className="scroll-mt-20 border-t border-border-subtle"
     >
-      <Container className="flex flex-col gap-10 py-14 sm:py-20">
+      <Container className="flex flex-col gap-10 py-16 sm:gap-14 sm:py-24">
+        {/* Section Opening & Project Count */}
         <Reveal>
-          <SectionHeading
-            eyebrow="02 — Selected work"
-            title="Things I've built"
-            description="A collection of AI-powered, full-stack, and real-world software products."
-          />
+          <div className="flex flex-col gap-4 pb-6 border-b border-border-subtle/50">
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-xs tracking-[0.16em] uppercase text-text-muted">
+                02 — Selected work
+              </span>
+              <span className="font-mono text-[0.68rem] tracking-[0.16em] uppercase px-2.5 py-0.5 rounded-full border border-border-subtle bg-surface-muted/60 text-accent">
+                07 Projects
+              </span>
+            </div>
+            <h2 className="type-h1 font-semibold text-text-primary tracking-tight">
+              Things I&apos;ve built
+            </h2>
+            <p className="type-body max-w-2xl text-pretty text-text-secondary leading-relaxed">
+              Seven products. Different problems. One engineering mindset —
+              spanning on-device intelligence, creative AI, streaming
+              architecture, and full-stack systems.
+            </p>
+          </div>
         </Reveal>
 
-        <Reveal delay={0.05}>
-          <FeaturedProject project={featured} />
-        </Reveal>
-
-        <Stagger className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          <StaggerItem className="md:col-span-2">
-            <ProjectCard
-              project={hearttune}
-              layout="horizontal"
-              maxTechnologies={6}
-            />
-          </StaggerItem>
-          <StaggerItem>
-            <ProjectCard project={nisf} />
-          </StaggerItem>
-          <StaggerItem>
-            <ProjectCard project={ahal} maxTechnologies={3} />
-          </StaggerItem>
-          <StaggerItem>
-            <ProjectCard project={prysm} />
-          </StaggerItem>
-          <StaggerItem>
-            <ProjectCard project={bhoomi} />
-          </StaggerItem>
-          <StaggerItem className="md:col-span-2">
-            <ProjectCard project={minchal} layout="horizontal" />
-          </StaggerItem>
-        </Stagger>
+        {/* Editorial Project Showcase Sequence */}
+        <ProjectShowcase projects={projects} />
       </Container>
     </section>
   );
