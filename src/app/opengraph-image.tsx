@@ -20,7 +20,7 @@ export default function OpengraphImage() {
           width: "100%",
           height: "100%",
           padding: "96px",
-          backgroundColor: "#faf9f7",
+          backgroundColor: "#0a0a0b",
           fontFamily: "system-ui, -apple-system, sans-serif",
         }}
       >
@@ -37,14 +37,14 @@ export default function OpengraphImage() {
               width: "12px",
               height: "12px",
               borderRadius: "999px",
-              backgroundColor: "#0f766e",
+              backgroundColor: "#14b8a6",
             }}
           />
           <div
             style={{
               fontSize: "24px",
               letterSpacing: "3px",
-              color: "#6e6a64",
+              color: "#857f75",
             }}
           >
             AI · FULL-STACK · PRODUCT ENGINEERING
@@ -55,7 +55,7 @@ export default function OpengraphImage() {
             fontSize: "104px",
             fontWeight: 700,
             letterSpacing: "-3px",
-            color: "#1a1a18",
+            color: "#f2f0eb",
             lineHeight: 1.05,
           }}
         >
@@ -65,7 +65,7 @@ export default function OpengraphImage() {
           style={{
             marginTop: "24px",
             fontSize: "32px",
-            color: "#4f4c47",
+            color: "#b3aea4",
             maxWidth: "900px",
             lineHeight: 1.4,
           }}

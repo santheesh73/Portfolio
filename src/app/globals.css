@@ -1,34 +1,44 @@
 @import "tailwindcss";
 
 :root {
-  /* ---- Base palette ---- */
-  --white: #ffffff;
-  --warm-white: #faf9f7;
-  --neutral-soft: #f4f3f0;
-  --charcoal: #1a1a18;
-  --gray-muted: #6e6a64;
+  color-scheme: dark;
 
-  /* ---- Semantic color tokens (premium light) ---- */
-  --background: #ffffff;
-  --foreground: #1a1a18;
-  --surface: #ffffff;
-  --surface-muted: #f4f3f0;
-  --surface-elevated: #ffffff;
+  /* ---- Base palette (dark cinematic, warm charcoal) ---- */
+  --ink-950: #0a0a0b;
+  --ink-900: #111113;
+  --ink-850: #161618;
+  --ink-800: #1b1b1f;
+  --ink-700: #232329;
+  --paper: #f2f0eb;
+  --gray-soft: #b3aea4;
+  --gray-dim: #857f75;
+  --teal: #14b8a6;
+  --teal-bright: #2dd4bf;
+  --teal-deep: #04211d;
 
-  --text-primary: #1a1a18;
-  --text-secondary: #4f4c47;
-  --text-muted: #8a857e;
+  /* ---- Semantic color tokens (dark cinematic) ---- */
+  --background: var(--ink-950);
+  --foreground: var(--paper);
+  --surface: var(--ink-900);
+  --surface-muted: var(--ink-850);
+  --surface-elevated: var(--ink-800);
+  --surface-interactive: var(--ink-700);
 
-  --border: #e7e4de;
-  --border-subtle: #f0ede7;
+  --text-primary: var(--paper);
+  --text-secondary: var(--gray-soft);
+  --text-muted: var(--gray-dim);
 
-  --accent: #0f766e;
-  --accent-hover: #0b5f59;
-  --accent-foreground: #ffffff;
+  --border: rgb(255 255 255 / 0.1);
+  --border-subtle: rgb(255 255 255 / 0.06);
 
-  --success: #15803d;
-  --warning: #b45309;
-  --error: #b91c1c;
+  --accent: var(--teal);
+  --accent-hover: var(--teal-bright);
+  --accent-foreground: var(--teal-deep);
+  --accent-muted: rgb(20 184 166 / 0.12);
+
+  --success: #4ade80;
+  --warning: #fbbf24;
+  --error: #f87171;
 
   /* ---- Radius ---- */
   --radius-sm: 6px;
@@ -37,14 +47,34 @@
   --radius-xl: 24px;
   --radius-pill: 999px;
 
-  /* ---- Motion ---- */
+  /* ---- Motion language ----
+     Micro (100–200ms) → UI (200–400ms) → Section (400–700ms) → Cinematic (700–1200ms).
+     Slow, intentional, controlled — film over dashboard. */
+  --duration-instant: 100ms;
   --duration-fast: 150ms;
   --duration-base: 250ms;
   --duration-slow: 420ms;
+  --duration-cinematic: 900ms;
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
 
   /* ---- Layout ---- */
   --container-max: 72rem;
+  --container-wide: 80rem;
+  --gutter: clamp(1.25rem, 4vw, 2rem);
+
+  /* ---- Spacing scale (breathing room for cinematic composition) ---- */
+  --space-micro: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+  --space-section: clamp(4.5rem, 10vw, 8rem);
+  --space-hero: clamp(6rem, 12vw, 10rem);
 }
 
 @theme inline {
@@ -53,6 +83,7 @@
   --color-surface: var(--surface);
   --color-surface-muted: var(--surface-muted);
   --color-surface-elevated: var(--surface-elevated);
+  --color-surface-interactive: var(--surface-interactive);
 
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
@@ -64,6 +95,7 @@
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
   --color-accent-foreground: var(--accent-foreground);
+  --color-accent-muted: var(--accent-muted);
 
   --color-success: var(--success);
   --color-warning: var(--warning);
@@ -78,9 +110,10 @@
   --radius-xl: var(--radius-xl);
   --radius-pill: var(--radius-pill);
 
-  --shadow-subtle: 0 1px 2px rgb(26 26 24 / 0.05);
-  --shadow-card: 0 1px 2px rgb(26 26 24 / 0.05), 0 4px 16px -4px rgb(26 26 24 / 0.08);
-  --shadow-elevated: 0 2px 6px rgb(26 26 24 / 0.06), 0 16px 40px -16px rgb(26 26 24 / 0.18);
+  --shadow-subtle: 0 1px 2px rgb(0 0 0 / 0.5);
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.5), 0 12px 32px -12px rgb(0 0 0 / 0.6);
+  --shadow-elevated: 0 2px 8px rgb(0 0 0 / 0.5), 0 24px 64px -16px rgb(0 0 0 / 0.65);
+  --shadow-glow-accent: 0 0 24px rgb(20 184 166 / 0.15);
 }
 
 * {
@@ -102,46 +135,77 @@ body {
   overflow-x: clip;
 }
 
+/* ---- Cinematic atmosphere: film grain (global, decorative) ----
+   Tiny tiled SVG turbulence at very low opacity. Pseudo-element only,
+   so it never enters the accessibility tree or intercepts input. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+/* ---- Cinematic atmosphere: viewport vignette (global, decorative) ----
+   Visual depth, not dark corners — kept faint to protect readability. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 89;
+  pointer-events: none;
+  background: radial-gradient(
+    120% 90% at 50% 40%,
+    transparent 55%,
+    rgb(0 0 0 / 0.38) 100%
+  );
+}
+
 ::selection {
-  background: rgb(15 118 110 / 0.16);
+  background: rgb(20 184 166 / 0.28);
   color: var(--text-primary);
 }
 
-/* ---- Accessible focus ---- */
+/* ---- Accessible focus (dark-system ring) ---- */
 :where(a, button, input, textarea, select, [tabindex]):focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: 4px;
 }
 
-/* ---- Typography scale (Geist-first, editorial restraint) ---- */
+/* ---- Typography scale (Geist-first, editorial cinematic) ----
+   Display type does the visual work: large, tight, confident.
+   Uppercase tracking is reserved for labels/metadata/eyebrows. */
 .type-display {
-  font-size: clamp(2.5rem, 5.2vw, 4.25rem);
-  line-height: 1.04;
-  letter-spacing: -0.035em;
+  font-size: clamp(3rem, 8vw, 6rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
   font-weight: 650;
   text-wrap: balance;
 }
 
 .type-h1 {
-  font-size: clamp(2rem, 3.6vw, 3rem);
-  line-height: 1.08;
-  letter-spacing: -0.028em;
+  font-size: clamp(2.25rem, 5vw, 3.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.032em;
   font-weight: 650;
   text-wrap: balance;
 }
 
 .type-h2 {
-  font-size: clamp(1.5rem, 2.6vw, 2.125rem);
-  line-height: 1.16;
-  letter-spacing: -0.022em;
+  font-size: clamp(1.625rem, 3.4vw, 2.5rem);
+  line-height: 1.12;
+  letter-spacing: -0.024em;
   font-weight: 620;
   text-wrap: balance;
 }
 
 .type-h3 {
-  font-size: clamp(1.125rem, 1.8vw, 1.375rem);
-  line-height: 1.32;
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
+  line-height: 1.3;
   letter-spacing: -0.014em;
   font-weight: 600;
 }
@@ -198,14 +262,45 @@ body {
   text-transform: uppercase;
 }
 
-/* ---- Subtle scrollbar ---- */
+/* ---- Atmospheric primitives (reusable, CSS-first) ----
+   Later phases compose these for sections/overlays.
+   All decorative: apply alongside aria-hidden markup where layered. */
+.atmosphere-grid {
+  background-image:
+    linear-gradient(to right, var(--border-subtle) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border-subtle) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+.atmosphere-grid-fade {
+  -webkit-mask-image: radial-gradient(46rem 30rem at 50% 0%, black, transparent 75%);
+  mask-image: radial-gradient(46rem 30rem at 50% 0%, black, transparent 75%);
+}
+
+.atmosphere-radial {
+  background: radial-gradient(
+    52rem 30rem at 50% 0%,
+    rgb(20 184 166 / 0.08),
+    transparent 65%
+  );
+}
+
+.atmosphere-glow {
+  background: radial-gradient(
+    closest-side,
+    rgb(20 184 166 / 0.1),
+    transparent
+  );
+}
+
+/* ---- Subtle scrollbar (cinematic palette) ---- */
 ::-webkit-scrollbar {
   width: 10px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #d8d4cc;
+  background: #26262c;
   border-radius: 8px;
-  border: 2px solid #fff;
+  border: 2px solid #0a0a0b;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
@@ -215,6 +310,10 @@ body {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  body::before,
+  body::after {
+    display: none;
   }
   *,
   *::before,

@@ -113,17 +113,17 @@ export function HeroVisual() {
       {/* Soft accent depth behind the card */}
       <motion.div
         aria-hidden="true"
-        className="absolute -inset-6 rounded-xl bg-[radial-gradient(closest-side,rgba(15,118,110,0.12),transparent)]"
+        className="absolute -inset-6 rounded-xl bg-[radial-gradient(closest-side,rgba(20,184,166,0.12),transparent)]"
         style={parallaxEnabled ? { x: glowX, y: glowY } : undefined}
       />
 
       <motion.div
         aria-hidden="true"
-        className="relative overflow-hidden rounded-xl border border-border bg-surface shadow-elevated"
+        className="relative overflow-hidden rounded-xl border border-border-subtle bg-surface/50 shadow-card backdrop-blur-md"
         style={parallaxEnabled ? { x: cardX, y: cardY } : undefined}
       >
         {/* Window header */}
-        <div className="flex items-center justify-between border-b border-border-subtle px-4 py-2.5">
+        <div className="flex items-center justify-between border-b border-border-subtle bg-surface-muted/30 px-4 py-2.5">
           <div className="flex items-center gap-1.5">
             <span className="size-2 rounded-full bg-border" />
             <span className="size-2 rounded-full bg-border" />

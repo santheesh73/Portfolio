@@ -7,9 +7,10 @@ export const SITE_DESCRIPTION =
   "Santheesh S — AI Software Engineer and Full-Stack Developer building calm, precise, production-quality software with modern generative AI.";
 
 export const NAV_ITEMS: NavigationItem[] = [
+  { label: "Work", href: "/#projects" },
   { label: "About", href: "/#about" },
-  { label: "Projects", href: "/#projects" },
   { label: "Stack", href: "/#stack" },
+  { label: "Proof", href: "/#proof" },
   { label: "Contact", href: "/#contact" },
 ];
 
