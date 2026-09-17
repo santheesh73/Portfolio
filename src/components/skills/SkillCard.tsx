@@ -54,50 +54,67 @@ const ICONS: Record<SkillItem["icon"], LucideIcon> = {
 };
 
 /**
- * Phase 5 — Individual technology tile.
- * Server component: hover depth is CSS-only so the information
- * is never hover-dependent. Project links are always visible.
+ * Phase 9 — Individual technology tile.
+ * Editorial presentation: verified details, clear name and description,
+ * verified project usage references, and restrained tactile micro-motion.
  */
 export function SkillCard({ skill }: { skill: SkillItem }) {
   const Icon = ICONS[skill.icon];
 
   return (
     <div
+      tabIndex={0}
+      role="article"
+      aria-label={`${skill.name}: ${skill.description}`}
       className={cn(
-        "group flex h-full flex-col gap-2.5 rounded-md border bg-background p-4",
-        "transition-[box-shadow,transform,border-color] duration-200 ease-out",
-        "hover:-translate-y-[2px] hover:border-text-muted/40 hover:shadow-card",
-        "focus-within:-translate-y-[2px] focus-within:border-text-muted/40 focus-within:shadow-card",
-        skill.featured ? "border-accent/30" : "border-border-subtle"
+        "group relative flex h-full flex-col justify-between gap-3 rounded-lg border p-4 sm:p-4.5 outline-none",
+        "transition-[border-color,background-color,transform,box-shadow] duration-200 ease-out",
+        "hover:-translate-y-0.5 hover:border-text-muted/40 hover:bg-surface-muted/30 hover:shadow-card",
+        "focus-visible:ring-1 focus-visible:ring-accent focus-visible:bg-surface-muted/30",
+        skill.featured
+          ? "border-accent/30 bg-surface-muted/15"
+          : "border-border-subtle/80 bg-surface/40"
       )}
     >
-      <span
-        aria-hidden="true"
-        className={cn(
-          "flex size-9 items-center justify-center rounded-lg border transition-transform duration-200 ease-out group-hover:-translate-y-0.5",
-          skill.featured
-            ? "border-accent/25 bg-accent/10 text-accent"
-            : "border-border-subtle bg-surface-muted text-text-secondary"
-        )}
-      >
-        <Icon className="size-[18px]" />
-      </span>
-      <div className="flex flex-col gap-1">
-        <p className="type-body-small font-semibold tracking-[-0.005em] text-text-primary">
-          {skill.name}
-        </p>
-        <p className="type-caption text-pretty text-text-secondary">
-          {skill.description}
-        </p>
+      <div className="flex flex-col gap-2.5">
+        <div className="flex items-center justify-between gap-2">
+          <span
+            aria-hidden="true"
+            className={cn(
+              "flex size-8 items-center justify-center rounded-md border transition-transform duration-200 ease-out group-hover:-translate-y-0.5",
+              skill.featured
+                ? "border-accent/30 bg-accent/10 text-accent"
+                : "border-border-subtle bg-surface-muted/80 text-text-secondary"
+            )}
+          >
+            <Icon className="size-4" />
+          </span>
+
+          {skill.featured ? (
+            <span className="font-mono text-[0.62rem] tracking-[0.14em] uppercase px-2 py-0.5 rounded border border-accent/25 bg-accent/5 text-accent">
+              Core
+            </span>
+          ) : null}
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <h4 className="type-body font-semibold tracking-tight text-text-primary group-hover:text-accent transition-colors duration-200">
+            {skill.name}
+          </h4>
+          <p className="type-caption text-pretty text-text-secondary leading-relaxed">
+            {skill.description}
+          </p>
+        </div>
       </div>
+
       {skill.projects && skill.projects.length > 0 ? (
-        <p className="mt-auto pt-1 font-mono text-[0.68rem] tracking-[0.04em] text-text-muted">
+        <div className="mt-auto pt-2 border-t border-border-subtle/50 flex items-center gap-1.5 font-mono text-[0.66rem] tracking-[0.04em] text-text-muted">
           <span aria-hidden="true" className="text-accent">
             →
-          </span>{" "}
+          </span>
           <span className="sr-only">Used in: </span>
-          {skill.projects.join(" · ")}
-        </p>
+          <span className="truncate">{skill.projects.join(" · ")}</span>
+        </div>
       ) : null}
     </div>
   );
