@@ -1,5 +1,4 @@
 import { Container } from "@/components/ui/Container";
-import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { Reveal } from "@/components/motion/Reveal";
@@ -9,96 +8,174 @@ import { TECHNICAL_FOCUS } from "@/data/about";
 import { profile } from "@/data/profile";
 
 /**
- * Phase 4 — About / Engineering Identity.
- * Server component. Editorial narrative + typographic identity visual,
- * principles, and a compact education surface.
- * Motion is delegated to the reduced-motion-aware Reveal primitive.
+ * Phase 8 — Cinematic About & Personal Identity.
+ * Server component. Editorial narrative hierarchy:
+ * 1. Large identity statement (editorial headline)
+ * 2. Personal narrative & typographic system visual
+ * 3. Build / Think / Explore / Refine editorial principles
+ * 4. Education surface
+ * 5. Transition bridge into Technical Stack
  */
 export function AboutSection() {
   return (
     <section
       id="about"
       aria-label="About Santheesh S"
-      className="scroll-mt-20 border-t border-border-subtle"
+      className="relative scroll-mt-20 border-t border-border-subtle bg-background"
     >
-      <Container className="flex flex-col gap-10 py-14 sm:gap-12 sm:py-20">
+      {/* Reflective cinematic atmospheric ambient light */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_35%_at_50%_0%,rgba(20,184,166,0.035),transparent_70%)]"
+      />
+
+      <Container className="relative flex flex-col gap-16 py-20 sm:gap-20 sm:py-28 lg:gap-24 lg:py-32">
+        {/* ---- 1. Opening Identity Statement ---- */}
         <Reveal>
-          <SectionHeading
-            eyebrow="03 — About"
-            title="Engineer. Builder. Learner."
-            description="Building software at the intersection of AI, engineering, and user experience."
-          />
+          <div className="flex max-w-4xl flex-col gap-6">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+              <span className="font-mono text-xs tracking-[0.16em] uppercase text-text-muted">
+                03 — About &amp; Engineering Identity
+              </span>
+              <span aria-hidden="true" className="hidden h-px w-6 bg-border-subtle sm:inline-block" />
+              <span className="font-mono text-[0.68rem] tracking-[0.14em] uppercase text-accent whitespace-nowrap">
+                {profile.name}
+              </span>
+            </div>
+
+            <h2 className="text-balance text-3xl font-semibold tracking-tight text-text-primary sm:text-4xl lg:text-5xl leading-[1.15]">
+              I turn ideas in AI and modern web architecture into calm, reliable
+              software people can actually use.
+            </h2>
+
+            <p className="type-body max-w-2xl text-pretty text-text-secondary leading-relaxed sm:text-lg">
+              {profile.roles.join("  ·  ")}
+            </p>
+          </div>
         </Reveal>
 
-        <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
-          {/* ---- Narrative ---- */}
+        {/* ---- 2. Personal Narrative & Typographic System Visual ---- */}
+        <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
+          {/* Narrative Column */}
           <Reveal delay={0.05}>
-            <div className="flex max-w-2xl flex-col">
-              <p className="type-eyebrow text-text-secondary">
-                {profile.name} — {profile.roles.join("  ·  ")}
-              </p>
-              <h3 className="type-h2 mt-4 text-balance text-text-primary">
-                I turn ideas in AI and full-stack development into software
-                people can actually use.
-              </h3>
-              <div className="type-body mt-4 flex flex-col gap-4 text-pretty text-text-secondary">
+            <div className="flex flex-col gap-6">
+              <div className="flex items-center gap-2">
+                <span
+                  aria-hidden="true"
+                  className="size-1.5 rounded-full bg-accent"
+                />
+                <h3 className="font-mono text-xs tracking-[0.16em] uppercase text-text-muted">
+                  Approach &amp; Mindset
+                </h3>
+              </div>
+
+              <div className="type-body flex flex-col gap-4 text-pretty text-text-secondary leading-relaxed">
                 <p>
                   I work across intelligent systems and modern web interfaces —
-                  experimenting with generative AI, building full-stack
-                  products, and refining them until they feel simple and
-                  reliable.
+                  experimenting with generative AI, building full-stack products,
+                  and refining them until they feel simple, honest, and reliable.
                 </p>
                 <p>
-                  My focus is real-world problems: clear architecture, honest
-                  interfaces, and software that holds up in everyday use.
+                  My focus is real-world problems: understanding the system first,
+                  architecting honest interfaces, and delivering software that holds
+                  up in everyday use.
                 </p>
               </div>
 
-              <ul
-                aria-label="Technical focus areas"
-                className="mt-6 flex flex-wrap gap-2"
-              >
-                {TECHNICAL_FOCUS.map((area) => (
-                  <li key={area}>
-                    <Badge variant="outline">{area}</Badge>
-                  </li>
-                ))}
-              </ul>
+              {/* Verified Technical Focus */}
+              <div className="flex flex-col gap-3 pt-2">
+                <p className="font-mono text-[0.7rem] tracking-[0.12em] uppercase text-text-muted">
+                  Core Engineering Focus
+                </p>
+                <ul
+                  aria-label="Technical focus areas"
+                  className="flex flex-wrap gap-2"
+                >
+                  {TECHNICAL_FOCUS.map((area) => (
+                    <li key={area}>
+                      <Badge variant="outline">{area}</Badge>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-              <p className="mt-6 font-mono text-[0.72rem] tracking-[0.06em] text-text-muted">
+              <p className="font-mono text-[0.72rem] tracking-[0.08em] text-text-muted">
                 PROJECTS ↑ WHAT I BUILD &nbsp;·&nbsp; ABOUT → HOW I THINK
               </p>
             </div>
           </Reveal>
 
-          {/* ---- Identity visual ---- */}
+          {/* Identity visual */}
           <Reveal delay={0.1}>
             <IdentityVisual />
           </Reveal>
         </div>
 
-        {/* ---- Principles ---- */}
+        {/* ---- 3. Engineering Principles (Build / Think / Explore / Refine) ---- */}
         <Reveal delay={0.05}>
-          <div className="flex flex-col gap-5">
-            <div className="flex items-baseline justify-between gap-4">
-              <h3 className="type-label text-text-muted">
-                How I approach building
-              </h3>
+          <div className="flex flex-col gap-6">
+            <div className="flex items-baseline justify-between gap-4 border-b border-border-subtle/50 pb-4">
+              <div className="flex items-center gap-2.5">
+                <span
+                  aria-hidden="true"
+                  className="size-1.5 rounded-full bg-accent"
+                />
+                <h3 className="font-mono text-xs tracking-[0.16em] uppercase text-text-muted">
+                  How I approach building
+                </h3>
+              </div>
               <span
                 aria-hidden="true"
-                className="hidden font-mono text-[0.72rem] tracking-[0.08em] text-text-muted sm:block"
+                className="font-mono text-[0.72rem] tracking-[0.1em] text-text-muted"
               >
                 04 PRINCIPLES
               </span>
             </div>
+
             <EngineeringPrinciples />
           </div>
         </Reveal>
 
-        {/* ---- Education ---- */}
+        {/* ---- 4. Education Surface ---- */}
         <Reveal delay={0.05}>
           <EducationCard />
         </Reveal>
+
+        {/* ---- 5. About → Skills Transition Bridge ---- */}
+        <div className="relative pt-6 sm:pt-10">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 -top-6 h-20 bg-gradient-to-b from-transparent to-surface-muted/20 opacity-60"
+          />
+
+          <Reveal delay={0.1}>
+            <div className="flex flex-col items-start justify-between gap-4 border-t border-border-subtle/50 pt-8 sm:flex-row sm:items-center">
+              <div className="flex items-center gap-2.5">
+                <span
+                  aria-hidden="true"
+                  className="size-1.5 rounded-full bg-accent"
+                />
+                <p className="font-mono text-xs tracking-[0.14em] uppercase text-text-muted">
+                  03 / Philosophy &amp; Identity Complete
+                </p>
+              </div>
+
+              <a
+                href="#stack"
+                className="group inline-flex items-center gap-2 font-mono text-xs tracking-[0.14em] uppercase text-text-muted transition-colors duration-200 hover:text-text-primary focus-visible:text-accent focus-visible:outline-none"
+                aria-label="Continue downward to Technical Stack section"
+              >
+                <span>Continue to Technical Stack</span>
+                <span
+                  aria-hidden="true"
+                  className="transition-transform duration-200 ease-out group-hover:translate-y-0.5 group-focus-visible:translate-y-0.5"
+                >
+                  ↓
+                </span>
+              </a>
+            </div>
+          </Reveal>
+        </div>
       </Container>
     </section>
   );
