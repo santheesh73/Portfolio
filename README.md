@@ -17,8 +17,8 @@ server components, and reduced-motion-aware animation.
 ## Local development
 
 ```bash
-npm install
-npm run dev
+npm  install
+npm  run  dev
 ```
 
 
