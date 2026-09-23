@@ -39,16 +39,16 @@ export function ProofDisplay({
   const materials = useMemo(() => {
     return {
       glassBackplate: new THREE.MeshStandardMaterial({
-        color: "#141720",
-        roughness: 0.2,
-        metalness: 0.6,
+        color: "#ffffff",
+        roughness: 0.15,
+        metalness: 0.2,
         transparent: true,
-        opacity: 0.88,
+        opacity: 0.75,
       }),
       frame: new THREE.MeshStandardMaterial({
-        color: "#222633",
-        roughness: 0.4,
-        metalness: 0.7,
+        color: "#cbd5e1",
+        roughness: 0.35,
+        metalness: 0.8,
       }),
       glow: new THREE.MeshBasicMaterial({
         color: accentColor,

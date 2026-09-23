@@ -39,8 +39,8 @@ export function Atmosphere({
     // 1. Modulate fog distance when entering interior (keeps foyer and corridor clear)
     if (state.scene.fog && state.scene.fog instanceof THREE.Fog) {
       const interiorFactor = Math.min(1, Math.max(0, (scrollProgress - 0.28) / 0.2));
-      const targetNear = THREE.MathUtils.lerp(12, 24, interiorFactor);
-      const targetFar = THREE.MathUtils.lerp(44, 65, interiorFactor);
+      const targetNear = THREE.MathUtils.lerp(16, 26, interiorFactor);
+      const targetFar = THREE.MathUtils.lerp(55, 75, interiorFactor);
       state.scene.fog.near = THREE.MathUtils.damp(state.scene.fog.near, targetNear, 4.0, delta);
       state.scene.fog.far = THREE.MathUtils.damp(state.scene.fog.far, targetFar, 4.0, delta);
     }
@@ -67,10 +67,10 @@ export function Atmosphere({
 
   return (
     <>
-      {/* Blue-Hour Atmospheric Fog */}
-      <fog attach="fog" args={["#080a12", 12, 44]} />
+      {/* Soft Daylight Architectural Fog */}
+      <fog attach="fog" args={["#F5F4EF", 16, 55]} />
 
-      {/* Atmospheric Motes / Fireflies */}
+      {/* Subtle Sunlit Dust Motes in Morning Light */}
       {!reducedMotion && (
         <points ref={pointsRef}>
           <bufferGeometry>
@@ -80,11 +80,10 @@ export function Atmosphere({
             />
           </bufferGeometry>
           <pointsMaterial
-            size={0.065}
-            color="#fbbf24"
+            size={0.045}
+            color="#dcd7cc"
             transparent
-            opacity={Math.max(0.04, 0.38 * (1 - scrollProgress * 1.6))}
-            blending={THREE.AdditiveBlending}
+            opacity={Math.max(0.02, 0.22 * (1 - scrollProgress * 1.5))}
             depthWrite={false}
           />
         </points>

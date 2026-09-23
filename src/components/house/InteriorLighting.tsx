@@ -178,7 +178,7 @@ export function InteriorLighting({
       {/* 1. Foyer Ambient Warm Fill */}
       <ambientLight
         ref={foyerAmbientRef}
-        color="#382618"
+        color="#fdfbf7"
         intensity={0}
       />
 
@@ -186,7 +186,7 @@ export function InteriorLighting({
       <pointLight
         ref={foyerCoveRef}
         position={[1.65, 3.1, -1.2]}
-        color="#ffedd5"
+        color="#fffbeb"
         intensity={0}
         distance={6.5}
         decay={2}
@@ -195,7 +195,7 @@ export function InteriorLighting({
       {/* 3. Foyer Feature Art Wash */}
       <pointLight
         position={[0.65, 2.4, -1.8]}
-        color="#fed7aa"
+        color="#fef3c7"
         intensity={0.8 * targetInteriorFactor}
         distance={4.0}
         decay={2}
@@ -206,7 +206,7 @@ export function InteriorLighting({
         ref={corridorSpot1Ref}
         position={[1.7, 2.95, -6.0]}
         target-position={[1.7, 0.12, -6.0]}
-        color="#ffedd5"
+        color="#fffdf5"
         intensity={0}
         angle={Math.PI / 3.8}
         penumbra={0.6}
@@ -221,7 +221,7 @@ export function InteriorLighting({
         ref={corridorSpot2Ref}
         position={[1.7, 2.95, -10.0]}
         target-position={[1.7, 0.12, -10.0]}
-        color="#ffedd5"
+        color="#fffdf5"
         intensity={0}
         angle={Math.PI / 3.8}
         penumbra={0.6}
@@ -232,7 +232,7 @@ export function InteriorLighting({
         ref={corridorSpot3Ref}
         position={[1.7, 2.95, -14.0]}
         target-position={[1.7, 0.12, -14.0]}
-        color="#ffedd5"
+        color="#fffdf5"
         intensity={0}
         angle={Math.PI / 3.8}
         penumbra={0.6}
@@ -258,7 +258,7 @@ export function InteriorLighting({
       <pointLight
         ref={studioAmbientRef}
         position={[-4.5, 2.8, -6.5]}
-        color="#fed7aa"
+        color="#f8fafc"
         intensity={0}
         distance={8.5}
         decay={2}
@@ -269,7 +269,7 @@ export function InteriorLighting({
         ref={labSpotRef}
         position={[6.2, 3.15, -9.0]}
         target-position={[6.2, 0.3, -9.0]}
-        color="#e0f2fe"
+        color="#f0fdfa"
         intensity={0}
         angle={Math.PI / 3.5}
         penumbra={0.6}
@@ -279,23 +279,23 @@ export function InteriorLighting({
       <pointLight
         ref={labCoreRef}
         position={[6.2, 1.0, -9.0]}
-        color="#38bdf8"
+        color="#0d9488"
         intensity={0}
         distance={6.0}
         decay={2}
       />
 
-      {/* 7. Room 04: ARCHIVE LIGHTING (Low warm amber) */}
+      {/* 7. Room 04: ARCHIVE LIGHTING (Warm parchment glow) */}
       <pointLight
         ref={archiveAmbientRef}
         position={[-4.0, 2.7, -12.0]}
-        color="#fde68a"
+        color="#fef3c7"
         intensity={0}
         distance={7.0}
         decay={2}
       />
 
-      {/* 8. Room 05: PRIVATE STUDY LIGHTING (Warm walnut & desk lamp) */}
+      {/* 8. Room 05: PRIVATE STUDY LIGHTING (Warm oak & desk lamp) */}
       <pointLight
         ref={studyLampRef}
         position={[6.95, 1.25, -14.3]}
@@ -309,17 +309,17 @@ export function InteriorLighting({
       <pointLight
         ref={contactAmbientRef}
         position={[1.7, 2.8, -19.0]}
-        color="#e2e8f0"
+        color="#f8fafc"
         intensity={0}
         distance={7.5}
         decay={2}
       />
 
-      {/* Cool exterior moonlight over observation terrace */}
+      {/* Daylight exterior sky light over observation terrace */}
       <directionalLight
         ref={terraceMoonRef}
         position={[1.7, 7.0, -25.0]}
-        color="#93c5fd"
+        color="#e0f2fe"
         intensity={0}
       />
     </group>

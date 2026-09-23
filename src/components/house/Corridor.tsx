@@ -13,32 +13,32 @@ export function Corridor({ onSelectRoom, reducedMotion = false }: CorridorProps)
   const materials = useMemo(() => {
     return {
       floor: new THREE.MeshStandardMaterial({
-        color: "#202227",
-        roughness: 0.6,
-        metalness: 0.05,
-      }),
-      wall: new THREE.MeshStandardMaterial({
-        color: "#151619",
-        roughness: 0.9,
+        color: "#e5e0d6",
+        roughness: 0.55,
         metalness: 0.04,
       }),
+      wall: new THREE.MeshStandardMaterial({
+        color: "#f5f4ef",
+        roughness: 0.88,
+        metalness: 0.02,
+      }),
       ceiling: new THREE.MeshStandardMaterial({
-        color: "#111215",
+        color: "#faf9f6",
         roughness: 0.92,
         metalness: 0.02,
       }),
       downlightBezel: new THREE.MeshStandardMaterial({
-        color: "#1e2025",
+        color: "#cbd5e1",
         roughness: 0.3,
         metalness: 0.8,
       }),
       downlightLens: new THREE.MeshBasicMaterial({
-        color: "#fffbeb",
+        color: "#fffdf5",
       }),
       endPortalGlow: new THREE.MeshBasicMaterial({
-        color: "#f59e0b",
+        color: "#0f766e",
         transparent: true,
-        opacity: 0.3,
+        opacity: 0.18,
         blending: THREE.AdditiveBlending,
       }),
     };

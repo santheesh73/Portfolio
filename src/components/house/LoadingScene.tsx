@@ -14,7 +14,7 @@ export function LoadingScene({ isLoading }: LoadingSceneProps) {
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#0a0a0b] text-text-primary pointer-events-none"
+      className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-background text-text-primary pointer-events-none"
     >
       {/* Subtle architectural background grid */}
       <div
@@ -55,7 +55,7 @@ export function LoadingScene({ isLoading }: LoadingSceneProps) {
         </div>
 
         <span className="font-mono text-[0.65rem] tracking-[0.16em] text-text-muted/60 uppercase">
-          BLUE HOUR · 3D EXTERIOR
+          DAYLIGHT ARCHITECTURE · 3D RESIDENCE
         </span>
       </div>
     </motion.div>

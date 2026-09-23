@@ -22,41 +22,41 @@ export function ContactRoom({
   const materials = useMemo(() => {
     return {
       floor: new THREE.MeshStandardMaterial({
-        color: "#181a22",
-        roughness: 0.4,
-        metalness: 0.2,
-      }),
-      terraceFloor: new THREE.MeshStandardMaterial({
-        color: "#101218",
-        roughness: 0.7,
-        metalness: 0.1,
-      }),
-      wall: new THREE.MeshStandardMaterial({
-        color: "#0f1116",
-        roughness: 0.9,
+        color: "#ece8e0",
+        roughness: 0.55,
         metalness: 0.05,
       }),
+      terraceFloor: new THREE.MeshStandardMaterial({
+        color: "#e4dfd6",
+        roughness: 0.75,
+        metalness: 0.04,
+      }),
+      wall: new THREE.MeshStandardMaterial({
+        color: "#f5f4ef",
+        roughness: 0.88,
+        metalness: 0.02,
+      }),
       ceiling: new THREE.MeshStandardMaterial({
-        color: "#0a0c10",
+        color: "#faf9f6",
         roughness: 0.95,
         metalness: 0.02,
       }),
       glass: new THREE.MeshStandardMaterial({
-        color: "#08101a",
-        roughness: 0.1,
-        metalness: 0.85,
+        color: "#e0f2fe",
+        roughness: 0.08,
+        metalness: 0.3,
         transparent: true,
-        opacity: 0.35,
+        opacity: 0.32,
       }),
       frameDark: new THREE.MeshStandardMaterial({
-        color: "#1a1e28",
-        roughness: 0.3,
+        color: "#cbd5e1",
+        roughness: 0.35,
         metalness: 0.8,
       }),
       consolePedestal: new THREE.MeshStandardMaterial({
-        color: "#13161f",
-        roughness: 0.3,
-        metalness: 0.6,
+        color: "#ffffff",
+        roughness: 0.4,
+        metalness: 0.1,
       }),
       terminalEmail: new THREE.MeshBasicMaterial({
         color: "#2dd4bf",

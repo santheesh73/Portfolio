@@ -14,6 +14,7 @@ import { StudyDetailModal } from "./about/StudyDetailModal";
 import { FinalExitOverlay } from "./FinalExitOverlay";
 import { profile } from "@/data/profile";
 import { Project, SkillGroupData, ProofItem } from "@/types";
+import { useTheme } from "@/theme/ThemeContext";
 
 import {
   RoomId,
@@ -76,6 +77,12 @@ export function HouseExperience() {
   const spatialState = getActiveSpatialState(scrollProgress);
   const doorOpenProgress = spatialState.doorOpenProgress;
   const activeRoomId = spatialState.roomId;
+
+  const { updateAccentForRoom } = useTheme();
+
+  useEffect(() => {
+    updateAccentForRoom(activeRoomId);
+  }, [activeRoomId, updateAccentForRoom]);
 
   // Scroll tracking across the full 650vh spatial track
   useEffect(() => {
@@ -217,7 +224,7 @@ export function HouseExperience() {
       ref={containerRef}
       id="house-experience"
       aria-label="Santheesh's Digital House — Complete Cinematic Spatial Experience"
-      className="relative h-[650vh] w-full bg-[#080a12]"
+      className="relative h-[650vh] w-full bg-[#F5F4EF]"
     >
       {/* Accessible semantic content for screen readers & SEO */}
       <div className="sr-only">

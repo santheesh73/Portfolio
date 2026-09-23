@@ -7,45 +7,45 @@ export function Foyer() {
   const materials = useMemo(() => {
     return {
       foyerFloor: new THREE.MeshStandardMaterial({
-        color: "#302319",
-        roughness: 0.45,
-        metalness: 0.08,
-      }),
-      foyerWall: new THREE.MeshStandardMaterial({
-        color: "#18191d",
-        roughness: 0.88,
-        metalness: 0.05,
-      }),
-      featureWoodWall: new THREE.MeshStandardMaterial({
-        color: "#4a3221",
+        color: "#e8dfd3",
         roughness: 0.52,
         metalness: 0.04,
       }),
+      foyerWall: new THREE.MeshStandardMaterial({
+        color: "#f7f6f2",
+        roughness: 0.85,
+        metalness: 0.02,
+      }),
+      featureWoodWall: new THREE.MeshStandardMaterial({
+        color: "#c89a65",
+        roughness: 0.55,
+        metalness: 0.02,
+      }),
       ceiling: new THREE.MeshStandardMaterial({
-        color: "#131417",
+        color: "#faf9f6",
         roughness: 0.9,
         metalness: 0.02,
       }),
       coveLight: new THREE.MeshBasicMaterial({
-        color: "#ffedd5",
+        color: "#fffbeb",
       }),
       pedestal: new THREE.MeshStandardMaterial({
-        color: "#22242a",
-        roughness: 0.35,
-        metalness: 0.4,
+        color: "#dedad0",
+        roughness: 0.6,
+        metalness: 0.1,
       }),
       sculptureMetal: new THREE.MeshStandardMaterial({
-        color: "#94a3b8",
-        roughness: 0.2,
-        metalness: 0.95,
+        color: "#64748b",
+        roughness: 0.25,
+        metalness: 0.85,
       }),
       plantFoliage: new THREE.MeshStandardMaterial({
-        color: "#1e3325",
-        roughness: 0.8,
+        color: "#476a4f",
+        roughness: 0.78,
         metalness: 0.05,
       }),
       accentLight: new THREE.MeshBasicMaterial({
-        color: "#fed7aa",
+        color: "#f59e0b",
       }),
     };
   }, []);

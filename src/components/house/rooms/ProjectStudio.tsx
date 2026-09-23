@@ -18,32 +18,32 @@ export function ProjectStudio({
   const materials = useMemo(() => {
     return {
       floor: new THREE.MeshStandardMaterial({
-        color: "#22252a",
-        roughness: 0.62,
-        metalness: 0.08,
+        color: "#e6e2d8",
+        roughness: 0.58,
+        metalness: 0.04,
       }),
       concreteWall: new THREE.MeshStandardMaterial({
-        color: "#16181c",
-        roughness: 0.88,
-        metalness: 0.05,
+        color: "#f4f2ed",
+        roughness: 0.85,
+        metalness: 0.02,
       }),
       woodAccentWall: new THREE.MeshStandardMaterial({
-        color: "#3f2b1d",
+        color: "#be8e56",
         roughness: 0.55,
         metalness: 0.02,
       }),
       ceiling: new THREE.MeshStandardMaterial({
-        color: "#111215",
+        color: "#faf9f6",
         roughness: 0.9,
         metalness: 0.02,
       }),
       trackLight: new THREE.MeshStandardMaterial({
-        color: "#1e2228",
+        color: "#cbd5e1",
         roughness: 0.3,
         metalness: 0.8,
       }),
       trackLens: new THREE.MeshBasicMaterial({
-        color: "#ffedd5",
+        color: "#fffdf5",
       }),
     };
   }, []);

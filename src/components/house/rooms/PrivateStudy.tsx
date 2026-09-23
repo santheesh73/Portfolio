@@ -15,32 +15,32 @@ export function PrivateStudy({
   const materials = useMemo(() => {
     return {
       walnutFloor: new THREE.MeshStandardMaterial({
-        color: "#281e16",
-        roughness: 0.45,
-        metalness: 0.05,
+        color: "#e2d9cd",
+        roughness: 0.52,
+        metalness: 0.04,
       }),
       darkConcreteWall: new THREE.MeshStandardMaterial({
-        color: "#13151a",
-        roughness: 0.9,
-        metalness: 0.05,
+        color: "#f5f3ec",
+        roughness: 0.88,
+        metalness: 0.02,
       }),
       walnutWoodWall: new THREE.MeshStandardMaterial({
-        color: "#38291e",
-        roughness: 0.5,
+        color: "#c89a65",
+        roughness: 0.52,
         metalness: 0.02,
       }),
       ceiling: new THREE.MeshStandardMaterial({
-        color: "#0e1014",
+        color: "#faf9f6",
         roughness: 0.92,
         metalness: 0.02,
       }),
       deskWood: new THREE.MeshStandardMaterial({
-        color: "#241a12",
-        roughness: 0.35,
-        metalness: 0.08,
+        color: "#be8e56",
+        roughness: 0.45,
+        metalness: 0.04,
       }),
       deskMetalLeg: new THREE.MeshStandardMaterial({
-        color: "#1e222a",
+        color: "#cbd5e1",
         roughness: 0.25,
         metalness: 0.85,
       }),
@@ -50,22 +50,22 @@ export function PrivateStudy({
         metalness: 0.9,
       }),
       lampLight: new THREE.MeshBasicMaterial({
-        color: "#ffedd5",
+        color: "#fffbeb",
       }),
       windowGlass: new THREE.MeshStandardMaterial({
-        color: "#081018",
-        roughness: 0.1,
-        metalness: 0.9,
+        color: "#e0f2fe",
+        roughness: 0.08,
+        metalness: 0.3,
         transparent: true,
-        opacity: 0.35,
+        opacity: 0.3,
       }),
       principlePlaque: new THREE.MeshStandardMaterial({
-        color: "#181a22",
-        roughness: 0.4,
-        metalness: 0.5,
+        color: "#ffffff",
+        roughness: 0.35,
+        metalness: 0.08,
       }),
       principleAccent: new THREE.MeshBasicMaterial({
-        color: "#2dd4bf",
+        color: "#be123c",
       }),
     };
   }, []);

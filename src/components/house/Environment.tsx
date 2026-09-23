@@ -7,32 +7,32 @@ export function Environment() {
   const materials = useMemo(() => {
     return {
       ground: new THREE.MeshStandardMaterial({
-        color: "#0a0c10",
-        roughness: 0.96,
+        color: "#dcd7cc",
+        roughness: 0.94,
         metalness: 0.02,
       }),
       pathPaver: new THREE.MeshStandardMaterial({
-        color: "#24272e",
-        roughness: 0.82,
-        metalness: 0.06,
+        color: "#f3efe6",
+        roughness: 0.72,
+        metalness: 0.04,
       }),
       gravelBed: new THREE.MeshStandardMaterial({
-        color: "#121418",
+        color: "#e8e4dc",
         roughness: 0.95,
         metalness: 0.04,
       }),
       darkFoliage: new THREE.MeshStandardMaterial({
-        color: "#152219",
-        roughness: 0.85,
-        metalness: 0.05,
+        color: "#426b48",
+        roughness: 0.78,
+        metalness: 0.04,
       }),
       treeTrunk: new THREE.MeshStandardMaterial({
-        color: "#161311",
-        roughness: 0.9,
+        color: "#78695d",
+        roughness: 0.88,
         metalness: 0.02,
       }),
       bollardMetal: new THREE.MeshStandardMaterial({
-        color: "#0f172a",
+        color: "#cbd5e1",
         roughness: 0.35,
         metalness: 0.8,
       }),
@@ -145,13 +145,13 @@ export function Environment() {
         </mesh>
       </group>
 
-      {/* 7. Distant Horizon Silhouette Backdrop */}
+      {/* 7. Distant Daylight Horizon Backdrop */}
       <mesh position={[0, 4.5, -28]}>
         <planeGeometry args={[80, 18]} />
         <meshBasicMaterial
-          color="#05070a"
+          color="#edebe5"
           transparent
-          opacity={0.9}
+          opacity={0.8}
         />
       </mesh>
     </group>
