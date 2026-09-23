@@ -8,8 +8,11 @@ import { LoadingScene } from "./LoadingScene";
 import { HouseFallback } from "./HouseFallback";
 import { ProjectDetailModal } from "./projects/ProjectDetailModal";
 import { SkillDetailModal } from "./skills/SkillDetailModal";
+import { ProofDetailModal } from "./proof/ProofDetailModal";
+import { StudyDetailModal } from "./about/StudyDetailModal";
+import { FinalExitOverlay } from "./FinalExitOverlay";
 import { profile } from "@/data/profile";
-import { Project, SkillGroupData } from "@/types";
+import { Project, SkillGroupData, ProofItem } from "@/types";
 
 import {
   RoomId,
@@ -65,13 +68,15 @@ export function HouseExperience() {
   // Selected interactive details for modals
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [selectedSkillGroup, setSelectedSkillGroup] = useState<SkillGroupData | null>(null);
+  const [selectedProof, setSelectedProof] = useState<ProofItem | null>(null);
+  const [isStudyModalOpen, setIsStudyModalOpen] = useState(false);
 
   // Compute active spatial room and physical door opening progress
   const spatialState = getActiveSpatialState(scrollProgress);
   const doorOpenProgress = spatialState.doorOpenProgress;
   const activeRoomId = spatialState.roomId;
 
-  // Scroll tracking across the full 380vh spatial track
+  // Scroll tracking across the full 650vh spatial track
   useEffect(() => {
     let animationFrameId: number;
 
@@ -131,7 +136,7 @@ export function HouseExperience() {
     [reduce]
   );
 
-  // Hash listener for deep-linking into specific 3D rooms (#projects, #stack, #lab, #foyer)
+  // Hash listener for deep-linking into specific 3D rooms (#projects, #stack, #proof, #about, #contact)
   useEffect(() => {
     const handleHash = () => {
       const hash = window.location.hash.toLowerCase();
@@ -139,6 +144,12 @@ export function HouseExperience() {
         handleNavigateToRoom("projects");
       } else if (hash === "#stack" || hash === "#skills" || hash === "#lab") {
         handleNavigateToRoom("lab");
+      } else if (hash === "#proof" || hash === "#archive") {
+        handleNavigateToRoom("archive");
+      } else if (hash === "#about" || hash === "#study") {
+        handleNavigateToRoom("study");
+      } else if (hash === "#contact") {
+        handleNavigateToRoom("contact");
       } else if (hash === "#foyer") {
         handleNavigateToRoom("foyer");
       } else if (hash === "#exterior") {
@@ -151,27 +162,27 @@ export function HouseExperience() {
     return () => window.removeEventListener("hashchange", handleHash);
   }, [handleNavigateToRoom]);
 
-  // Contextual enter action: advances sequentially through the house
+  // Contextual enter action: advances sequentially through the complete house
   const handleEnterClick = useCallback(() => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     const totalScrollableDistance = rect.height - window.innerHeight;
 
-    let targetRatio = 0.32; // Enter into Foyer
-    if (scrollProgress < 0.28) {
-      targetRatio = 0.32; // Step into Foyer
-    } else if (scrollProgress < 0.50) {
-      targetRatio = 0.58; // Enter Project Studio
-    } else if (scrollProgress < 0.78) {
-      targetRatio = 0.85; // Enter Engineering Lab
+    let targetRatio = 0.22; // Step into Foyer
+    if (scrollProgress < 0.16) {
+      targetRatio = 0.22; // Enter Foyer
+    } else if (scrollProgress < 0.32) {
+      targetRatio = 0.36; // Enter Project Studio
+    } else if (scrollProgress < 0.46) {
+      targetRatio = 0.5; // Enter Engineering Lab
+    } else if (scrollProgress < 0.6) {
+      targetRatio = 0.64; // Enter Archive
+    } else if (scrollProgress < 0.74) {
+      targetRatio = 0.78; // Enter Private Study
+    } else if (scrollProgress < 0.86) {
+      targetRatio = 0.9; // Enter Contact
     } else {
-      // Transition to Identity Narrative
-      const narrativeEl = document.getElementById("identity-heading");
-      if (narrativeEl) {
-        narrativeEl.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
-        return;
-      }
-      targetRatio = 1.0;
+      targetRatio = 0.98; // Step out to Terrace
     }
 
     const targetScrollY =
@@ -188,6 +199,13 @@ export function HouseExperience() {
     handleNavigateToRoom("foyer");
   }, [handleNavigateToRoom]);
 
+  const handleContinueDown = useCallback(() => {
+    const el = document.getElementById("identity-heading");
+    if (el) {
+      el.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
+    }
+  }, [reduce]);
+
   // If WebGL is verified as unsupported, render graceful fallback
   if (webglSupported === false) {
     return <HouseFallback />;
@@ -197,38 +215,53 @@ export function HouseExperience() {
     <section
       ref={containerRef}
       id="house-experience"
-      aria-label="Santheesh's Digital House — Cinematic Spatial Experience"
-      className="relative h-[520vh] w-full bg-[#080a12]"
+      aria-label="Santheesh's Digital House — Complete Cinematic Spatial Experience"
+      className="relative h-[650vh] w-full bg-[#080a12]"
     >
       {/* Accessible semantic content for screen readers & SEO */}
       <div className="sr-only">
         <h1>{profile.name} — AI Software Engineer</h1>
         <p>{profile.tagline}</p>
         <p>
-          Welcome inside my digital residence. Phase 3 establishes the Project
-          Studio featuring live work, and the Engineering Lab displaying core technical skills.
+          Welcome inside my digital residence. Explore the Project Studio,
+          Engineering Lab, Archive of Work, Private Study, and Contact Exit.
           Current space: {spatialState.name} — {spatialState.subtitle}.
         </p>
         <nav aria-label="Spatial room destinations">
           <ul>
             <li>
               <button onClick={() => handleNavigateToRoom("exterior")}>
-                Exterior Residence
+                00 Exterior Residence
               </button>
             </li>
             <li>
               <button onClick={() => handleNavigateToRoom("foyer")}>
-                Room 01: Foyer
+                01 Foyer
               </button>
             </li>
             <li>
               <button onClick={() => handleNavigateToRoom("projects")}>
-                Room 02: Project Studio
+                02 Project Studio (Work)
               </button>
             </li>
             <li>
               <button onClick={() => handleNavigateToRoom("lab")}>
-                Room 03: Engineering Lab
+                03 Engineering Lab (Skills)
+              </button>
+            </li>
+            <li>
+              <button onClick={() => handleNavigateToRoom("archive")}>
+                04 Archive (Proof of Work)
+              </button>
+            </li>
+            <li>
+              <button onClick={() => handleNavigateToRoom("study")}>
+                05 Private Study (About & Principles)
+              </button>
+            </li>
+            <li>
+              <button onClick={() => handleNavigateToRoom("contact")}>
+                06 Contact (Exit)
               </button>
             </li>
             <li>
@@ -239,6 +272,9 @@ export function HouseExperience() {
             </li>
             <li>
               <a href="#stack">Technical Stack</a>
+            </li>
+            <li>
+              <a href="#proof">Proof of Work</a>
             </li>
             <li>
               <a href="#about">About & Philosophy</a>
@@ -269,6 +305,8 @@ export function HouseExperience() {
             }}
             onSelectProject={setSelectedProject}
             onSelectSkill={setSelectedSkillGroup}
+            onSelectProof={setSelectedProof}
+            onOpenStudyModal={() => setIsStudyModalOpen(true)}
             onSceneReady={() => setSceneReady(true)}
             reducedMotion={Boolean(reduce)}
           />
@@ -289,6 +327,21 @@ export function HouseExperience() {
         <SkillDetailModal
           group={selectedSkillGroup}
           onClose={() => setSelectedSkillGroup(null)}
+        />
+        <ProofDetailModal
+          item={selectedProof}
+          onClose={() => setSelectedProof(null)}
+        />
+        <StudyDetailModal
+          isOpen={isStudyModalOpen}
+          onClose={() => setIsStudyModalOpen(false)}
+        />
+
+        {/* Final Ending State Overlay at Terrace Exit */}
+        <FinalExitOverlay
+          isVisible={scrollProgress >= 0.95}
+          onRestart={() => handleNavigateToRoom("exterior")}
+          onContinueDown={handleContinueDown}
         />
       </div>
     </section>

@@ -32,7 +32,7 @@ export function HouseFallback() {
           </span>
         </div>
         <div className="font-mono text-xs tracking-[0.16em] text-text-muted">
-          PHASE 03 / 04 · PROJECT STUDIO & LAB
+          COMPLETE DIGITAL RESIDENCE · ALL ROOMS ACTIVE
         </div>
       </div>
 
@@ -40,7 +40,7 @@ export function HouseFallback() {
       <div className="my-auto flex flex-col items-center py-12 text-center">
         <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border-subtle bg-surface-muted/60 px-3.5 py-1 text-xs font-mono text-text-secondary">
           <span className="size-1.5 rounded-full bg-accent" />
-          <span>PHASE 3 · WORK & CAPABILITIES</span>
+          <span>SANTHEESH&apos;S DIGITAL HOUSE</span>
         </div>
 
         <h1 className="type-display max-w-3xl text-balance text-text-primary">
@@ -49,36 +49,46 @@ export function HouseFallback() {
         </h1>
 
         <p className="type-body-large mt-6 max-w-xl text-balance text-text-secondary">
-          Step into the digital house to explore production software engineering,
-          real-world AI systems, and core technical capabilities.
+          Explore production software engineering, real-world AI systems, core technical capabilities, proof of work, and engineering philosophy.
         </p>
 
         {/* Spatial Room Destinations */}
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-2.5 max-w-xl">
-          <Link
-            href="#identity-heading"
-            className="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 font-mono text-xs font-medium tracking-[0.08em] text-accent-foreground uppercase transition-opacity hover:opacity-90"
-          >
-            Enter Foyer
-            <ArrowDown className="size-3.5" aria-hidden="true" />
-          </Link>
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-2 max-w-2xl">
           <Link
             href="#projects"
-            className="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-4 py-2 font-mono text-xs font-medium tracking-[0.08em] text-text-primary uppercase transition-colors hover:bg-surface-muted"
+            className="inline-flex items-center gap-1.5 rounded-md bg-accent px-3.5 py-2 font-mono text-xs font-medium tracking-[0.08em] text-accent-foreground uppercase transition-opacity hover:opacity-90"
           >
             02 Work (Projects)
           </Link>
           <Link
             href="#stack"
-            className="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-4 py-2 font-mono text-xs font-medium tracking-[0.08em] text-text-primary uppercase transition-colors hover:bg-surface-muted"
+            className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3.5 py-2 font-mono text-xs font-medium tracking-[0.08em] text-text-primary uppercase transition-colors hover:bg-surface-muted"
           >
             03 Lab (Stack)
+          </Link>
+          <Link
+            href="#proof"
+            className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3.5 py-2 font-mono text-xs font-medium tracking-[0.08em] text-text-primary uppercase transition-colors hover:bg-surface-muted"
+          >
+            04 Archive (Proof)
+          </Link>
+          <Link
+            href="#about"
+            className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3.5 py-2 font-mono text-xs font-medium tracking-[0.08em] text-text-primary uppercase transition-colors hover:bg-surface-muted"
+          >
+            05 Study (About)
+          </Link>
+          <Link
+            href="#contact"
+            className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3.5 py-2 font-mono text-xs font-medium tracking-[0.08em] text-text-primary uppercase transition-colors hover:bg-surface-muted"
+          >
+            06 Contact (Exit)
           </Link>
           <Link
             href={SOCIAL_LINKS.github}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-4 py-2 font-mono text-xs font-medium tracking-[0.08em] text-text-muted uppercase transition-colors hover:text-text-primary hover:bg-surface-muted"
+            className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-3.5 py-2 font-mono text-xs font-medium tracking-[0.08em] text-text-muted uppercase transition-colors hover:text-text-primary hover:bg-surface-muted"
           >
             GitHub
             <ArrowUpRight className="size-3 text-text-muted" aria-hidden="true" />
@@ -88,8 +98,11 @@ export function HouseFallback() {
 
       {/* Bottom Status */}
       <div className="flex items-center justify-between border-t border-border-subtle/40 pt-6 text-xs font-mono text-text-muted">
-        <span>02 WORK & 03 LAB ACTIVE</span>
-        <span>SCROLL DOWN TO EXPLORE</span>
+        <span>ALL 6 ROOMS INTEGRATED</span>
+        <Link href="#identity-heading" className="inline-flex items-center gap-1 hover:text-text-primary">
+          <span>SCROLL DOWN TO EXPLORE</span>
+          <ArrowDown className="size-3" aria-hidden="true" />
+        </Link>
       </div>
     </section>
   );
