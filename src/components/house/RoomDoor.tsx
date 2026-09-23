@@ -11,6 +11,7 @@ interface RoomDoorProps {
   title: string;
   subtitle: string;
   isUnlocked?: boolean;
+  isOpen?: boolean;
   onSelect?: () => void;
   reducedMotion?: boolean;
 }
@@ -22,12 +23,14 @@ export function RoomDoor({
   title,
   subtitle,
   isUnlocked = false,
+  isOpen = false,
   onSelect,
   reducedMotion = false,
 }: RoomDoorProps) {
   const [hovered, setHovered] = useState(false);
   const glowPlaneRef = useRef<THREE.Mesh>(null);
   const doorPanelRef = useRef<THREE.Mesh>(null);
+  const hingeRef = useRef<THREE.Group>(null);
 
   const materials = useMemo(() => {
     return {
@@ -70,11 +73,16 @@ export function RoomDoor({
   }, []);
 
   useFrame((_, delta) => {
-    if (reducedMotion) return;
+    if (reducedMotion) {
+      if (hingeRef.current) {
+        hingeRef.current.rotation.y = isOpen ? -Math.PI * 0.48 : 0;
+      }
+      return;
+    }
 
     if (glowPlaneRef.current) {
       const mat = glowPlaneRef.current.material as THREE.MeshBasicMaterial;
-      const targetOpacity = hovered ? 0.35 : 0.12;
+      const targetOpacity = hovered ? 0.35 : (isOpen ? 0.06 : 0.12);
       mat.opacity = THREE.MathUtils.lerp(mat.opacity, targetOpacity, delta * 6);
     }
 
@@ -82,6 +90,15 @@ export function RoomDoor({
       const mat = doorPanelRef.current.material as THREE.MeshStandardMaterial;
       const targetColor = hovered ? new THREE.Color("#362b22") : new THREE.Color("#2a221b");
       mat.color.lerp(targetColor, delta * 6);
+    }
+
+    if (hingeRef.current) {
+      const targetAngle = isOpen ? -Math.PI * 0.48 : 0;
+      hingeRef.current.rotation.y = THREE.MathUtils.lerp(
+        hingeRef.current.rotation.y,
+        targetAngle,
+        delta * 4
+      );
     }
   });
 
@@ -101,40 +118,51 @@ export function RoomDoor({
         if (onSelect) onSelect();
       }}
     >
-      {/* 1. Recessed Architectural Door Frame */}
-      <mesh material={materials.frame} position={[0, 1.3, 0]} receiveShadow>
-        <boxGeometry args={[1.36, 2.52, 0.12]} />
-      </mesh>
-
-      {/* 2. Door Panel (Flush dark architectural wood/charcoal) */}
-      <mesh
-        ref={doorPanelRef}
-        material={materials.doorPanel}
-        position={[0, 1.28, 0.02]}
-        castShadow
-        receiveShadow
-      >
-        <boxGeometry args={[1.2, 2.38, 0.06]} />
-      </mesh>
-
-      {/* 3. Minimalist Brushed Metal Lever Handle */}
-      <group position={[0.46, 1.15, 0.07]}>
-        {/* Rosette */}
-        <mesh material={materials.doorTrim}>
-          <cylinderGeometry args={[0.035, 0.035, 0.015, 16]} />
+      {/* 1. Recessed Architectural Door Frame with Jambs and Lintel */}
+      <group position={[0, 1.3, 0]}>
+        {/* Left jamb */}
+        <mesh position={[-0.64, 0, 0]} material={materials.frame} receiveShadow>
+          <boxGeometry args={[0.08, 2.52, 0.12]} />
         </mesh>
-        {/* Horizontal Lever */}
-        <mesh
-          position={[-0.06, 0, 0.02]}
-          rotation={[0, 0, Math.PI / 2]}
-          material={materials.handle}
-          castShadow
-        >
-          <cylinderGeometry args={[0.012, 0.012, 0.14, 12]} />
+        {/* Right jamb */}
+        <mesh position={[0.64, 0, 0]} material={materials.frame} receiveShadow>
+          <boxGeometry args={[0.08, 2.52, 0.12]} />
+        </mesh>
+        {/* Lintel header */}
+        <mesh position={[0, 1.22, 0]} material={materials.frame} receiveShadow>
+          <boxGeometry args={[1.36, 0.08, 0.12]} />
         </mesh>
       </group>
 
-      {/* 4. Floor Gap Warm Light Leakage (Illuminates corridor baseboard) */}
+      {/* 2. Pivoting Hinge & Door Leaf */}
+      <group ref={hingeRef} position={[-0.6, 0, 0]}>
+        <mesh
+          ref={doorPanelRef}
+          material={materials.doorPanel}
+          position={[0.6, 1.28, 0.02]}
+          castShadow
+          receiveShadow
+        >
+          <boxGeometry args={[1.2, 2.38, 0.06]} />
+        </mesh>
+
+        {/* Minimalist Brushed Metal Lever Handle */}
+        <group position={[1.06, 1.15, 0.07]}>
+          <mesh material={materials.doorTrim}>
+            <cylinderGeometry args={[0.035, 0.035, 0.015, 16]} />
+          </mesh>
+          <mesh
+            position={[-0.06, 0, 0.02]}
+            rotation={[0, 0, Math.PI / 2]}
+            material={materials.handle}
+            castShadow
+          >
+            <cylinderGeometry args={[0.012, 0.012, 0.14, 12]} />
+          </mesh>
+        </group>
+      </group>
+
+      {/* 3. Floor Gap Warm Light Leakage */}
       <mesh
         position={[0, 0.04, 0.1]}
         rotation={[-Math.PI / 2, 0, 0]}
@@ -143,32 +171,30 @@ export function RoomDoor({
         <planeGeometry args={[1.25, 0.45]} />
       </mesh>
 
-      {/* 5. Hover Highlight Glow Plane */}
-      <mesh
-        ref={glowPlaneRef}
-        position={[0, 1.28, 0.06]}
-        material={materials.lightSpill}
-      >
-        <planeGeometry args={[1.28, 2.42]} />
-      </mesh>
+      {/* 4. Hover Highlight Glow Plane (only when door is closed) */}
+      {!isOpen && (
+        <mesh
+          ref={glowPlaneRef}
+          position={[0, 1.28, 0.06]}
+          material={materials.lightSpill}
+        >
+          <planeGeometry args={[1.28, 2.42]} />
+        </mesh>
+      )}
 
-      {/* 6. Architectural Signage Plaque beside door */}
+      {/* 5. Architectural Signage Plaque beside door */}
       <group position={[-0.82, 1.6, 0.04]}>
-        {/* Plaque backplate */}
         <mesh material={materials.signPlaque} receiveShadow>
           <boxGeometry args={[0.26, 0.38, 0.02]} />
         </mesh>
-        {/* Plaque border hairline */}
         <mesh position={[0, 0, 0.012]}>
           <boxGeometry args={[0.24, 0.36, 0.002]} />
           <meshBasicMaterial color={hovered ? "#fbbf24" : "#475569"} />
         </mesh>
-        {/* Index indicator block */}
         <mesh position={[0, 0.08, 0.016]}>
           <boxGeometry args={[0.16, 0.08, 0.002]} />
           <meshBasicMaterial color={isUnlocked ? "#2dd4bf" : "#f59e0b"} />
         </mesh>
-        {/* Status dot */}
         <mesh position={[0, -0.09, 0.016]}>
           <circleGeometry args={[0.02, 12]} />
           <meshBasicMaterial color={isUnlocked ? "#2dd4bf" : "#64748b"} />

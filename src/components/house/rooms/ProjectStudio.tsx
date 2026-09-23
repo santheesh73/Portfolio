@@ -1,0 +1,190 @@
+"use client";
+
+import { useMemo } from "react";
+import * as THREE from "three";
+import { projects } from "@/data/projects";
+import { Project } from "@/types";
+import { ProjectDisplay } from "../projects/ProjectDisplay";
+
+interface ProjectStudioProps {
+  onSelectProject: (project: Project) => void;
+  reducedMotion?: boolean;
+}
+
+export function ProjectStudio({
+  onSelectProject,
+  reducedMotion = false,
+}: ProjectStudioProps) {
+  const materials = useMemo(() => {
+    return {
+      floor: new THREE.MeshStandardMaterial({
+        color: "#22252a",
+        roughness: 0.62,
+        metalness: 0.08,
+      }),
+      concreteWall: new THREE.MeshStandardMaterial({
+        color: "#16181c",
+        roughness: 0.88,
+        metalness: 0.05,
+      }),
+      woodAccentWall: new THREE.MeshStandardMaterial({
+        color: "#3f2b1d",
+        roughness: 0.55,
+        metalness: 0.02,
+      }),
+      ceiling: new THREE.MeshStandardMaterial({
+        color: "#111215",
+        roughness: 0.9,
+        metalness: 0.02,
+      }),
+      trackLight: new THREE.MeshStandardMaterial({
+        color: "#1e2228",
+        roughness: 0.3,
+        metalness: 0.8,
+      }),
+      trackLens: new THREE.MeshBasicMaterial({
+        color: "#ffedd5",
+      }),
+    };
+  }, []);
+
+  // Split featured project (ORION) from secondary projects
+  const featuredProject = useMemo(() => projects.find((p) => p.featured) || projects[0], []);
+  const secondaryProjects = useMemo(() => projects.filter((p) => p.id !== featuredProject.id), [featuredProject]);
+
+  // Spatial coordinates for secondary projects
+  const secondaryPositions: {
+    pos: [number, number, number];
+    rot: [number, number, number];
+  }[] = [
+    { pos: [-2.4, 0, -4.8], rot: [0, Math.PI / 4, 0] },     // HeartTune
+    { pos: [-2.4, 0, -7.8], rot: [0, (3 * Math.PI) / 4, 0] }, // NISF
+    { pos: [-6.6, 0, -4.8], rot: [0, -Math.PI / 4, 0] },    // AHAL AI
+    { pos: [-6.6, 0, -7.8], rot: [0, -(3 * Math.PI) / 4, 0] },// PRYSM
+    { pos: [-4.5, 0, -4.4], rot: [0, 0, 0] },               // BHOOMI
+    { pos: [-4.5, 0, -8.6], rot: [0, Math.PI, 0] },          // MINCHAL
+  ];
+
+  return (
+    <group name="room-02-project-studio" position={[0, 0, 0]}>
+      {/* 1. ROOM FLOOR */}
+      {/* Width x: -0.5 to -8.5 (width 8.0), Depth z: -3.5 to -9.5 (depth 6.0), y: 0.12 */}
+      <mesh
+        position={[-4.5, 0.12, -6.5]}
+        material={materials.floor}
+        receiveShadow
+      >
+        <boxGeometry args={[8.0, 0.04, 6.0]} />
+      </mesh>
+
+      {/* 2. ROOM CEILING */}
+      <mesh
+        position={[-4.5, 3.22, -6.5]}
+        material={materials.ceiling}
+        receiveShadow
+      >
+        <boxGeometry args={[8.0, 0.04, 6.0]} />
+      </mesh>
+
+      {/* Architectural Ceiling Track Lighting Rails */}
+      {[-5.0, -8.0].map((zPos, idx) => (
+        <group key={idx} position={[-4.5, 3.19, zPos]}>
+          <mesh material={materials.trackLight}>
+            <boxGeometry args={[6.8, 0.03, 0.06]} />
+          </mesh>
+          {[-2.5, -1.0, 1.0, 2.5].map((xOffset) => (
+            <mesh key={xOffset} position={[xOffset, -0.02, 0]} material={materials.trackLens}>
+              <cylinderGeometry args={[0.03, 0.03, 0.015, 12]} />
+            </mesh>
+          ))}
+        </group>
+      ))}
+
+      {/* 3. STUDIO WALLS */}
+      {/* North Wall (z: -9.5) */}
+      <mesh
+        position={[-4.5, 1.67, -9.52]}
+        material={materials.concreteWall}
+        castShadow
+        receiveShadow
+      >
+        <boxGeometry args={[8.0, 3.1, 0.06]} />
+      </mesh>
+
+      {/* South Wall (z: -3.5) */}
+      <mesh
+        position={[-4.5, 1.67, -3.48]}
+        material={materials.woodAccentWall}
+        castShadow
+        receiveShadow
+      >
+        <boxGeometry args={[8.0, 3.1, 0.06]} />
+      </mesh>
+
+      {/* West Wall (x: -8.5) */}
+      <mesh
+        position={[-8.52, 1.67, -6.5]}
+        material={materials.concreteWall}
+        castShadow
+        receiveShadow
+      >
+        <boxGeometry args={[0.06, 3.1, 6.0]} />
+      </mesh>
+
+      {/* East Wall (x: -0.5) with Doorway Opening leading to Corridor */}
+      {/* North section of east wall */}
+      <mesh
+        position={[-0.48, 1.67, -8.25]}
+        material={materials.concreteWall}
+        receiveShadow
+      >
+        <boxGeometry args={[0.06, 3.1, 2.5]} />
+      </mesh>
+      {/* South section of east wall */}
+      <mesh
+        position={[-0.48, 1.67, -4.75]}
+        material={materials.concreteWall}
+        receiveShadow
+      >
+        <boxGeometry args={[0.06, 3.1, 2.5]} />
+      </mesh>
+      {/* Lintel header above doorway */}
+      <mesh
+        position={[-0.48, 2.85, -6.5]}
+        material={materials.concreteWall}
+        receiveShadow
+      >
+        <boxGeometry args={[0.06, 0.74, 1.4]} />
+      </mesh>
+
+      {/* 4. FEATURED CENTERPIECE: ORION */}
+      <ProjectDisplay
+        project={featuredProject}
+        position={[-4.5, 0.14, -6.5]}
+        rotation={[0, 0, 0]}
+        isFeatured={true}
+        onSelect={onSelectProject}
+        reducedMotion={reducedMotion}
+      />
+
+      {/* 5. SECONDARY PROJECT DISPLAYS */}
+      {secondaryProjects.map((project, idx) => {
+        const layout = secondaryPositions[idx] || {
+          pos: [-3.0 - idx * 0.8, 0, -5.0],
+          rot: [0, 0, 0],
+        };
+        return (
+          <ProjectDisplay
+            key={project.id}
+            project={project}
+            position={[layout.pos[0], 0.14, layout.pos[2]]}
+            rotation={layout.rot as [number, number, number]}
+            isFeatured={false}
+            onSelect={onSelectProject}
+            reducedMotion={reducedMotion}
+          />
+        );
+      })}
+    </group>
+  );
+}

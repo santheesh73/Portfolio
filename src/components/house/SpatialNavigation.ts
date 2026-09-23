@@ -34,7 +34,7 @@ export const ROOM_WAYPOINTS: RoomWaypoint[] = [
     index: "—",
     name: "ENTRANCE",
     subtitle: "THE THRESHOLD",
-    scrollTarget: 0.35,
+    scrollTarget: 0.18,
     isUnlocked: true,
     phase: "PHASE 02",
   },
@@ -43,7 +43,7 @@ export const ROOM_WAYPOINTS: RoomWaypoint[] = [
     index: "01",
     name: "FOYER",
     subtitle: "THE RESIDENCE",
-    scrollTarget: 0.6,
+    scrollTarget: 0.32,
     isUnlocked: true,
     phase: "PHASE 02",
   },
@@ -52,7 +52,7 @@ export const ROOM_WAYPOINTS: RoomWaypoint[] = [
     index: "—",
     name: "CORRIDOR",
     subtitle: "GALLERY",
-    scrollTarget: 0.88,
+    scrollTarget: 0.44,
     isUnlocked: true,
     phase: "PHASE 02",
   },
@@ -61,8 +61,8 @@ export const ROOM_WAYPOINTS: RoomWaypoint[] = [
     index: "02",
     name: "WORK",
     subtitle: "PROJECT STUDIO",
-    scrollTarget: 0.88,
-    isUnlocked: false,
+    scrollTarget: 0.58,
+    isUnlocked: true,
     phase: "PHASE 03",
   },
   {
@@ -70,8 +70,8 @@ export const ROOM_WAYPOINTS: RoomWaypoint[] = [
     index: "03",
     name: "LAB",
     subtitle: "ENGINEERING LAB",
-    scrollTarget: 0.92,
-    isUnlocked: false,
+    scrollTarget: 0.85,
+    isUnlocked: true,
     phase: "PHASE 03",
   },
   {
@@ -104,7 +104,7 @@ export const ROOM_WAYPOINTS: RoomWaypoint[] = [
 ];
 
 export function getActiveSpatialState(scrollProgress: number) {
-  if (scrollProgress < 0.28) {
+  if (scrollProgress < 0.16) {
     return {
       roomId: "exterior" as RoomId,
       index: "00",
@@ -113,9 +113,9 @@ export function getActiveSpatialState(scrollProgress: number) {
       isInterior: false,
       doorOpenProgress: 0,
     };
-  } else if (scrollProgress < 0.45) {
-    // Door opening zone: 0.28 to 0.45
-    const doorProgress = Math.min(1, Math.max(0, (scrollProgress - 0.28) / 0.17));
+  } else if (scrollProgress < 0.28) {
+    // Door opening zone: 0.16 to 0.28
+    const doorProgress = Math.min(1, Math.max(0, (scrollProgress - 0.16) / 0.12));
     return {
       roomId: "entrance" as RoomId,
       index: "—",
@@ -124,12 +124,30 @@ export function getActiveSpatialState(scrollProgress: number) {
       isInterior: doorProgress > 0.6,
       doorOpenProgress: doorProgress,
     };
-  } else if (scrollProgress < 0.75) {
+  } else if (scrollProgress < 0.44) {
     return {
       roomId: "foyer" as RoomId,
       index: "01",
       name: "FOYER",
       subtitle: "THE RESIDENCE",
+      isInterior: true,
+      doorOpenProgress: 1,
+    };
+  } else if (scrollProgress < 0.72) {
+    return {
+      roomId: "projects" as RoomId,
+      index: "02",
+      name: "PROJECT STUDIO",
+      subtitle: "THE WORK",
+      isInterior: true,
+      doorOpenProgress: 1,
+    };
+  } else if (scrollProgress < 0.98) {
+    return {
+      roomId: "lab" as RoomId,
+      index: "03",
+      name: "ENGINEERING LAB",
+      subtitle: "SYSTEMS I BUILD WITH",
       isInterior: true,
       doorOpenProgress: 1,
     };

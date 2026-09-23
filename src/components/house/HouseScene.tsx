@@ -11,8 +11,11 @@ import { ExteriorHouse } from "./ExteriorHouse";
 import { Entrance } from "./Entrance";
 import { Foyer } from "./Foyer";
 import { Corridor } from "./Corridor";
+import { ProjectStudio } from "./rooms/ProjectStudio";
+import { EngineeringLab } from "./rooms/EngineeringLab";
 import { RoomSystem } from "./RoomSystem";
 import { RoomId } from "./SpatialNavigation";
+import { Project, SkillGroupData } from "@/types";
 
 interface HouseSceneProps {
   scrollProgress: number;
@@ -22,6 +25,8 @@ interface HouseSceneProps {
   onEntranceHoverChange: (hovered: boolean) => void;
   onDoorClick?: () => void;
   onSelectRoom?: (roomId: string) => void;
+  onSelectProject: (project: Project) => void;
+  onSelectSkill: (group: SkillGroupData) => void;
   onSceneReady: () => void;
   reducedMotion?: boolean;
 }
@@ -34,6 +39,8 @@ export function HouseScene({
   onEntranceHoverChange,
   onDoorClick,
   onSelectRoom,
+  onSelectProject,
+  onSelectSkill,
   onSceneReady,
   reducedMotion = false,
 }: HouseSceneProps) {
@@ -99,11 +106,19 @@ export function HouseScene({
           reducedMotion={reducedMotion}
         />
 
-        {/* Spatial Room System: Foyer and Corridor */}
+        {/* Spatial Room System: Foyer, Corridor, Project Studio, Engineering Lab */}
         <RoomSystem activeRoomId={activeRoomId}>
           <Foyer />
           <Corridor
             onSelectRoom={onSelectRoom}
+            reducedMotion={reducedMotion}
+          />
+          <ProjectStudio
+            onSelectProject={onSelectProject}
+            reducedMotion={reducedMotion}
+          />
+          <EngineeringLab
+            onSelectSkill={onSelectSkill}
             reducedMotion={reducedMotion}
           />
         </RoomSystem>

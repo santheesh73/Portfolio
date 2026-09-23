@@ -23,8 +23,15 @@ export function CinematicHUD({
   const reduce = useReducedMotion();
   const spatialState = getActiveSpatialState(scrollProgress);
 
-  // In Foyer zone (0.48 to 0.70), show prominent cinematic room title
-  const showFoyerTitle = scrollProgress >= 0.48 && scrollProgress < 0.72;
+  // In specific zones, show prominent cinematic room title
+  const activeRoomTitle =
+    scrollProgress >= 0.30 && scrollProgress < 0.44
+      ? { index: "01", title: "FOYER", subtitle: "THE DIGITAL RESIDENCE" }
+      : scrollProgress >= 0.52 && scrollProgress < 0.68
+      ? { index: "02", title: "PROJECT STUDIO", subtitle: "FEATURED WORK & SYSTEMS" }
+      : scrollProgress >= 0.82 && scrollProgress < 0.96
+      ? { index: "03", title: "ENGINEERING LAB", subtitle: "TECHNICAL CAPABILITIES" }
+      : null;
 
   return (
     <div
@@ -86,11 +93,12 @@ export function CinematicHUD({
       </header>
 
       {/* ========================================================
-          2. CENTER: Cinematic Room Title Reveal (Foyer Entry)
+          2. CENTER: Cinematic Room Title Reveal (Dynamic)
           ======================================================== */}
-      <AnimatePresence>
-        {showFoyerTitle && (
+      <AnimatePresence mode="wait">
+        {activeRoomTitle && (
           <motion.div
+            key={activeRoomTitle.index}
             initial={reduce ? { opacity: 1 } : { opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={reduce ? { opacity: 0 } : { opacity: 0, y: -12 }}
@@ -102,14 +110,14 @@ export function CinematicHUD({
             className="my-auto mx-auto flex flex-col items-center text-center pointer-events-none"
           >
             <span className="font-mono text-xs tracking-[0.3em] text-accent uppercase">
-              01
+              {activeRoomTitle.index}
             </span>
             <h2 className="type-h1 mt-1 font-semibold tracking-[0.1em] text-text-primary">
-              FOYER
+              {activeRoomTitle.title}
             </h2>
             <div className="mt-2 h-px w-16 bg-gradient-to-r from-transparent via-accent/60 to-transparent" />
             <p className="mt-2 font-mono text-xs tracking-[0.2em] text-text-secondary uppercase">
-              THE DIGITAL RESIDENCE
+              {activeRoomTitle.subtitle}
             </p>
           </motion.div>
         )}
@@ -161,12 +169,16 @@ export function CinematicHUD({
             <div className="flex items-center gap-2 font-mono text-xs sm:text-sm tracking-[0.22em] text-text-secondary uppercase transition-colors group-hover:text-text-primary">
               <span className="size-1 rounded-full bg-accent/60" aria-hidden="true" />
               <span>
-                {scrollProgress < 0.28
+                {scrollProgress < 0.16
                   ? "SCROLL TO ENTER"
-                  : scrollProgress < 0.45
-                  ? "STEP INSIDE"
-                  : scrollProgress < 0.72
+                  : scrollProgress < 0.28
+                  ? "STEP TO THRESHOLD"
+                  : scrollProgress < 0.44
                   ? "EXPLORING FOYER"
+                  : scrollProgress < 0.72
+                  ? "02 PROJECT STUDIO"
+                  : scrollProgress < 0.98
+                  ? "03 ENGINEERING LAB"
                   : "CORRIDOR GALLERY"}
               </span>
               <span className="size-1 rounded-full bg-accent/60" aria-hidden="true" />
@@ -229,25 +241,38 @@ export function CinematicHUD({
               01 FOYER
             </button>
 
-            {/* CORRIDOR */}
+            {/* 02 WORK */}
             <button
               type="button"
-              onClick={() => onNavigateToRoom("corridor")}
+              onClick={() => onNavigateToRoom("projects")}
               className={`rounded px-2 py-1 font-mono text-[0.65rem] tracking-[0.12em] uppercase transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent ${
-                spatialState.roomId === "corridor"
+                spatialState.roomId === "projects"
                   ? "bg-accent/20 text-accent font-semibold"
                   : "text-text-secondary hover:text-text-primary"
               }`}
             >
-              CORRIDOR
+              02 WORK
+            </button>
+
+            {/* 03 LAB */}
+            <button
+              type="button"
+              onClick={() => onNavigateToRoom("lab")}
+              className={`rounded px-2 py-1 font-mono text-[0.65rem] tracking-[0.12em] uppercase transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent ${
+                spatialState.roomId === "lab"
+                  ? "bg-accent/20 text-accent font-semibold"
+                  : "text-text-secondary hover:text-text-primary"
+              }`}
+            >
+              03 LAB
             </button>
 
             {/* FUTURE DESTINATIONS BADGE */}
             <span
-              title="Work, Lab, Archive, Study (Phases 3 & 4)"
+              title="Archive, Study, Contact (Phase 4)"
               className="px-1.5 py-1 font-mono text-[0.6rem] tracking-[0.08em] text-text-muted/60 uppercase cursor-default"
             >
-              +4 ROOMS
+              +3 ROOMS
             </span>
           </div>
         </motion.div>
