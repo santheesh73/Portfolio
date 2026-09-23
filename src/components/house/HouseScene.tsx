@@ -13,9 +13,12 @@ import { Foyer } from "./Foyer";
 import { Corridor } from "./Corridor";
 import { ProjectStudio } from "./rooms/ProjectStudio";
 import { EngineeringLab } from "./rooms/EngineeringLab";
+import { ArchiveRoom } from "./rooms/ArchiveRoom";
+import { PrivateStudy } from "./rooms/PrivateStudy";
+import { ContactRoom } from "./rooms/ContactRoom";
 import { RoomSystem } from "./RoomSystem";
 import { RoomId } from "./SpatialNavigation";
-import { Project, SkillGroupData } from "@/types";
+import { Project, SkillGroupData, ProofItem } from "@/types";
 
 interface HouseSceneProps {
   scrollProgress: number;
@@ -27,6 +30,8 @@ interface HouseSceneProps {
   onSelectRoom?: (roomId: string) => void;
   onSelectProject: (project: Project) => void;
   onSelectSkill: (group: SkillGroupData) => void;
+  onSelectProof: (item: ProofItem) => void;
+  onOpenStudyModal: () => void;
   onSceneReady: () => void;
   reducedMotion?: boolean;
 }
@@ -41,6 +46,8 @@ export function HouseScene({
   onSelectRoom,
   onSelectProject,
   onSelectSkill,
+  onSelectProof,
+  onOpenStudyModal,
   onSceneReady,
   reducedMotion = false,
 }: HouseSceneProps) {
@@ -67,7 +74,7 @@ export function HouseScene({
           onSceneReady();
         }}
       >
-        {/* Dynamic camera rig with cinematic inertia across exterior, foyer, and corridor */}
+        {/* Dynamic camera rig with cinematic inertia across full digital house */}
         <CameraRig
           scrollProgress={scrollProgress}
           reducedMotion={reducedMotion}
@@ -79,7 +86,7 @@ export function HouseScene({
           reducedMotion={reducedMotion}
         />
 
-        {/* Interior warm lighting (foyer cove, corridor downlights) */}
+        {/* Interior multi-zone dynamic lighting */}
         <InteriorLighting
           scrollProgress={scrollProgress}
           reducedMotion={reducedMotion}
@@ -91,36 +98,59 @@ export function HouseScene({
           reducedMotion={reducedMotion}
         />
 
-        {/* Ground, modern staggered pavers, and framing trees */}
-        <Environment />
+        {/* Ground, modern staggered pavers, framing trees, exterior house, and entrance */}
+        <group visible={scrollProgress <= 0.35}>
+          <Environment />
+          <ExteriorHouse />
+          <Entrance
+            isHovered={isEntranceHovered}
+            onHoverChange={onEntranceHoverChange}
+            doorOpenProgress={doorOpenProgress}
+            onDoorClick={onDoorClick}
+            reducedMotion={reducedMotion}
+          />
+        </group>
 
-        {/* Modern minimal architectural house exterior */}
-        <ExteriorHouse />
-
-        {/* Front door with physical pivot opening animation */}
-        <Entrance
-          isHovered={isEntranceHovered}
-          onHoverChange={onEntranceHoverChange}
-          doorOpenProgress={doorOpenProgress}
-          onDoorClick={onDoorClick}
-          reducedMotion={reducedMotion}
-        />
-
-        {/* Spatial Room System: Foyer, Corridor, Project Studio, Engineering Lab */}
+        {/* Complete Spatial Room System: All 6 Rooms + Corridor with Visibility Culling */}
         <RoomSystem activeRoomId={activeRoomId}>
-          <Foyer />
-          <Corridor
-            onSelectRoom={onSelectRoom}
-            reducedMotion={reducedMotion}
-          />
-          <ProjectStudio
-            onSelectProject={onSelectProject}
-            reducedMotion={reducedMotion}
-          />
-          <EngineeringLab
-            onSelectSkill={onSelectSkill}
-            reducedMotion={reducedMotion}
-          />
+          <group visible={scrollProgress <= 0.48}>
+            <Foyer />
+          </group>
+          <group visible={scrollProgress >= 0.15 && scrollProgress <= 0.98}>
+            <Corridor
+              onSelectRoom={onSelectRoom}
+              reducedMotion={reducedMotion}
+            />
+          </group>
+          <group visible={scrollProgress >= 0.18 && scrollProgress <= 0.62}>
+            <ProjectStudio
+              onSelectProject={onSelectProject}
+              reducedMotion={reducedMotion}
+            />
+          </group>
+          <group visible={scrollProgress >= 0.28 && scrollProgress <= 0.76}>
+            <EngineeringLab
+              onSelectSkill={onSelectSkill}
+              reducedMotion={reducedMotion}
+            />
+          </group>
+          <group visible={scrollProgress >= 0.42 && scrollProgress <= 0.9}>
+            <ArchiveRoom
+              onSelectProof={onSelectProof}
+              reducedMotion={reducedMotion}
+            />
+          </group>
+          <group visible={scrollProgress >= 0.56 && scrollProgress <= 0.98}>
+            <PrivateStudy
+              onOpenStudyModal={onOpenStudyModal}
+            />
+          </group>
+          <group visible={scrollProgress >= 0.72}>
+            <ContactRoom
+              scrollProgress={scrollProgress}
+              reducedMotion={reducedMotion}
+            />
+          </group>
         </RoomSystem>
       </Canvas>
     </div>

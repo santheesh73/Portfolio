@@ -22,23 +22,45 @@ export function InteriorLighting({
   const studioAmbientRef = useRef<THREE.PointLight>(null);
   const labSpotRef = useRef<THREE.SpotLight>(null);
   const labCoreRef = useRef<THREE.PointLight>(null);
+  const archiveAmbientRef = useRef<THREE.PointLight>(null);
+  const studyLampRef = useRef<THREE.PointLight>(null);
+  const contactAmbientRef = useRef<THREE.PointLight>(null);
+  const terraceMoonRef = useRef<THREE.DirectionalLight>(null);
 
-  // Interior intensity factor: 0.0 outside (p < 0.28), smoothly rises to 1.0 inside (p > 0.45)
+  // Interior intensity factor: 0.0 outside, smoothly rises to 1.0 inside (p > 0.18)
   const targetInteriorFactor = Math.min(
     1,
-    Math.max(0, (scrollProgress - 0.28) / 0.17)
+    Math.max(0, (scrollProgress - 0.16) / 0.1)
   );
 
-  // Studio lighting factor (peaks when in/near Project Studio, p: 0.40 to 0.75)
+  // Studio lighting factor (p: 0.28 to 0.48)
   const targetStudioFactor = Math.min(
     1,
-    Math.max(0, (scrollProgress - 0.36) / 0.1)
+    Math.max(0, (scrollProgress - 0.26) / 0.08)
   );
 
-  // Lab lighting factor (peaks when in/near Engineering Lab, p: 0.68 to 1.0)
+  // Lab lighting factor (p: 0.42 to 0.62)
   const targetLabFactor = Math.min(
     1,
-    Math.max(0, (scrollProgress - 0.62) / 0.12)
+    Math.max(0, (scrollProgress - 0.4) / 0.08)
+  );
+
+  // Archive lighting factor (p: 0.56 to 0.76)
+  const targetArchiveFactor = Math.min(
+    1,
+    Math.max(0, (scrollProgress - 0.54) / 0.08)
+  );
+
+  // Study lighting factor (p: 0.70 to 0.88)
+  const targetStudyFactor = Math.min(
+    1,
+    Math.max(0, (scrollProgress - 0.68) / 0.08)
+  );
+
+  // Contact lighting factor (p: 0.82 to 1.0)
+  const targetContactFactor = Math.min(
+    1,
+    Math.max(0, (scrollProgress - 0.8) / 0.08)
   );
 
   useFrame((_, delta) => {
@@ -117,6 +139,38 @@ export function InteriorLighting({
         lerpSpeed
       );
     }
+
+    if (archiveAmbientRef.current) {
+      archiveAmbientRef.current.intensity = THREE.MathUtils.lerp(
+        archiveAmbientRef.current.intensity,
+        1.6 * targetArchiveFactor,
+        lerpSpeed
+      );
+    }
+
+    if (studyLampRef.current) {
+      studyLampRef.current.intensity = THREE.MathUtils.lerp(
+        studyLampRef.current.intensity,
+        1.9 * targetStudyFactor,
+        lerpSpeed
+      );
+    }
+
+    if (contactAmbientRef.current) {
+      contactAmbientRef.current.intensity = THREE.MathUtils.lerp(
+        contactAmbientRef.current.intensity,
+        1.7 * targetContactFactor,
+        lerpSpeed
+      );
+    }
+
+    if (terraceMoonRef.current) {
+      terraceMoonRef.current.intensity = THREE.MathUtils.lerp(
+        terraceMoonRef.current.intensity,
+        0.8 * targetContactFactor,
+        lerpSpeed
+      );
+    }
   });
 
   return (
@@ -148,7 +202,6 @@ export function InteriorLighting({
       />
 
       {/* 4. Corridor Downlights (Rhythmic warm spotlights along the gallery) */}
-      {/* Downlight 1 at z: -6.0 (Near Work Door) */}
       <spotLight
         ref={corridorSpot1Ref}
         position={[1.7, 2.95, -6.0]}
@@ -164,7 +217,6 @@ export function InteriorLighting({
         shadow-bias={-0.0001}
       />
 
-      {/* Downlight 2 at z: -10.0 (Near Archive Door) */}
       <spotLight
         ref={corridorSpot2Ref}
         position={[1.7, 2.95, -10.0]}
@@ -176,7 +228,6 @@ export function InteriorLighting({
         distance={6.0}
       />
 
-      {/* Downlight 3 at z: -14.0 (Near Study Door) */}
       <spotLight
         ref={corridorSpot3Ref}
         position={[1.7, 2.95, -14.0]}
@@ -188,17 +239,7 @@ export function InteriorLighting({
         distance={6.0}
       />
 
-      {/* 5. Terminal Ambient Warm Glow (At End of Corridor) */}
-      <pointLight
-        position={[1.7, 1.8, -15.2]}
-        color="#f59e0b"
-        intensity={1.2 * targetInteriorFactor}
-        distance={4.5}
-        decay={2}
-      />
-
-      {/* 6. PROJECT STUDIO LIGHTING (Room 02) */}
-      {/* High-focus spotlight illuminating ORION centerpiece plinth */}
+      {/* 5. Room 02: PROJECT STUDIO LIGHTING */}
       <spotLight
         ref={studioSpotRef}
         position={[-4.5, 3.15, -6.5]}
@@ -214,7 +255,6 @@ export function InteriorLighting({
         shadow-bias={-0.0001}
       />
 
-      {/* Warm ambient studio fill */}
       <pointLight
         ref={studioAmbientRef}
         position={[-4.5, 2.8, -6.5]}
@@ -224,8 +264,7 @@ export function InteriorLighting({
         decay={2}
       />
 
-      {/* 7. ENGINEERING LAB LIGHTING (Room 03) */}
-      {/* Cool technical overhead illumination */}
+      {/* 6. Room 03: ENGINEERING LAB LIGHTING */}
       <spotLight
         ref={labSpotRef}
         position={[6.2, 3.15, -9.0]}
@@ -237,7 +276,6 @@ export function InteriorLighting({
         distance={7.5}
       />
 
-      {/* Central telemetry cyan luminous core */}
       <pointLight
         ref={labCoreRef}
         position={[6.2, 1.0, -9.0]}
@@ -245,6 +283,44 @@ export function InteriorLighting({
         intensity={0}
         distance={6.0}
         decay={2}
+      />
+
+      {/* 7. Room 04: ARCHIVE LIGHTING (Low warm amber) */}
+      <pointLight
+        ref={archiveAmbientRef}
+        position={[-4.0, 2.7, -12.0]}
+        color="#fde68a"
+        intensity={0}
+        distance={7.0}
+        decay={2}
+      />
+
+      {/* 8. Room 05: PRIVATE STUDY LIGHTING (Warm walnut & desk lamp) */}
+      <pointLight
+        ref={studyLampRef}
+        position={[6.95, 1.25, -14.3]}
+        color="#ffedd5"
+        intensity={0}
+        distance={5.0}
+        decay={2}
+      />
+
+      {/* 9. Room 06: CONTACT PAVILION & TERRACE LIGHTING */}
+      <pointLight
+        ref={contactAmbientRef}
+        position={[1.7, 2.8, -19.0]}
+        color="#e2e8f0"
+        intensity={0}
+        distance={7.5}
+        decay={2}
+      />
+
+      {/* Cool exterior moonlight over observation terrace */}
+      <directionalLight
+        ref={terraceMoonRef}
+        position={[1.7, 7.0, -25.0]}
+        color="#93c5fd"
+        intensity={0}
       />
     </group>
   );

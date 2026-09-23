@@ -81,7 +81,7 @@ export function Corridor({ onSelectRoom, reducedMotion = false }: CorridorProps)
       ))}
 
       {/* 3. CORRIDOR WALLS WITH ARCHITECTURAL REVEALS & DOORWAY OPENINGS */}
-      {/* Left Corridor Wall (x: 0.48) with opening at Door 02 (z: -6.2) */}
+      {/* Left Corridor Wall (x: 0.48) with openings at Door 02 (z: -6.2) and Door 04 (z: -11.0) */}
       {/* South section of left wall (z: -4.0 to -5.5) */}
       <mesh
         position={[0.48, 1.57, -4.75]}
@@ -99,17 +99,34 @@ export function Corridor({ onSelectRoom, reducedMotion = false }: CorridorProps)
       >
         <boxGeometry args={[0.04, 0.34, 1.4]} />
       </mesh>
-      {/* North section of left wall (z: -6.9 to -16.0) */}
+      {/* Middle section of left wall (z: -6.9 to -10.4) */}
       <mesh
-        position={[0.48, 1.57, -11.45]}
+        position={[0.48, 1.57, -8.65]}
         material={materials.wall}
         castShadow
         receiveShadow
       >
-        <boxGeometry args={[0.04, 2.9, 9.1]} />
+        <boxGeometry args={[0.04, 2.9, 3.5]} />
+      </mesh>
+      {/* Lintel header above Door 04 (z: -10.4 to -11.6) */}
+      <mesh
+        position={[0.48, 2.85, -11.0]}
+        material={materials.wall}
+        receiveShadow
+      >
+        <boxGeometry args={[0.04, 0.34, 1.2]} />
+      </mesh>
+      {/* North section of left wall (z: -11.6 to -16.0) */}
+      <mesh
+        position={[0.48, 1.57, -13.8]}
+        material={materials.wall}
+        castShadow
+        receiveShadow
+      >
+        <boxGeometry args={[0.04, 2.9, 4.4]} />
       </mesh>
 
-      {/* Right Corridor Wall (x: 2.92) with opening at Door 03 (z: -8.6) */}
+      {/* Right Corridor Wall (x: 2.92) with openings at Door 03 (z: -8.6) and Door 05 (z: -13.4) */}
       {/* South section of right wall (z: -4.0 to -8.0) */}
       <mesh
         position={[2.92, 1.57, -6.0]}
@@ -127,24 +144,45 @@ export function Corridor({ onSelectRoom, reducedMotion = false }: CorridorProps)
       >
         <boxGeometry args={[0.04, 0.34, 1.2]} />
       </mesh>
-      {/* North section of right wall (z: -9.2 to -16.0) */}
+      {/* Middle section of right wall (z: -9.2 to -12.8) */}
       <mesh
-        position={[2.92, 1.57, -12.6]}
+        position={[2.92, 1.57, -11.0]}
         material={materials.wall}
         castShadow
         receiveShadow
       >
-        <boxGeometry args={[0.04, 2.9, 6.8]} />
+        <boxGeometry args={[0.04, 2.9, 3.6]} />
+      </mesh>
+      {/* Lintel header above Door 05 (z: -12.8 to -14.0) */}
+      <mesh
+        position={[2.92, 2.85, -13.4]}
+        material={materials.wall}
+        receiveShadow
+      >
+        <boxGeometry args={[0.04, 0.34, 1.2]} />
+      </mesh>
+      {/* North section of right wall (z: -14.0 to -16.0) */}
+      <mesh
+        position={[2.92, 1.57, -15.0]}
+        material={materials.wall}
+        castShadow
+        receiveShadow
+      >
+        <boxGeometry args={[0.04, 2.9, 2.0]} />
       </mesh>
 
-      {/* End Wall of Corridor (z: -16.02) */}
-      <mesh
-        position={[1.7, 1.57, -16.02]}
-        material={materials.wall}
-        castShadow
-        receiveShadow
-      >
-        <boxGeometry args={[2.44, 2.9, 0.04]} />
+      {/* Open Portal Frame to Contact Room (z: -16.0) */}
+      {/* Left jamb */}
+      <mesh position={[0.52, 1.57, -16.0]} material={materials.wall} receiveShadow>
+        <boxGeometry args={[0.08, 2.9, 0.06]} />
+      </mesh>
+      {/* Right jamb */}
+      <mesh position={[2.88, 1.57, -16.0]} material={materials.wall} receiveShadow>
+        <boxGeometry args={[0.08, 2.9, 0.06]} />
+      </mesh>
+      {/* Lintel */}
+      <mesh position={[1.7, 2.85, -16.0]} material={materials.wall} receiveShadow>
+        <boxGeometry args={[2.44, 0.34, 0.06]} />
       </mesh>
 
       {/* 4. ROOM DOORS IN CORRIDOR */}
@@ -174,49 +212,44 @@ export function Corridor({ onSelectRoom, reducedMotion = false }: CorridorProps)
         reducedMotion={reducedMotion}
       />
 
-      {/* Door 04 — ARCHIVE (Left wall at z: -11.0) */}
+      {/* Door 04 — ARCHIVE (Left wall at z: -11.0, leading into Archive) */}
       <RoomDoor
         position={[0.54, 0, -11.0]}
         rotation={[0, Math.PI / 2, 0]}
         index="04"
         title="ARCHIVE"
         subtitle="PROOF & MILESTONES"
-        isUnlocked={false}
+        isUnlocked={true}
+        isOpen={true}
         onSelect={() => onSelectRoom?.("archive")}
         reducedMotion={reducedMotion}
       />
 
-      {/* Door 05 — STUDY (Right wall at z: -13.4) */}
+      {/* Door 05 — STUDY (Right wall at z: -13.4, leading into Private Study) */}
       <RoomDoor
         position={[2.86, 0, -13.4]}
         rotation={[0, -Math.PI / 2, 0]}
         index="05"
         title="STUDY"
         subtitle="ABOUT & PHILOSOPHY"
-        isUnlocked={false}
+        isUnlocked={true}
+        isOpen={true}
         onSelect={() => onSelectRoom?.("study")}
         reducedMotion={reducedMotion}
       />
 
-      {/* Door 06 / Terminal Portal — CONTACT (End of corridor at z: -15.96) */}
+      {/* Door 06 — CONTACT (Corridor Terminus Portal at z: -15.94) */}
       <RoomDoor
         position={[1.7, 0, -15.94]}
         rotation={[0, 0, 0]}
         index="06"
         title="CONTACT"
         subtitle="COMMUNICATION"
-        isUnlocked={false}
+        isUnlocked={true}
+        isOpen={true}
         onSelect={() => onSelectRoom?.("contact")}
         reducedMotion={reducedMotion}
       />
-
-      {/* Subtle Terminal Glow at Corridor Terminus */}
-      <mesh
-        position={[1.7, 1.4, -15.88]}
-        material={materials.endPortalGlow}
-      >
-        <planeGeometry args={[1.1, 2.1]} />
-      </mesh>
     </group>
   );
 }
