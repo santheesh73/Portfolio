@@ -78,11 +78,20 @@ export function HouseExperience() {
   const doorOpenProgress = spatialState.doorOpenProgress;
   const activeRoomId = spatialState.roomId;
 
-  const { updateAccentForRoom } = useTheme();
+  const { updateAccentForRoom, setInteractingProject } = useTheme();
 
   useEffect(() => {
     updateAccentForRoom(activeRoomId);
   }, [activeRoomId, updateAccentForRoom]);
+
+  // Dynamic Color Intelligence: elevate accent to project identity during selection and restore on close
+  useEffect(() => {
+    if (selectedProject) {
+      setInteractingProject(selectedProject.id);
+    } else {
+      setInteractingProject(null);
+    }
+  }, [selectedProject, setInteractingProject]);
 
   // Scroll tracking across the full 650vh spatial track
   useEffect(() => {

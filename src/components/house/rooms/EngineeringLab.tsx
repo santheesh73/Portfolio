@@ -53,17 +53,17 @@ export function EngineeringLab({
     };
   }, []);
 
-  // Map accents to the 4 skill groups
+  // Map accents to the 4 skill groups (AI: Teal, Frontend: Azure Blue, Backend: Amber, Infra: Violet)
   const nodeConfigs: {
     id: string;
     accent: string;
     pos: [number, number, number];
     rot: [number, number, number];
   }[] = [
-    { id: "ai", accent: "#2dd4bf", pos: [5.0, 0.12, -7.6], rot: [0, Math.PI / 6, 0] },
-    { id: "frontend", accent: "#38bdf8", pos: [7.4, 0.12, -7.6], rot: [0, -Math.PI / 6, 0] },
-    { id: "backend", accent: "#f59e0b", pos: [5.0, 0.12, -10.4], rot: [0, (5 * Math.PI) / 6, 0] },
-    { id: "data-infra", accent: "#a855f7", pos: [7.4, 0.12, -10.4], rot: [0, -(5 * Math.PI) / 6, 0] },
+    { id: "ai", accent: "#0d9488", pos: [5.0, 0.12, -7.6], rot: [0, Math.PI / 6, 0] },
+    { id: "frontend", accent: "#0284c7", pos: [7.4, 0.12, -7.6], rot: [0, -Math.PI / 6, 0] },
+    { id: "backend", accent: "#d97706", pos: [5.0, 0.12, -10.4], rot: [0, (5 * Math.PI) / 6, 0] },
+    { id: "data-infra", accent: "#7c3aed", pos: [7.4, 0.12, -10.4], rot: [0, -(5 * Math.PI) / 6, 0] },
   ];
 
   return (
@@ -78,11 +78,11 @@ export function EngineeringLab({
         <boxGeometry args={[6.6, 0.04, 6.0]} />
       </mesh>
 
-      {/* Laboratory floor grid inlays */}
+      {/* Laboratory floor grid inlays (Precision architectural aluminum joint lines) */}
       {[-11.0, -10.0, -9.0, -8.0, -7.0].map((zPos) => (
         <mesh key={zPos} position={[6.2, 0.141, zPos]}>
           <boxGeometry args={[6.4, 0.002, 0.015]} />
-          <meshBasicMaterial color="#2d3748" transparent opacity={0.3} />
+          <meshBasicMaterial color="#94a3b8" transparent opacity={0.35} />
         </mesh>
       ))}
 
@@ -169,6 +169,11 @@ export function EngineeringLab({
         </mesh>
         <mesh position={[0, 0.51, 0]} material={materials.luminaireCyan}>
           <cylinderGeometry args={[0.62, 0.62, 0.02, 8]} />
+        </mesh>
+        {/* Subtle AI technical core central indicator ring */}
+        <mesh position={[0, 0.72, 0]} rotation={[Math.PI / 2, 0, 0]}>
+          <torusGeometry args={[0.35, 0.008, 12, 32]} />
+          <meshBasicMaterial color="#2dd4bf" transparent opacity={0.65} />
         </mesh>
       </group>
 

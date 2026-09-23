@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import { useTheme } from "@/theme/ThemeContext";
 
 interface EntranceProps {
   isHovered: boolean;
@@ -19,6 +20,7 @@ export function Entrance({
   onDoorClick,
   reducedMotion = false,
 }: EntranceProps) {
+  const { activeAccent } = useTheme();
   const doorMeshRef = useRef<THREE.Group>(null);
   const handleMeshRef = useRef<THREE.Mesh>(null);
   const doorGlowPlaneRef = useRef<THREE.Mesh>(null);
@@ -126,6 +128,14 @@ export function Entrance({
         <circleGeometry args={[0.05, 16]} />
         <meshBasicMaterial color="#fffbeb" />
       </mesh>
+      {/* Soft welcoming porch downlight illuminating landing threshold */}
+      <pointLight
+        position={[0, 2.65, 0.1]}
+        color="#fffbeb"
+        intensity={0.9}
+        distance={3.2}
+        decay={2}
+      />
 
       {/* 3. Modern Pivot Door & Frame */}
       {/* Slate metal door jamb/frame */}
@@ -177,7 +187,7 @@ export function Entrance({
       >
         <planeGeometry args={[1.45, 2.35]} />
         <meshBasicMaterial
-          color="#14b8a6"
+          color={activeAccent.glow3D}
           transparent
           opacity={0.08}
           blending={THREE.AdditiveBlending}

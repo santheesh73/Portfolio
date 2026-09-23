@@ -12,6 +12,7 @@ interface RoomDoorProps {
   subtitle: string;
   isUnlocked?: boolean;
   isOpen?: boolean;
+  accentColor?: string;
   onSelect?: () => void;
   reducedMotion?: boolean;
 }
@@ -24,6 +25,7 @@ export function RoomDoor({
   subtitle,
   isUnlocked = false,
   isOpen = false,
+  accentColor = "#0f766e",
   onSelect,
   reducedMotion = false,
 }: RoomDoorProps) {
@@ -35,42 +37,42 @@ export function RoomDoor({
   const materials = useMemo(() => {
     return {
       frame: new THREE.MeshStandardMaterial({
-        color: "#121418",
+        color: "#33373c",
         roughness: 0.35,
         metalness: 0.75,
       }),
       doorPanel: new THREE.MeshStandardMaterial({
-        color: "#2a221b",
-        roughness: 0.55,
-        metalness: 0.08,
+        color: "#a06d3b",
+        roughness: 0.48,
+        metalness: 0.04,
       }),
       doorTrim: new THREE.MeshStandardMaterial({
-        color: "#1a1c22",
-        roughness: 0.4,
-        metalness: 0.6,
+        color: "#64748b",
+        roughness: 0.3,
+        metalness: 0.8,
       }),
       handle: new THREE.MeshStandardMaterial({
-        color: "#cbd5e1",
-        roughness: 0.2,
-        metalness: 0.9,
+        color: "#f1f5f9",
+        roughness: 0.15,
+        metalness: 0.92,
       }),
       lightSpill: new THREE.MeshBasicMaterial({
-        color: "#fbbf24",
+        color: accentColor,
         transparent: true,
         opacity: 0.16,
         blending: THREE.AdditiveBlending,
         depthWrite: false,
       }),
       signPlaque: new THREE.MeshStandardMaterial({
-        color: "#181a20",
-        roughness: 0.4,
-        metalness: 0.5,
+        color: "#ffffff",
+        roughness: 0.35,
+        metalness: 0.08,
       }),
-      textAmber: new THREE.MeshBasicMaterial({
-        color: "#fbbf24",
+      textAccent: new THREE.MeshBasicMaterial({
+        color: accentColor,
       }),
     };
-  }, []);
+  }, [accentColor]);
 
   useFrame((_, delta) => {
     if (reducedMotion) {
@@ -88,7 +90,7 @@ export function RoomDoor({
 
     if (doorPanelRef.current) {
       const mat = doorPanelRef.current.material as THREE.MeshStandardMaterial;
-      const targetColor = hovered ? new THREE.Color("#362b22") : new THREE.Color("#2a221b");
+      const targetColor = hovered ? new THREE.Color("#b57c45") : new THREE.Color("#a06d3b");
       mat.color.lerp(targetColor, delta * 6);
     }
 
@@ -189,15 +191,15 @@ export function RoomDoor({
         </mesh>
         <mesh position={[0, 0, 0.012]}>
           <boxGeometry args={[0.24, 0.36, 0.002]} />
-          <meshBasicMaterial color={hovered ? "#fbbf24" : "#475569"} />
+          <meshBasicMaterial color={hovered ? accentColor : "#e2e8f0"} />
         </mesh>
         <mesh position={[0, 0.08, 0.016]}>
           <boxGeometry args={[0.16, 0.08, 0.002]} />
-          <meshBasicMaterial color={isUnlocked ? "#2dd4bf" : "#f59e0b"} />
+          <meshBasicMaterial color={accentColor} />
         </mesh>
         <mesh position={[0, -0.09, 0.016]}>
           <circleGeometry args={[0.02, 12]} />
-          <meshBasicMaterial color={isUnlocked ? "#2dd4bf" : "#64748b"} />
+          <meshBasicMaterial color={isUnlocked ? accentColor : "#cbd5e1"} />
         </mesh>
       </group>
     </group>

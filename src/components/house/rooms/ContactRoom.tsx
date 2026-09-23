@@ -77,12 +77,17 @@ export function ContactRoom({
         blending: THREE.AdditiveBlending,
       }),
       terraceRailing: new THREE.MeshStandardMaterial({
-        color: "#334155",
+        color: "#64748b",
         roughness: 0.2,
         metalness: 0.85,
       }),
       outdoorBeacon: new THREE.MeshBasicMaterial({
         color: "#93c5fd",
+      }),
+      terraceGreenery: new THREE.MeshStandardMaterial({
+        color: "#426b48",
+        roughness: 0.75,
+        metalness: 0.04,
       }),
     };
   }, []);
@@ -183,6 +188,24 @@ export function ContactRoom({
           </mesh>
         </group>
       ))}
+
+      {/* Terrace Edge Planters with Structured Architectural Greenery */}
+      <group position={[-1.2, 0.28, -26.0]}>
+        <mesh material={materials.frameDark} castShadow receiveShadow>
+          <boxGeometry args={[0.5, 0.3, 1.2]} />
+        </mesh>
+        <mesh position={[0, 0.22, 0]} material={materials.terraceGreenery} castShadow>
+          <sphereGeometry args={[0.22, 8, 8]} />
+        </mesh>
+      </group>
+      <group position={[4.6, 0.28, -26.0]}>
+        <mesh material={materials.frameDark} castShadow receiveShadow>
+          <boxGeometry args={[0.5, 0.3, 1.2]} />
+        </mesh>
+        <mesh position={[0, 0.22, 0]} material={materials.terraceGreenery} castShadow>
+          <sphereGeometry args={[0.22, 8, 8]} />
+        </mesh>
+      </group>
 
       {/* 4. ROOM WALLS */}
       {/* West Wall (x: -1.52) */}

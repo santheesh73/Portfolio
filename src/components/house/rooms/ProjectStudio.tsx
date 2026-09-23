@@ -157,6 +157,38 @@ export function ProjectStudio({
         <boxGeometry args={[0.06, 0.74, 1.4]} />
       </mesh>
 
+      {/* 3b. ARCHITECTURAL PRODUCT WORKBENCH (West wall display) */}
+      <group position={[-8.1, 0.14, -6.5]}>
+        {/* Floating natural timber tabletop */}
+        <mesh position={[0, 0.72, 0]} material={materials.woodAccentWall} castShadow receiveShadow>
+          <boxGeometry args={[0.7, 0.04, 3.2]} />
+        </mesh>
+        {/* Brushed aluminum legs */}
+        <mesh position={[0, 0.36, -1.4]} material={materials.trackLight} castShadow>
+          <boxGeometry args={[0.65, 0.72, 0.04]} />
+        </mesh>
+        <mesh position={[0, 0.36, 1.4]} material={materials.trackLight} castShadow>
+          <boxGeometry args={[0.65, 0.72, 0.04]} />
+        </mesh>
+        {/* Minimal design prototype artifacts on workbench */}
+        <mesh position={[0, 0.78, -0.6]} material={materials.concreteWall} castShadow>
+          <boxGeometry args={[0.22, 0.08, 0.3]} />
+        </mesh>
+        <mesh position={[0, 0.79, 0.4]} material={materials.trackLight} castShadow>
+          <cylinderGeometry args={[0.08, 0.08, 0.1, 16]} />
+        </mesh>
+      </group>
+
+      {/* 3c. MINIMAL WALL SHELVING (West wall above workbench) */}
+      <group position={[-8.38, 1.8, -6.5]}>
+        <mesh material={materials.trackLight} castShadow>
+          <boxGeometry args={[0.04, 0.8, 2.6]} />
+        </mesh>
+        <mesh position={[0.12, 0, 0]} material={materials.trackLight} castShadow>
+          <boxGeometry args={[0.24, 0.02, 2.8]} />
+        </mesh>
+      </group>
+
       {/* 4. FEATURED CENTERPIECE: ORION */}
       <ProjectDisplay
         project={featuredProject}

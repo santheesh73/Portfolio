@@ -54,7 +54,54 @@ export const ACCENT_PALETTES: Record<string, ColorTokenGroup> = {
     accentContrast: "#FFFFFF",
     glow3D: "#F43F5E",
   },
+  violet: {
+    name: "Violet",
+    accent: "#6D28D9",
+    accentHover: "#7C3AED",
+    accentSoft: "rgba(109, 40, 217, 0.10)",
+    accentMuted: "rgba(109, 40, 217, 0.22)",
+    accentContrast: "#FFFFFF",
+    glow3D: "#8B5CF6",
+  },
 };
+
+export interface ProjectIdentity {
+  accent: string;
+  glow: string;
+  name: string;
+}
+
+export const PROJECT_IDENTITIES: Record<string, ProjectIdentity> = {
+  orion: { accent: "#0D9488", glow: "#2DD4BF", name: "Teal" },
+  hearttune: { accent: "#7C3AED", glow: "#A855F7", name: "Violet" },
+  nisf: { accent: "#1D4ED8", glow: "#38BDF8", name: "Blue" },
+  ahal: { accent: "#059669", glow: "#34D399", name: "Emerald" },
+  prysm: { accent: "#D97706", glow: "#FBBF24", name: "Amber" },
+  bhoomi: { accent: "#15803D", glow: "#4ADE80", name: "Green" },
+  minchal: { accent: "#EA580C", glow: "#FB923C", name: "Orange" },
+};
+
+export function getProjectIdentity(projectId: string): ProjectIdentity {
+  const normalized = projectId.toLowerCase().replace(/[^a-z0-9]/g, "");
+  for (const [key, identity] of Object.entries(PROJECT_IDENTITIES)) {
+    if (normalized.includes(key)) {
+      return identity;
+    }
+  }
+  return { accent: "#1D4ED8", glow: "#3B82F6", name: "Blue" };
+}
+
+export function createProjectTokenGroup(identity: ProjectIdentity): ColorTokenGroup {
+  return {
+    name: identity.name,
+    accent: identity.accent,
+    accentHover: identity.glow,
+    accentSoft: `${identity.accent}1A`,
+    accentMuted: `${identity.accent}38`,
+    accentContrast: "#FFFFFF",
+    glow3D: identity.glow,
+  };
+}
 
 export const LIGHT_THEME_BASE = {
   background: "#F5F4EF",
@@ -89,7 +136,7 @@ export function getRoomAccentKey(roomId: string): string {
     case "archive":
       return "amber";
     case "study":
-      return "rose";
+      return "violet";
     case "contact":
     case "exit":
       return "emerald";

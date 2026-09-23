@@ -67,7 +67,7 @@ export function InteriorLighting({
     const lerpSpeed = reducedMotion ? 1 : delta * 5;
 
     if (foyerAmbientRef.current) {
-      const target = 0.5 * targetInteriorFactor;
+      const target = 0.95 * targetInteriorFactor;
       foyerAmbientRef.current.intensity = THREE.MathUtils.lerp(
         foyerAmbientRef.current.intensity,
         target,
@@ -302,6 +302,15 @@ export function InteriorLighting({
         color="#ffedd5"
         intensity={0}
         distance={5.0}
+        decay={2}
+      />
+
+      {/* 8b. Room 05: Principle Wall Soft Violet Accent Wash */}
+      <pointLight
+        position={[6.2, 2.6, -16.0]}
+        color="#8b5cf6"
+        intensity={0.5 * targetStudyFactor}
+        distance={4.5}
         decay={2}
       />
 

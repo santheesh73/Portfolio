@@ -29,21 +29,21 @@ export function SkillSystemNode({
   const materials = useMemo(() => {
     return {
       pedestal: new THREE.MeshStandardMaterial({
-        color: "#181a20",
-        roughness: 0.5,
-        metalness: 0.35,
+        color: "#ffffff",
+        roughness: 0.45,
+        metalness: 0.05,
       }),
       trim: new THREE.MeshStandardMaterial({
-        color: "#272a33",
-        roughness: 0.3,
-        metalness: 0.8,
+        color: "#cbd5e1",
+        roughness: 0.25,
+        metalness: 0.85,
       }),
       telemetryPanel: new THREE.MeshStandardMaterial({
-        color: "#081016",
-        roughness: 0.12,
-        metalness: 0.75,
+        color: "#ffffff",
+        roughness: 0.1,
+        metalness: 0.2,
         transparent: true,
-        opacity: 0.82,
+        opacity: 0.65,
       }),
       accentGlow: new THREE.MeshBasicMaterial({
         color: accentColor,
@@ -122,7 +122,7 @@ export function SkillSystemNode({
         {/* System Category Hairline */}
         <mesh position={[0, -0.15, 0.025]}>
           <boxGeometry args={[0.8, 0.015, 0.002]} />
-          <meshBasicMaterial color={hovered ? accentColor : "#475569"} />
+          <meshBasicMaterial color={hovered ? accentColor : "#64748b"} />
         </mesh>
       </group>
 
