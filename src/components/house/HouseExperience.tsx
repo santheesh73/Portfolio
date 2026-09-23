@@ -6,6 +6,7 @@ import { useReducedMotion } from "motion/react";
 import { CinematicHUD } from "./CinematicHUD";
 import { LoadingScene } from "./LoadingScene";
 import { HouseFallback } from "./HouseFallback";
+import { HouseErrorBoundary } from "./HouseErrorBoundary";
 import { ProjectDetailModal } from "./projects/ProjectDetailModal";
 import { SkillDetailModal } from "./skills/SkillDetailModal";
 import { ProofDetailModal } from "./proof/ProofDetailModal";
@@ -291,25 +292,27 @@ export function HouseExperience() {
         {/* Loading Screen Preloader */}
         <LoadingScene isLoading={!sceneReady} />
 
-        {/* 3D Scene Viewport */}
+        {/* 3D Scene Viewport with Graceful Error Boundary */}
         {webglSupported && (
-          <HouseScene
-            scrollProgress={scrollProgress}
-            doorOpenProgress={doorOpenProgress}
-            activeRoomId={activeRoomId}
-            isEntranceHovered={isEntranceHovered}
-            onEntranceHoverChange={setIsEntranceHovered}
-            onDoorClick={handleDoorClick}
-            onSelectRoom={(rId) => {
-              handleNavigateToRoom(rId as RoomId);
-            }}
-            onSelectProject={setSelectedProject}
-            onSelectSkill={setSelectedSkillGroup}
-            onSelectProof={setSelectedProof}
-            onOpenStudyModal={() => setIsStudyModalOpen(true)}
-            onSceneReady={() => setSceneReady(true)}
-            reducedMotion={Boolean(reduce)}
-          />
+          <HouseErrorBoundary fallback={<HouseFallback />}>
+            <HouseScene
+              scrollProgress={scrollProgress}
+              doorOpenProgress={doorOpenProgress}
+              activeRoomId={activeRoomId}
+              isEntranceHovered={isEntranceHovered}
+              onEntranceHoverChange={setIsEntranceHovered}
+              onDoorClick={handleDoorClick}
+              onSelectRoom={(rId) => {
+                handleNavigateToRoom(rId as RoomId);
+              }}
+              onSelectProject={setSelectedProject}
+              onSelectSkill={setSelectedSkillGroup}
+              onSelectProof={setSelectedProof}
+              onOpenStudyModal={() => setIsStudyModalOpen(true)}
+              onSceneReady={() => setSceneReady(true)}
+              reducedMotion={Boolean(reduce)}
+            />
+          </HouseErrorBoundary>
         )}
 
         {/* Spatial Cinematic HUD */}
