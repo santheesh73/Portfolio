@@ -8,51 +8,51 @@ export function ExteriorHouse() {
   const materials = useMemo(() => {
     return {
       darkConcrete: new THREE.MeshStandardMaterial({
-        color: "#1c1e22",
-        roughness: 0.88,
-        metalness: 0.08,
+        color: "#e5e1d8",
+        roughness: 0.82,
+        metalness: 0.04,
       }),
       charcoalWall: new THREE.MeshStandardMaterial({
-        color: "#141518",
-        roughness: 0.92,
-        metalness: 0.05,
+        color: "#f6f5f0",
+        roughness: 0.85,
+        metalness: 0.02,
       }),
       darkFascia: new THREE.MeshStandardMaterial({
-        color: "#0a0a0c",
+        color: "#2d3136",
         roughness: 0.35,
-        metalness: 0.85,
+        metalness: 0.75,
       }),
       warmWoodSoffit: new THREE.MeshStandardMaterial({
-        color: "#523722",
+        color: "#c89a65",
         roughness: 0.55,
         metalness: 0.02,
       }),
       warmWoodPanel: new THREE.MeshStandardMaterial({
-        color: "#462e1c",
-        roughness: 0.6,
+        color: "#be8e56",
+        roughness: 0.55,
         metalness: 0.02,
       }),
       windowGlass: new THREE.MeshStandardMaterial({
-        color: "#0c1520",
-        roughness: 0.1,
-        metalness: 0.65,
+        color: "#e0f2fe",
+        roughness: 0.08,
+        metalness: 0.4,
         transparent: true,
-        opacity: 0.72,
+        opacity: 0.35,
       }),
       windowGlowInterior: new THREE.MeshBasicMaterial({
-        color: "#fbbf24",
+        color: "#fffbeb",
         transparent: true,
-        opacity: 0.42,
+        opacity: 0.16,
       }),
       windowMullion: new THREE.MeshStandardMaterial({
-        color: "#08090a",
-        roughness: 0.4,
+        color: "#33373c",
+        roughness: 0.35,
         metalness: 0.7,
       }),
       architecturalSteel: new THREE.MeshStandardMaterial({
-        color: "#27272a",
-        roughness: 0.3,
-        metalness: 0.9,
+        color: "#94a3b8",
+        roughness: 0.25,
+        metalness: 0.85,
       }),
     };
   }, []);

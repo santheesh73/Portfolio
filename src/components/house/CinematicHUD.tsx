@@ -87,7 +87,7 @@ export function CinematicHUD({
         >
           <Link
             href="#identity-heading"
-            className="group inline-flex items-center gap-1.5 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-text-muted/80 transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent rounded-sm px-2.5 py-1.5 border border-border-subtle/50 bg-surface/30 backdrop-blur-sm"
+            className="group inline-flex items-center gap-1.5 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-text-secondary transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent rounded-sm px-2.5 py-1.5 border border-black/[0.08] bg-white/75 shadow-xs backdrop-blur-md"
           >
             <span>Skip to Content</span>
             <ArrowDown
@@ -203,7 +203,7 @@ export function CinematicHUD({
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
-              className="flex items-center justify-center rounded-full border border-border-subtle bg-surface/50 p-1.5 text-text-muted backdrop-blur-sm transition-colors group-hover:border-accent/40 group-hover:text-accent"
+              className="flex items-center justify-center rounded-full border border-black/[0.08] bg-white/75 p-1.5 text-text-secondary backdrop-blur-md shadow-xs transition-colors group-hover:border-accent/40 group-hover:text-accent"
             >
               <ChevronDown className="size-3.5" aria-hidden="true" />
             </motion.div>
@@ -218,12 +218,12 @@ export function CinematicHUD({
           className="pointer-events-auto flex flex-col items-end gap-1.5"
         >
           <div className="hidden sm:flex items-center gap-1.5 font-mono text-[0.65rem] tracking-[0.16em] uppercase">
-            <span className="text-text-muted/60">SPATIAL</span>
+            <span className="text-text-muted/70">SPATIAL</span>
             <span className="text-text-secondary font-medium">DESTINATIONS</span>
           </div>
 
           <div
-            className="flex items-center gap-1 rounded-md border border-border-subtle bg-surface/80 p-1 backdrop-blur-md overflow-x-auto max-w-full"
+            className="flex items-center gap-1 rounded-md border border-black/[0.08] bg-white/80 p-1 backdrop-blur-md shadow-xs overflow-x-auto max-w-full"
             role="toolbar"
             aria-label="Direct spatial room navigation"
           >

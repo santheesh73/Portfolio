@@ -75,51 +75,51 @@ export function Entrance({
       {/* Step 1 (Lowest) */}
       <mesh position={[0, 0.06, 0.65]} receiveShadow>
         <boxGeometry args={[2.4, 0.12, 0.8]} />
-        <meshStandardMaterial color="#272a30" roughness={0.85} metalness={0.05} />
+        <meshStandardMaterial color="#ece8e0" roughness={0.78} metalness={0.04} />
       </mesh>
       {/* Step 1 Under-edge Warm LED Glow Strip */}
       <mesh position={[0, 0.02, 1.04]}>
         <boxGeometry args={[2.3, 0.02, 0.04]} />
-        <meshBasicMaterial color="#fed7aa" />
+        <meshBasicMaterial color="#fde68a" />
       </mesh>
 
       {/* Step 2 (Middle) */}
       <mesh position={[0, 0.18, 0.35]} receiveShadow>
         <boxGeometry args={[2.2, 0.12, 0.7]} />
-        <meshStandardMaterial color="#23262c" roughness={0.85} metalness={0.05} />
+        <meshStandardMaterial color="#e4dfd6" roughness={0.78} metalness={0.04} />
       </mesh>
       {/* Step 2 Under-edge Warm LED Glow Strip */}
       <mesh position={[0, 0.14, 0.69]}>
         <boxGeometry args={[2.1, 0.02, 0.04]} />
-        <meshBasicMaterial color="#fed7aa" />
+        <meshBasicMaterial color="#fde68a" />
       </mesh>
 
       {/* Step 3 (Top Porch Landing) */}
       <mesh position={[0, 0.3, 0.0]} receiveShadow>
         <boxGeometry args={[2.0, 0.12, 0.75]} />
-        <meshStandardMaterial color="#1e2025" roughness={0.88} metalness={0.05} />
+        <meshStandardMaterial color="#ddd8cf" roughness={0.8} metalness={0.04} />
       </mesh>
 
-      {/* 2. Recessed Porch Alcove Surround (Warm Architectural Teak/Walnut Paneling) */}
+      {/* 2. Recessed Porch Alcove Surround (Warm Architectural Honey Oak Paneling) */}
       {/* Left alcove wooden wall */}
       <mesh position={[-0.92, 1.6, -0.05]} receiveShadow>
         <boxGeometry args={[0.08, 2.5, 0.7]} />
-        <meshStandardMaterial color="#4a3120" roughness={0.65} metalness={0.02} />
+        <meshStandardMaterial color="#b58350" roughness={0.58} metalness={0.02} />
       </mesh>
       {/* Right alcove wooden wall */}
       <mesh position={[0.92, 1.6, -0.05]} receiveShadow>
         <boxGeometry args={[0.08, 2.5, 0.7]} />
-        <meshStandardMaterial color="#4a3120" roughness={0.65} metalness={0.02} />
+        <meshStandardMaterial color="#b58350" roughness={0.58} metalness={0.02} />
       </mesh>
-      {/* Porch ceiling soffit (Dark wood slats with recessed light aperture) */}
+      {/* Porch ceiling soffit (Natural oak slats with recessed light aperture) */}
       <mesh position={[0, 2.76, -0.05]} receiveShadow>
         <boxGeometry args={[1.88, 0.08, 0.7]} />
-        <meshStandardMaterial color="#3d281a" roughness={0.6} metalness={0.02} />
+        <meshStandardMaterial color="#a87848" roughness={0.55} metalness={0.02} />
       </mesh>
       {/* Recessed Porch Downlight Fixture Ring */}
       <mesh position={[0, 2.71, 0.05]}>
         <cylinderGeometry args={[0.07, 0.07, 0.02, 16]} />
-        <meshStandardMaterial color="#111215" roughness={0.3} metalness={0.8} />
+        <meshStandardMaterial color="#33373c" roughness={0.3} metalness={0.8} />
       </mesh>
       {/* Glowing Recessed Lens */}
       <mesh position={[0, 2.7, 0.05]}>
@@ -128,10 +128,10 @@ export function Entrance({
       </mesh>
 
       {/* 3. Modern Pivot Door & Frame */}
-      {/* Dark charcoal door jamb/frame */}
+      {/* Slate metal door jamb/frame */}
       <mesh position={[0, 1.55, -0.22]} receiveShadow>
         <boxGeometry args={[1.56, 2.44, 0.06]} />
-        <meshStandardMaterial color="#121316" roughness={0.4} metalness={0.6} />
+        <meshStandardMaterial color="#2d3136" roughness={0.4} metalness={0.7} />
       </mesh>
 
       {/* Modern Pivot Door Panel (Subtle horizontal architectural wood slats) */}
@@ -140,7 +140,7 @@ export function Entrance({
         <mesh position={[0.65, 1.15, 0]} castShadow receiveShadow>
           <boxGeometry args={[1.3, 2.3, 0.06]} />
           <meshStandardMaterial
-            color="#5c3c26"
+            color="#a06d3b"
             roughness={0.48}
             metalness={0.04}
           />
@@ -154,19 +154,19 @@ export function Entrance({
         >
           <cylinderGeometry args={[0.016, 0.016, 1.1, 12]} />
           <meshStandardMaterial
-            color="#e2e8f0"
-            roughness={0.2}
-            metalness={0.9}
+            color="#f1f5f9"
+            roughness={0.15}
+            metalness={0.92}
           />
         </mesh>
         {/* Handle mounts */}
         <mesh position={[1.2, 1.55, 0.035]}>
           <boxGeometry args={[0.03, 0.03, 0.05]} />
-          <meshStandardMaterial color="#334155" roughness={0.3} metalness={0.8} />
+          <meshStandardMaterial color="#64748b" roughness={0.3} metalness={0.8} />
         </mesh>
         <mesh position={[1.2, 0.65, 0.035]}>
           <boxGeometry args={[0.03, 0.03, 0.05]} />
-          <meshStandardMaterial color="#334155" roughness={0.3} metalness={0.8} />
+          <meshStandardMaterial color="#64748b" roughness={0.3} metalness={0.8} />
         </mesh>
       </group>
 
@@ -177,7 +177,7 @@ export function Entrance({
       >
         <planeGeometry args={[1.45, 2.35]} />
         <meshBasicMaterial
-          color="#f59e0b"
+          color="#14b8a6"
           transparent
           opacity={0.08}
           blending={THREE.AdditiveBlending}
@@ -189,17 +189,17 @@ export function Entrance({
       <group position={[0.82, 1.6, 0.15]}>
         <mesh castShadow>
           <boxGeometry args={[0.04, 0.22, 0.05]} />
-          <meshStandardMaterial color="#0f172a" roughness={0.3} metalness={0.7} />
+          <meshStandardMaterial color="#cbd5e1" roughness={0.3} metalness={0.8} />
         </mesh>
         {/* Up glow */}
         <mesh position={[0, 0.12, 0.01]}>
           <boxGeometry args={[0.03, 0.015, 0.04]} />
-          <meshBasicMaterial color="#fed7aa" />
+          <meshBasicMaterial color="#fde68a" />
         </mesh>
         {/* Down glow */}
         <mesh position={[0, -0.12, 0.01]}>
           <boxGeometry args={[0.03, 0.015, 0.04]} />
-          <meshBasicMaterial color="#fed7aa" />
+          <meshBasicMaterial color="#fde68a" />
         </mesh>
       </group>
     </group>

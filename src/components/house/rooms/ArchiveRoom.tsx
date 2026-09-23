@@ -18,37 +18,37 @@ export function ArchiveRoom({
   const materials = useMemo(() => {
     return {
       floor: new THREE.MeshStandardMaterial({
-        color: "#16181f",
-        roughness: 0.65,
-        metalness: 0.15,
-      }),
-      darkWall: new THREE.MeshStandardMaterial({
-        color: "#111318",
-        roughness: 0.9,
+        color: "#dfd6c8",
+        roughness: 0.6,
         metalness: 0.05,
       }),
+      darkWall: new THREE.MeshStandardMaterial({
+        color: "#f6f4ee",
+        roughness: 0.88,
+        metalness: 0.02,
+      }),
       woodAccent: new THREE.MeshStandardMaterial({
-        color: "#2d231b",
+        color: "#c4955c",
         roughness: 0.5,
-        metalness: 0.08,
+        metalness: 0.04,
       }),
       ceiling: new THREE.MeshStandardMaterial({
-        color: "#0c0d12",
+        color: "#faf9f6",
         roughness: 0.95,
         metalness: 0.02,
       }),
       shelfWood: new THREE.MeshStandardMaterial({
-        color: "#1c1712",
+        color: "#b8864d",
         roughness: 0.45,
-        metalness: 0.1,
+        metalness: 0.05,
       }),
       timelineRail: new THREE.MeshBasicMaterial({
-        color: "#f59e0b",
+        color: "#b45309",
         transparent: true,
-        opacity: 0.6,
+        opacity: 0.5,
       }),
       coveLight: new THREE.MeshBasicMaterial({
-        color: "#ffedd5",
+        color: "#fffbeb",
       }),
     };
   }, []);

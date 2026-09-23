@@ -1,44 +1,48 @@
 @import "tailwindcss";
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 
-  /* ---- Base palette (dark cinematic, warm charcoal) ---- */
-  --ink-950: #0a0a0b;
-  --ink-900: #111113;
-  --ink-850: #161618;
-  --ink-800: #1b1b1f;
-  --ink-700: #232329;
-  --paper: #f2f0eb;
-  --gray-soft: #b3aea4;
-  --gray-dim: #857f75;
-  --teal: #14b8a6;
-  --teal-bright: #2dd4bf;
-  --teal-deep: #04211d;
+  /* ---- Base palette (light architectural, warm paper, natural stone) ---- */
+  --ink-950: #171918;
+  --ink-900: #232625;
+  --ink-850: #383d3b;
+  --ink-800: #4b524d;
+  --ink-700: #717770;
+  --paper: #F5F4EF;
+  --paper-card: #FFFFFF;
+  --paper-warm: #F0EDE4;
+  --stone-subtle: #EAE8E1;
+  --border-light: rgba(0, 0, 0, 0.09);
+  --border-subtle-light: rgba(0, 0, 0, 0.05);
 
-  /* ---- Semantic color tokens (dark cinematic) ---- */
-  --background: var(--ink-950);
-  --foreground: var(--paper);
-  --surface: var(--ink-900);
-  --surface-muted: var(--ink-850);
-  --surface-elevated: var(--ink-800);
-  --surface-interactive: var(--ink-700);
+  --teal: #0F766E;
+  --teal-bright: #14B8A6;
+  --teal-deep: #FFFFFF;
 
-  --text-primary: var(--paper);
-  --text-secondary: var(--gray-soft);
-  --text-muted: var(--gray-dim);
+  /* ---- Semantic color tokens (light architectural) ---- */
+  --background: var(--paper);
+  --foreground: var(--ink-950);
+  --surface: rgba(255, 255, 255, 0.85);
+  --surface-muted: var(--paper-warm);
+  --surface-elevated: var(--paper-card);
+  --surface-interactive: var(--stone-subtle);
 
-  --border: rgb(255 255 255 / 0.1);
-  --border-subtle: rgb(255 255 255 / 0.06);
+  --text-primary: var(--ink-950);
+  --text-secondary: var(--ink-800);
+  --text-muted: var(--ink-700);
+
+  --border: var(--border-light);
+  --border-subtle: var(--border-subtle-light);
 
   --accent: var(--teal);
   --accent-hover: var(--teal-bright);
   --accent-foreground: var(--teal-deep);
-  --accent-muted: rgb(20 184 166 / 0.12);
+  --accent-muted: rgba(15, 118, 110, 0.12);
 
-  --success: #4ade80;
-  --warning: #fbbf24;
-  --error: #f87171;
+  --success: #16a34a;
+  --warning: #d97706;
+  --error: #dc2626;
 
   /* ---- Radius ---- */
   --radius-sm: 6px;
@@ -110,10 +114,10 @@
   --radius-xl: var(--radius-xl);
   --radius-pill: var(--radius-pill);
 
-  --shadow-subtle: 0 1px 2px rgb(0 0 0 / 0.5);
-  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.5), 0 12px 32px -12px rgb(0 0 0 / 0.6);
-  --shadow-elevated: 0 2px 8px rgb(0 0 0 / 0.5), 0 24px 64px -16px rgb(0 0 0 / 0.65);
-  --shadow-glow-accent: 0 0 24px rgb(20 184 166 / 0.15);
+  --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+  --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+  --shadow-elevated: 0 20px 25px -5px rgba(0, 0, 0, 0.07), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+  --shadow-glow-accent: 0 0 24px var(--accent-muted);
 }
 
 * {
@@ -135,22 +139,21 @@ body {
   overflow-x: clip;
 }
 
-/* ---- Cinematic atmosphere: film grain (global, decorative) ----
-   Tiny tiled SVG turbulence at very low opacity. Pseudo-element only,
-   so it never enters the accessibility tree or intercepts input. */
+/* ---- Cinematic atmosphere: light architectural film grain ----
+   Micro-fine texture at very low opacity to resemble matte fine-art paper */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: 90;
   pointer-events: none;
-  opacity: 0.05;
+  opacity: 0.02;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
   background-size: 160px 160px;
 }
 
-/* ---- Cinematic atmosphere: viewport vignette (global, decorative) ----
-   Visual depth, not dark corners — kept faint to protect readability. */
+/* ---- Cinematic atmosphere: viewport vignette (light architectural falloff) ----
+   Barely perceptible soft natural edge falloff */
 body::after {
   content: "";
   position: fixed;
@@ -159,8 +162,8 @@ body::after {
   pointer-events: none;
   background: radial-gradient(
     120% 90% at 50% 40%,
-    transparent 55%,
-    rgb(0 0 0 / 0.38) 100%
+    transparent 65%,
+    rgb(0 0 0 / 0.04) 100%
   );
 }
 
@@ -298,9 +301,12 @@ body::after {
   width: 10px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #26262c;
+  background: #d4cfc5;
   border-radius: 8px;
-  border: 2px solid #0a0a0b;
+  border: 2px solid #f5f4ef;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #bcb6ab;
 }
 ::-webkit-scrollbar-track {
   background: transparent;

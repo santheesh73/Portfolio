@@ -52,7 +52,7 @@ export function HouseScene({
   reducedMotion = false,
 }: HouseSceneProps) {
   return (
-    <div className="relative h-full w-full bg-[#080a12]">
+    <div className="relative h-full w-full bg-[#F5F4EF]">
       <Canvas
         shadows={{ type: THREE.PCFShadowMap }}
         camera={{
@@ -70,7 +70,7 @@ export function HouseScene({
           toneMappingExposure: 1.05,
         }}
         onCreated={({ gl }) => {
-          gl.setClearColor(new THREE.Color("#080a12"));
+          gl.setClearColor(new THREE.Color("#F5F4EF"));
           onSceneReady();
         }}
       >

@@ -39,72 +39,72 @@ export function HouseLighting({
 
   return (
     <group name="house-lighting">
-      {/* 1. Deep Dusk Ambient Fill: Prevents shadow crushing while keeping darkness */}
-      <ambientLight color="#0d1527" intensity={0.42} />
+      {/* 1. Soft Daylight Ambient Fill */}
+      <ambientLight color="#fbf9f4" intensity={0.65} />
 
-      {/* 2. Hemisphere Light: Cool sky reflection above, subtle warm earth bounce below */}
+      {/* 2. Hemisphere Light: Pale morning sky above, warm limestone ground bounce below */}
       <hemisphereLight
-        args={["#1e293b", "#09090b", 0.45]}
+        args={["#e0f2fe", "#f5ede4", 0.85]}
       />
 
-      {/* 3. Directional Moonlight (Main Exterior Key Light) */}
+      {/* 3. Directional Sun Key Light (Main Architectural Daylight Source) */}
       <directionalLight
-        position={[14, 18, 12]}
-        color="#93c5fd"
-        intensity={0.8}
+        position={[14, 22, 12]}
+        color="#fffcf4"
+        intensity={1.8}
         castShadow
         shadow-mapSize-width={1024}
         shadow-mapSize-height={1024}
         shadow-camera-near={0.5}
-        shadow-camera-far={40}
-        shadow-camera-left={-12}
-        shadow-camera-right={12}
-        shadow-camera-top={12}
+        shadow-camera-far={42}
+        shadow-camera-left={-14}
+        shadow-camera-right={14}
+        shadow-camera-top={14}
         shadow-camera-bottom={-8}
         shadow-bias={-0.0002}
       />
 
-      {/* 4. Subtle Cool Rim Light (defines house silhouette against the dark background) */}
+      {/* 4. Soft Sky Fill Light (Softens contrast on western facades) */}
       <directionalLight
-        position={[-16, 10, -10]}
-        color="#38bdf8"
-        intensity={0.35}
+        position={[-12, 16, 8]}
+        color="#f0f9ff"
+        intensity={0.5}
       />
 
-      {/* 5. Warm Window Interior Lights: Gives life and curiosity to the residence */}
-      {/* Upper Floor Living/Gallery Window Glow */}
+      {/* 5. Window Interior Daylight Ambient Wash */}
+      {/* Upper Floor Living/Gallery Window */}
       <pointLight
         position={[-1.8, 3.8, 1.0]}
-        color="#fbbf24"
-        intensity={2.2}
-        distance={7.5}
-        decay={2}
-      />
-
-      {/* Ground Floor Corner Window Glow */}
-      <pointLight
-        position={[-2.4, 1.4, 2.2]}
-        color="#f59e0b"
-        intensity={1.9}
+        color="#fef3c7"
+        intensity={0.8}
         distance={6.5}
         decay={2}
       />
 
-      {/* Upper Right Studio Window (Soft Warm Ambient) */}
+      {/* Ground Floor Corner Window */}
       <pointLight
-        position={[2.8, 3.6, 0.2]}
-        color="#fbbf24"
-        intensity={1.4}
-        distance={5.0}
+        position={[-2.4, 1.4, 2.2]}
+        color="#fef3c7"
+        intensity={0.7}
+        distance={5.5}
         decay={2}
       />
 
-      {/* 6. Entrance / Porch Focal Light: Inviting, warm, brighter than the rest of the exterior */}
+      {/* Upper Right Studio Window */}
+      <pointLight
+        position={[2.8, 3.6, 0.2]}
+        color="#fef3c7"
+        intensity={0.6}
+        distance={4.5}
+        decay={2}
+      />
+
+      {/* 6. Entrance / Porch Focal Light: Warm welcoming entrance downlight */}
       <pointLight
         ref={entranceLightRef}
         position={[1.65, 2.4, 2.6]}
-        color="#fed7aa"
-        intensity={1.7}
+        color="#fffbeb"
+        intensity={1.5}
         distance={5.5}
         decay={2}
       />
@@ -114,8 +114,8 @@ export function HouseLighting({
         ref={porchSpotRef}
         position={[1.65, 2.65, 2.4]}
         target-position={[1.65, 0.4, 2.4]}
-        color="#ffedd5"
-        intensity={1.9}
+        color="#fffdf5"
+        intensity={1.6}
         angle={Math.PI / 4.2}
         penumbra={0.7}
         distance={5.0}
@@ -125,25 +125,25 @@ export function HouseLighting({
         shadow-bias={-0.0001}
       />
 
-      {/* 7. Low-profile Pathway Marker Lights (Leading lines to entrance) */}
+      {/* 7. Low-profile Pathway Marker Lights */}
       <pointLight
         position={[1.3, 0.15, 5.0]}
-        color="#fde047"
-        intensity={0.4}
+        color="#fbbf24"
+        intensity={0.3}
         distance={2.4}
         decay={2}
       />
       <pointLight
         position={[2.0, 0.15, 8.2]}
-        color="#fde047"
-        intensity={0.35}
+        color="#fbbf24"
+        intensity={0.25}
         distance={2.4}
         decay={2}
       />
       <pointLight
         position={[2.8, 0.15, 11.5]}
-        color="#fde047"
-        intensity={0.3}
+        color="#fbbf24"
+        intensity={0.2}
         distance={2.4}
         decay={2}
       />

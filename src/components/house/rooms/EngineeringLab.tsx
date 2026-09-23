@@ -18,37 +18,37 @@ export function EngineeringLab({
   const materials = useMemo(() => {
     return {
       floor: new THREE.MeshStandardMaterial({
-        color: "#1a1d24",
+        color: "#e4e6eb",
         roughness: 0.45,
-        metalness: 0.4,
+        metalness: 0.2,
       }),
       darkConcreteWall: new THREE.MeshStandardMaterial({
-        color: "#121418",
-        roughness: 0.9,
-        metalness: 0.1,
-      }),
-      steelPanel: new THREE.MeshStandardMaterial({
-        color: "#1e222b",
-        roughness: 0.35,
-        metalness: 0.7,
-      }),
-      ceiling: new THREE.MeshStandardMaterial({
-        color: "#0d0f12",
-        roughness: 0.95,
+        color: "#f1f3f7",
+        roughness: 0.85,
         metalness: 0.05,
       }),
+      steelPanel: new THREE.MeshStandardMaterial({
+        color: "#cbd5e1",
+        roughness: 0.35,
+        metalness: 0.75,
+      }),
+      ceiling: new THREE.MeshStandardMaterial({
+        color: "#faf9f6",
+        roughness: 0.95,
+        metalness: 0.02,
+      }),
       conduit: new THREE.MeshStandardMaterial({
-        color: "#2a2f3d",
+        color: "#94a3b8",
         roughness: 0.3,
         metalness: 0.85,
       }),
       luminaireCyan: new THREE.MeshBasicMaterial({
-        color: "#38bdf8",
+        color: "#0d9488",
       }),
       benchSurface: new THREE.MeshStandardMaterial({
-        color: "#161920",
+        color: "#e2e8f0",
         roughness: 0.25,
-        metalness: 0.6,
+        metalness: 0.3,
       }),
     };
   }, []);

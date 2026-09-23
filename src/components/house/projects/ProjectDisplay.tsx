@@ -29,31 +29,31 @@ export function ProjectDisplay({
   const materials = useMemo(() => {
     return {
       plinth: new THREE.MeshStandardMaterial({
-        color: isFeatured ? "#1c2226" : "#1a1c20",
-        roughness: 0.65,
-        metalness: 0.2,
+        color: isFeatured ? "#ffffff" : "#f5f4ef",
+        roughness: 0.5,
+        metalness: 0.05,
       }),
       trim: new THREE.MeshStandardMaterial({
-        color: isFeatured ? "#2dd4bf" : "#64748b",
+        color: isFeatured ? "#0f766e" : "#cbd5e1",
         roughness: 0.25,
-        metalness: 0.8,
+        metalness: 0.85,
       }),
       glassPlaque: new THREE.MeshStandardMaterial({
-        color: "#0a1017",
-        roughness: 0.1,
-        metalness: 0.7,
+        color: "#ffffff",
+        roughness: 0.08,
+        metalness: 0.2,
         transparent: true,
-        opacity: 0.78,
+        opacity: 0.45,
       }),
       glowEmissive: new THREE.MeshBasicMaterial({
-        color: isFeatured ? "#2dd4bf" : "#fbbf24",
+        color: isFeatured ? "#0f766e" : "#3b82f6",
         transparent: true,
-        opacity: isFeatured ? 0.28 : 0.14,
+        opacity: isFeatured ? 0.22 : 0.12,
         blending: THREE.AdditiveBlending,
         depthWrite: false,
       }),
       statusDot: new THREE.MeshBasicMaterial({
-        color: isFeatured ? "#2dd4bf" : "#f59e0b",
+        color: isFeatured ? "#0f766e" : "#2563eb",
       }),
     };
   }, [isFeatured]);

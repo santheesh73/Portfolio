@@ -9,15 +9,15 @@ export function HouseFallback() {
   return (
     <section
       aria-label="Santheesh's Digital House - Architectural Overview"
-      className="relative flex min-h-[90vh] flex-col justify-between overflow-hidden bg-[#0a0a0b] px-6 py-12 sm:px-12 lg:px-20"
+      className="relative flex min-h-[90vh] flex-col justify-between overflow-hidden bg-background px-6 py-12 sm:px-12 lg:px-20 text-text-primary"
     >
-      {/* Visual background gradient simulating dusk house silhouette */}
+      {/* Visual background gradient simulating daylight house architecture */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10"
       >
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 h-[600px] w-full max-w-6xl bg-[radial-gradient(ellipse_70%_60%_at_50%_30%,rgba(14,21,38,0.8),transparent_70%)]" />
-        <div className="absolute bottom-1/4 left-1/2 -translate-x-1/2 h-80 w-96 rounded-full bg-[radial-gradient(circle,rgba(245,158,11,0.08),transparent_65%)]" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 h-[600px] w-full max-w-6xl bg-[radial-gradient(ellipse_70%_60%_at_50%_30%,rgba(240,237,228,0.9),transparent_70%)]" />
+        <div className="absolute bottom-1/4 left-1/2 -translate-x-1/2 h-80 w-96 rounded-full bg-[radial-gradient(circle,rgba(15,118,110,0.06),transparent_65%)]" />
         <div className="absolute inset-0 atmosphere-grid opacity-25" />
       </div>
 
