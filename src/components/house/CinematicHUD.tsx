@@ -1,31 +1,39 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
-import { ChevronDown, ArrowDown } from "lucide-react";
+import { motion, AnimatePresence, useReducedMotion } from "motion/react";
+import { ChevronDown, ArrowDown, Compass } from "lucide-react";
 import Link from "next/link";
 import { profile } from "@/data/profile";
+import {
+  RoomId,
+  getActiveSpatialState,
+} from "./SpatialNavigation";
 
 interface CinematicHUDProps {
   scrollProgress: number;
+  onNavigateToRoom: (roomId: RoomId) => void;
   onEnterClick: () => void;
 }
 
 export function CinematicHUD({
   scrollProgress,
+  onNavigateToRoom,
   onEnterClick,
 }: CinematicHUDProps) {
   const reduce = useReducedMotion();
+  const spatialState = getActiveSpatialState(scrollProgress);
 
-  // As scroll approaches the door (progress > 0.75), fade out HUD elements smoothly
-  const hudOpacity = Math.max(0, 1 - scrollProgress * 1.3);
+  // In Foyer zone (0.48 to 0.70), show prominent cinematic room title
+  const showFoyerTitle = scrollProgress >= 0.48 && scrollProgress < 0.72;
 
   return (
     <div
-      className="pointer-events-none absolute inset-0 z-30 flex flex-col justify-between p-6 sm:p-10 lg:p-14 select-none"
-      style={{ opacity: hudOpacity }}
-      aria-hidden={hudOpacity < 0.1 ? "true" : undefined}
+      className="pointer-events-none absolute inset-0 z-30 flex flex-col justify-between p-6 sm:p-10 lg:p-12 select-none"
+      aria-label="Cinematic spatial navigation HUD"
     >
-      {/* Top Bar: Minimal Cinematic Brand & Eyebrow */}
+      {/* ========================================================
+          1. TOP BAR: Brand Identity, Active Spatial Tag, Skip
+          ======================================================== */}
       <header className="flex items-start justify-between">
         <motion.div
           initial={reduce ? false : { opacity: 0, y: -10 }}
@@ -33,7 +41,7 @@ export function CinematicHUD({
           transition={
             reduce
               ? { duration: 0.01 }
-              : { duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }
+              : { duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }
           }
           className="flex flex-col gap-1"
         >
@@ -46,23 +54,29 @@ export function CinematicHUD({
               {profile.name}
             </h1>
           </div>
-          <span className="font-mono text-[0.68rem] sm:text-xs tracking-[0.14em] text-text-muted uppercase">
-            AI SOFTWARE ENGINEER
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="font-mono text-[0.68rem] tracking-[0.14em] text-text-muted uppercase">
+              AI SOFTWARE ENGINEER
+            </span>
+            <span className="text-text-muted/40 font-mono text-[0.65rem]">/</span>
+            <span className="font-mono text-[0.68rem] tracking-[0.14em] text-accent font-medium uppercase">
+              {spatialState.name}
+            </span>
+          </div>
         </motion.div>
 
-        {/* Top-Right: Quick skip link for accessibility */}
+        {/* Top-Right: Skip link for quick accessibility */}
         <motion.div
           initial={reduce ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={reduce ? { duration: 0.01 } : { duration: 0.6, delay: 0.5 }}
+          transition={reduce ? { duration: 0.01 } : { duration: 0.6, delay: 0.4 }}
           className="pointer-events-auto"
         >
           <Link
             href="#identity-heading"
-            className="group inline-flex items-center gap-1.5 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-text-muted/80 transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent rounded-sm px-2 py-1"
+            className="group inline-flex items-center gap-1.5 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-text-muted/80 transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent rounded-sm px-2.5 py-1.5 border border-border-subtle/50 bg-surface/30 backdrop-blur-sm"
           >
-            <span>Skip Tour</span>
+            <span>Skip to Content</span>
             <ArrowDown
               className="size-3 text-text-muted transition-transform group-hover:translate-y-0.5"
               aria-hidden="true"
@@ -71,39 +85,90 @@ export function CinematicHUD({
         </motion.div>
       </header>
 
-      {/* Bottom Bar: Action prompt (center) & Phase counter (right) */}
-      <footer className="relative flex items-end justify-between">
-        {/* Bottom-Left: Subtle coordinates / setting */}
+      {/* ========================================================
+          2. CENTER: Cinematic Room Title Reveal (Foyer Entry)
+          ======================================================== */}
+      <AnimatePresence>
+        {showFoyerTitle && (
+          <motion.div
+            initial={reduce ? { opacity: 1 } : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={reduce ? { opacity: 0 } : { opacity: 0, y: -12 }}
+            transition={
+              reduce
+                ? { duration: 0.01 }
+                : { duration: 0.7, ease: [0.16, 1, 0.3, 1] }
+            }
+            className="my-auto mx-auto flex flex-col items-center text-center pointer-events-none"
+          >
+            <span className="font-mono text-xs tracking-[0.3em] text-accent uppercase">
+              01
+            </span>
+            <h2 className="type-h1 mt-1 font-semibold tracking-[0.1em] text-text-primary">
+              FOYER
+            </h2>
+            <div className="mt-2 h-px w-16 bg-gradient-to-r from-transparent via-accent/60 to-transparent" />
+            <p className="mt-2 font-mono text-xs tracking-[0.2em] text-text-secondary uppercase">
+              THE DIGITAL RESIDENCE
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ========================================================
+          3. BOTTOM BAR: Breadcrumb, Interaction Cue, Spatial Selector
+          ======================================================== */}
+      <footer className="relative flex flex-col sm:flex-row items-center sm:items-end justify-between gap-6 pt-4">
+        {/* Bottom-Left: Spatial Breadcrumb */}
         <motion.div
           initial={reduce ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={reduce ? { duration: 0.01 } : { duration: 0.8, delay: 0.7 }}
-          className="hidden sm:flex flex-col font-mono text-[0.65rem] tracking-[0.16em] text-text-muted/70 uppercase"
+          transition={reduce ? { duration: 0.01 } : { duration: 0.8, delay: 0.6 }}
+          className="hidden sm:flex flex-col font-mono text-[0.68rem] tracking-[0.16em] text-text-muted uppercase"
         >
-          <span>EXTERIOR · BLUE HOUR</span>
-          <span>LAT 11.0168° N · 76.9558° E</span>
+          <div className="flex items-center gap-2">
+            <Compass className="size-3 text-accent" aria-hidden="true" />
+            <span className="text-text-secondary font-medium">
+              {spatialState.name}
+            </span>
+            <span className="text-text-muted/40">·</span>
+            <span>{spatialState.subtitle}</span>
+          </div>
+          <span className="text-[0.62rem] text-text-muted/60 mt-0.5">
+            {spatialState.isInterior
+              ? "INTERIOR · CONTINUOUS NAVIGATION"
+              : "EXTERIOR · DUSK BLUE HOUR"}
+          </span>
         </motion.div>
 
-        {/* Bottom-Center: Enter Interaction Cue */}
+        {/* Bottom-Center: Contextual Exploration Cue */}
         <motion.div
           initial={reduce ? false : { opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={
             reduce
               ? { duration: 0.01 }
-              : { duration: 0.8, delay: 0.8, ease: [0.16, 1, 0.3, 1] }
+              : { duration: 0.8, delay: 0.7, ease: [0.16, 1, 0.3, 1] }
           }
-          className="pointer-events-auto mx-auto flex flex-col items-center"
+          className="pointer-events-auto flex flex-col items-center"
         >
           <button
             type="button"
             onClick={onEnterClick}
-            className="group flex flex-col items-center gap-2.5 transition-transform active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-md p-2"
-            aria-label="Scroll or click to approach the entrance"
+            className="group flex flex-col items-center gap-2 transition-transform active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-md p-2"
+            aria-label="Advance through the spatial journey"
           >
             <div className="flex items-center gap-2 font-mono text-xs sm:text-sm tracking-[0.22em] text-text-secondary uppercase transition-colors group-hover:text-text-primary">
               <span className="size-1 rounded-full bg-accent/60" aria-hidden="true" />
-              <span>{scrollProgress > 0.4 ? "APPROACHING ENTRANCE" : "SCROLL TO ENTER"}</span>
+              <span>
+                {scrollProgress < 0.28
+                  ? "SCROLL TO ENTER"
+                  : scrollProgress < 0.45
+                  ? "STEP INSIDE"
+                  : scrollProgress < 0.72
+                  ? "EXPLORING FOYER"
+                  : "CORRIDOR GALLERY"}
+              </span>
               <span className="size-1 rounded-full bg-accent/60" aria-hidden="true" />
             </div>
 
@@ -116,20 +181,75 @@ export function CinematicHUD({
               }}
               className="flex items-center justify-center rounded-full border border-border-subtle bg-surface/50 p-1.5 text-text-muted backdrop-blur-sm transition-colors group-hover:border-accent/40 group-hover:text-accent"
             >
-              <ChevronDown className="size-4" aria-hidden="true" />
+              <ChevronDown className="size-3.5" aria-hidden="true" />
             </motion.div>
           </button>
         </motion.div>
 
-        {/* Bottom-Right: Phase indicator (01 / 04) */}
+        {/* Bottom-Right: Direct Spatial Navigation Menu */}
         <motion.div
           initial={reduce ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={reduce ? { duration: 0.01 } : { duration: 0.8, delay: 0.7 }}
-          className="flex flex-col items-end font-mono text-[0.72rem] tracking-[0.18em] text-text-muted"
+          transition={reduce ? { duration: 0.01 } : { duration: 0.8, delay: 0.6 }}
+          className="pointer-events-auto flex flex-col items-end gap-1.5"
         >
-          <span className="text-text-secondary font-medium">01 / 04</span>
-          <span className="text-[0.62rem] text-text-muted/60 uppercase">PHASE ONE</span>
+          <div className="flex items-center gap-1.5 font-mono text-[0.68rem] tracking-[0.16em] uppercase">
+            <span className="text-text-muted/60">SPATIAL</span>
+            <span className="text-text-secondary font-medium">DESTINATIONS</span>
+          </div>
+
+          <div
+            className="flex items-center gap-1 rounded-md border border-border-subtle bg-surface/60 p-1 backdrop-blur-md"
+            role="toolbar"
+            aria-label="Direct spatial navigation"
+          >
+            {/* 00 EXTERIOR */}
+            <button
+              type="button"
+              onClick={() => onNavigateToRoom("exterior")}
+              className={`rounded px-2 py-1 font-mono text-[0.65rem] tracking-[0.12em] uppercase transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent ${
+                spatialState.roomId === "exterior"
+                  ? "bg-accent/20 text-accent font-semibold"
+                  : "text-text-secondary hover:text-text-primary"
+              }`}
+            >
+              00 EXT
+            </button>
+
+            {/* 01 FOYER */}
+            <button
+              type="button"
+              onClick={() => onNavigateToRoom("foyer")}
+              className={`rounded px-2 py-1 font-mono text-[0.65rem] tracking-[0.12em] uppercase transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent ${
+                spatialState.roomId === "foyer"
+                  ? "bg-accent/20 text-accent font-semibold"
+                  : "text-text-secondary hover:text-text-primary"
+              }`}
+            >
+              01 FOYER
+            </button>
+
+            {/* CORRIDOR */}
+            <button
+              type="button"
+              onClick={() => onNavigateToRoom("corridor")}
+              className={`rounded px-2 py-1 font-mono text-[0.65rem] tracking-[0.12em] uppercase transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent ${
+                spatialState.roomId === "corridor"
+                  ? "bg-accent/20 text-accent font-semibold"
+                  : "text-text-secondary hover:text-text-primary"
+              }`}
+            >
+              CORRIDOR
+            </button>
+
+            {/* FUTURE DESTINATIONS BADGE */}
+            <span
+              title="Work, Lab, Archive, Study (Phases 3 & 4)"
+              className="px-1.5 py-1 font-mono text-[0.6rem] tracking-[0.08em] text-text-muted/60 uppercase cursor-default"
+            >
+              +4 ROOMS
+            </span>
+          </div>
         </motion.div>
       </footer>
     </div>

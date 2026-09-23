@@ -83,23 +83,32 @@ export function ExteriorHouse() {
         <boxGeometry args={[5.2, 2.8, 6.2]} />
       </mesh>
 
-      {/* Ground Floor Right Service / Stair Volume behind Entrance */}
+      {/* Ground Floor Right Service / Stair Volume beside Entrance Hallway */}
       <mesh
-        position={[2.9, 1.6, -1.0]}
+        position={[4.1, 1.6, -1.0]}
         material={materials.darkConcrete}
         castShadow
         receiveShadow
       >
-        <boxGeometry args={[3.8, 2.8, 4.6]} />
+        <boxGeometry args={[2.0, 2.8, 4.6]} />
       </mesh>
 
-      {/* Ground Floor Back Wall */}
+      {/* Ground Floor Left Wing Back Wall */}
       <mesh
-        position={[0.2, 1.6, -3.2]}
+        position={[-2.4, 1.6, -3.2]}
         material={materials.charcoalWall}
         castShadow
       >
-        <boxGeometry args={[9.4, 2.8, 0.4]} />
+        <boxGeometry args={[5.2, 2.8, 0.4]} />
+      </mesh>
+
+      {/* Ground Floor Right Wing Back Wall */}
+      <mesh
+        position={[4.1, 1.6, -3.2]}
+        material={materials.charcoalWall}
+        castShadow
+      >
+        <boxGeometry args={[2.0, 2.8, 0.4]} />
       </mesh>
 
       {/* ========================================================

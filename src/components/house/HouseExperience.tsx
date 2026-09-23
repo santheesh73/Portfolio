@@ -8,6 +8,12 @@ import { LoadingScene } from "./LoadingScene";
 import { HouseFallback } from "./HouseFallback";
 import { profile } from "@/data/profile";
 
+import {
+  RoomId,
+  ROOM_WAYPOINTS,
+  getActiveSpatialState,
+} from "./SpatialNavigation";
+
 // Dynamically import HouseScene to ensure strict client-side evaluation
 const HouseScene = dynamic(
   () => import("./HouseScene").then((mod) => mod.HouseScene),
@@ -53,7 +59,12 @@ export function HouseExperience() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isEntranceHovered, setIsEntranceHovered] = useState(false);
 
-  // Scroll tracking to calculate progress from 0 (establishing) to 1 (front door)
+  // Compute active spatial room and physical door opening progress
+  const spatialState = getActiveSpatialState(scrollProgress);
+  const doorOpenProgress = spatialState.doorOpenProgress;
+  const activeRoomId = spatialState.roomId;
+
+  // Scroll tracking across the full 380vh spatial track
   useEffect(() => {
     let animationFrameId: number;
 
@@ -93,17 +104,58 @@ export function HouseExperience() {
     };
   }, []);
 
+  // Programmatic direct spatial navigation to specific waypoints
+  const handleNavigateToRoom = useCallback(
+    (targetRoomId: RoomId) => {
+      if (!containerRef.current) return;
+      const waypoint = ROOM_WAYPOINTS.find((w) => w.id === targetRoomId);
+      if (!waypoint) return;
+
+      const rect = containerRef.current.getBoundingClientRect();
+      const totalScrollableDistance = rect.height - window.innerHeight;
+      const targetScrollY =
+        window.scrollY + rect.top + totalScrollableDistance * waypoint.scrollTarget;
+
+      window.scrollTo({
+        top: targetScrollY,
+        behavior: reduce ? "auto" : "smooth",
+      });
+    },
+    [reduce]
+  );
+
+  // Contextual enter action: advances sequentially through the house
   const handleEnterClick = useCallback(() => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
-    const scrollTarget =
-      window.scrollY + rect.top + (rect.height - window.innerHeight) * 0.95;
+    const totalScrollableDistance = rect.height - window.innerHeight;
+
+    let targetRatio = 0.6; // Enter into Foyer
+    if (scrollProgress >= 0.35 && scrollProgress < 0.7) {
+      targetRatio = 0.88; // Enter Corridor Gallery
+    } else if (scrollProgress >= 0.7) {
+      // Transition to Identity Narrative
+      const narrativeEl = document.getElementById("identity-heading");
+      if (narrativeEl) {
+        narrativeEl.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
+        return;
+      }
+      targetRatio = 1.0;
+    }
+
+    const targetScrollY =
+      window.scrollY + rect.top + totalScrollableDistance * targetRatio;
 
     window.scrollTo({
-      top: scrollTarget,
+      top: targetScrollY,
       behavior: reduce ? "auto" : "smooth",
     });
-  }, [reduce]);
+  }, [scrollProgress, reduce]);
+
+  // Click directly on front door swings it open and glides into foyer
+  const handleDoorClick = useCallback(() => {
+    handleNavigateToRoom("foyer");
+  }, [handleNavigateToRoom]);
 
   // If WebGL is verified as unsupported, render graceful fallback
   if (webglSupported === false) {
@@ -114,31 +166,46 @@ export function HouseExperience() {
     <section
       ref={containerRef}
       id="house-experience"
-      aria-label="Santheesh's Digital House — Exterior 3D Opening Scene"
-      className="relative h-[220vh] w-full bg-[#080a12]"
+      aria-label="Santheesh's Digital House — Phase 2 Cinematic Spatial Experience"
+      className="relative h-[380vh] w-full bg-[#080a12]"
     >
       {/* Accessible semantic content for screen readers & SEO */}
       <div className="sr-only">
         <h1>{profile.name} — AI Software Engineer</h1>
         <p>{profile.tagline}</p>
         <p>
-          Welcome to my digital residence. Phase 1 establishes the 3D cinematic
-          exterior house. Scroll down to enter the residence and explore
-          selected engineering projects, philosophy, and background.
+          Welcome inside my digital residence. Phase 2 establishes the physical
+          entrance, architectural foyer, and continuous gallery corridor.
+          Current space: {spatialState.name} — {spatialState.subtitle}.
         </p>
-        <nav aria-label="Quick page jumps">
+        <nav aria-label="Spatial room destinations">
           <ul>
             <li>
-              <a href="#identity-heading">Go to Perspective & Identity</a>
+              <button onClick={() => handleNavigateToRoom("exterior")}>
+                Exterior Residence
+              </button>
             </li>
             <li>
-              <a href="#projects">Go to Projects</a>
+              <button onClick={() => handleNavigateToRoom("foyer")}>
+                Room 01: Foyer
+              </button>
             </li>
             <li>
-              <a href="#about">Go to About</a>
+              <button onClick={() => handleNavigateToRoom("corridor")}>
+                Corridor Gallery
+              </button>
             </li>
             <li>
-              <a href="#contact">Go to Contact</a>
+              <a href="#identity-heading">Perspective & Engineering Identity</a>
+            </li>
+            <li>
+              <a href="#projects">Selected Projects</a>
+            </li>
+            <li>
+              <a href="#about">About & Philosophy</a>
+            </li>
+            <li>
+              <a href="#contact">Contact & Communications</a>
             </li>
           </ul>
         </nav>
@@ -146,23 +213,32 @@ export function HouseExperience() {
 
       {/* Sticky 100vh 3D Viewport */}
       <div className="sticky top-0 h-screen w-full overflow-hidden">
-        {/* Loading Screen Overlay */}
+        {/* Loading Screen Preloader */}
         <LoadingScene isLoading={!sceneReady} />
 
         {/* 3D Scene Viewport */}
         {webglSupported && (
           <HouseScene
             scrollProgress={scrollProgress}
+            doorOpenProgress={doorOpenProgress}
+            activeRoomId={activeRoomId}
             isEntranceHovered={isEntranceHovered}
             onEntranceHoverChange={setIsEntranceHovered}
+            onDoorClick={handleDoorClick}
+            onSelectRoom={(rId) => {
+              if (rId === "exterior" || rId === "foyer" || rId === "corridor") {
+                handleNavigateToRoom(rId as RoomId);
+              }
+            }}
             onSceneReady={() => setSceneReady(true)}
             reducedMotion={Boolean(reduce)}
           />
         )}
 
-        {/* Cinematic Minimal HUD */}
+        {/* Spatial Cinematic HUD */}
         <CinematicHUD
           scrollProgress={scrollProgress}
+          onNavigateToRoom={handleNavigateToRoom}
           onEnterClick={handleEnterClick}
         />
       </div>

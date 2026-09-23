@@ -32,7 +32,7 @@ export function HouseFallback() {
           </span>
         </div>
         <div className="font-mono text-xs tracking-[0.16em] text-text-muted">
-          PHASE 01 / 04 · EXTERIOR
+          PHASE 02 / 04 · FOYER & CORRIDOR
         </div>
       </div>
 
@@ -40,7 +40,7 @@ export function HouseFallback() {
       <div className="my-auto flex flex-col items-center py-12 text-center">
         <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border-subtle bg-surface-muted/60 px-3.5 py-1 text-xs font-mono text-text-secondary">
           <span className="size-1.5 rounded-full bg-accent" />
-          <span>ARCHITECTURAL FOUNDATION</span>
+          <span>PHASE 2 · THE DIGITAL RESIDENCE</span>
         </div>
 
         <h1 className="type-display max-w-3xl text-balance text-text-primary">
@@ -49,34 +49,46 @@ export function HouseFallback() {
         </h1>
 
         <p className="type-body-large mt-6 max-w-xl text-balance text-text-secondary">
-          Welcome to my digital residence. Explore production engineering,
-          generative AI systems, and selected software architectures.
+          Step into the foyer and explore production software engineering,
+          generative AI systems, and architectural principles.
         </p>
 
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+        {/* Spatial Room Destinations */}
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-2.5 max-w-xl">
           <Link
-            href="#projects"
-            className="inline-flex items-center gap-2 rounded-md bg-accent px-5 py-2.5 font-mono text-xs font-medium tracking-[0.08em] text-accent-foreground uppercase transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            href="#identity-heading"
+            className="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 font-mono text-xs font-medium tracking-[0.08em] text-accent-foreground uppercase transition-opacity hover:opacity-90"
           >
-            Step Inside
+            Enter Foyer
             <ArrowDown className="size-3.5" aria-hidden="true" />
           </Link>
-
+          <Link
+            href="#projects"
+            className="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-4 py-2 font-mono text-xs font-medium tracking-[0.08em] text-text-primary uppercase transition-colors hover:bg-surface-muted"
+          >
+            02 Work (Projects)
+          </Link>
+          <Link
+            href="#stack"
+            className="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-4 py-2 font-mono text-xs font-medium tracking-[0.08em] text-text-primary uppercase transition-colors hover:bg-surface-muted"
+          >
+            03 Lab (Stack)
+          </Link>
           <Link
             href={SOCIAL_LINKS.github}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-5 py-2.5 font-mono text-xs font-medium tracking-[0.08em] text-text-primary uppercase transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="inline-flex items-center gap-1.5 rounded-md border border-border bg-surface px-4 py-2 font-mono text-xs font-medium tracking-[0.08em] text-text-muted uppercase transition-colors hover:text-text-primary hover:bg-surface-muted"
           >
             GitHub
-            <ArrowUpRight className="size-3.5 text-text-muted" aria-hidden="true" />
+            <ArrowUpRight className="size-3 text-text-muted" aria-hidden="true" />
           </Link>
         </div>
       </div>
 
       {/* Bottom Status */}
       <div className="flex items-center justify-between border-t border-border-subtle/40 pt-6 text-xs font-mono text-text-muted">
-        <span>BLUE HOUR · DUSK EXTERIOR</span>
+        <span>01 / FOYER · THE RESIDENCE</span>
         <span>SCROLL DOWN TO EXPLORE</span>
       </div>
     </section>

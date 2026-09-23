@@ -1,0 +1,184 @@
+"use client";
+
+import { useMemo } from "react";
+import * as THREE from "three";
+import { RoomDoor } from "./RoomDoor";
+
+interface CorridorProps {
+  onSelectRoom?: (roomId: string) => void;
+  reducedMotion?: boolean;
+}
+
+export function Corridor({ onSelectRoom, reducedMotion = false }: CorridorProps) {
+  const materials = useMemo(() => {
+    return {
+      floor: new THREE.MeshStandardMaterial({
+        color: "#202227",
+        roughness: 0.6,
+        metalness: 0.05,
+      }),
+      wall: new THREE.MeshStandardMaterial({
+        color: "#151619",
+        roughness: 0.9,
+        metalness: 0.04,
+      }),
+      ceiling: new THREE.MeshStandardMaterial({
+        color: "#111215",
+        roughness: 0.92,
+        metalness: 0.02,
+      }),
+      downlightBezel: new THREE.MeshStandardMaterial({
+        color: "#1e2025",
+        roughness: 0.3,
+        metalness: 0.8,
+      }),
+      downlightLens: new THREE.MeshBasicMaterial({
+        color: "#fffbeb",
+      }),
+      endPortalGlow: new THREE.MeshBasicMaterial({
+        color: "#f59e0b",
+        transparent: true,
+        opacity: 0.3,
+        blending: THREE.AdditiveBlending,
+      }),
+    };
+  }, []);
+
+  // Downlights placed along the corridor ceiling (y: 2.98, x: 1.7)
+  const downlightZPositions = [-5.2, -7.6, -10.0, -12.4, -14.8];
+
+  return (
+    <group name="interior-corridor" position={[0, 0, 0]}>
+      {/* 1. CORRIDOR FLOOR */}
+      {/* Spans x: 0.5 to 2.9 (width 2.4), z: -4.0 to -16.0 (depth 12.0), y: 0.12 */}
+      <mesh
+        position={[1.7, 0.12, -10.0]}
+        material={materials.floor}
+        receiveShadow
+      >
+        <boxGeometry args={[2.4, 0.04, 12.0]} />
+      </mesh>
+
+      {/* 2. CORRIDOR CEILING */}
+      <mesh
+        position={[1.7, 3.02, -10.0]}
+        material={materials.ceiling}
+        receiveShadow
+      >
+        <boxGeometry args={[2.4, 0.04, 12.0]} />
+      </mesh>
+
+      {/* Recessed Downlight Fixtures in Ceiling */}
+      {downlightZPositions.map((zPos, idx) => (
+        <group key={idx} position={[1.7, 2.99, zPos]}>
+          <mesh material={materials.downlightBezel}>
+            <cylinderGeometry args={[0.07, 0.07, 0.02, 16]} />
+          </mesh>
+          <mesh position={[0, -0.012, 0]} material={materials.downlightLens}>
+            <circleGeometry args={[0.05, 16]} />
+          </mesh>
+        </group>
+      ))}
+
+      {/* 3. CORRIDOR WALLS WITH ARCHITECTURAL REVEALS */}
+      {/* Left Corridor Wall (x: 0.5) */}
+      <mesh
+        position={[0.48, 1.57, -10.0]}
+        material={materials.wall}
+        castShadow
+        receiveShadow
+      >
+        <boxGeometry args={[0.04, 2.9, 12.0]} />
+      </mesh>
+
+      {/* Right Corridor Wall (x: 2.9) */}
+      <mesh
+        position={[2.92, 1.57, -10.0]}
+        material={materials.wall}
+        castShadow
+        receiveShadow
+      >
+        <boxGeometry args={[0.04, 2.9, 12.0]} />
+      </mesh>
+
+      {/* End Wall of Corridor (z: -16.02) */}
+      <mesh
+        position={[1.7, 1.57, -16.02]}
+        material={materials.wall}
+        castShadow
+        receiveShadow
+      >
+        <boxGeometry args={[2.44, 2.9, 0.04]} />
+      </mesh>
+
+      {/* 4. FUTURE ROOM DOORS IN CORRIDOR */}
+      {/* Door 02 — WORK (Left wall at z: -6.2, rotated to face corridor) */}
+      <RoomDoor
+        position={[0.54, 0, -6.2]}
+        rotation={[0, Math.PI / 2, 0]}
+        index="02"
+        title="WORK"
+        subtitle="PROJECT STUDIO"
+        isUnlocked={false}
+        onSelect={() => onSelectRoom?.("projects")}
+        reducedMotion={reducedMotion}
+      />
+
+      {/* Door 03 — LAB (Right wall at z: -8.6) */}
+      <RoomDoor
+        position={[2.86, 0, -8.6]}
+        rotation={[0, -Math.PI / 2, 0]}
+        index="03"
+        title="LAB"
+        subtitle="ENGINEERING LAB"
+        isUnlocked={false}
+        onSelect={() => onSelectRoom?.("lab")}
+        reducedMotion={reducedMotion}
+      />
+
+      {/* Door 04 — ARCHIVE (Left wall at z: -11.0) */}
+      <RoomDoor
+        position={[0.54, 0, -11.0]}
+        rotation={[0, Math.PI / 2, 0]}
+        index="04"
+        title="ARCHIVE"
+        subtitle="PROOF & MILESTONES"
+        isUnlocked={false}
+        onSelect={() => onSelectRoom?.("archive")}
+        reducedMotion={reducedMotion}
+      />
+
+      {/* Door 05 — STUDY (Right wall at z: -13.4) */}
+      <RoomDoor
+        position={[2.86, 0, -13.4]}
+        rotation={[0, -Math.PI / 2, 0]}
+        index="05"
+        title="STUDY"
+        subtitle="ABOUT & PHILOSOPHY"
+        isUnlocked={false}
+        onSelect={() => onSelectRoom?.("study")}
+        reducedMotion={reducedMotion}
+      />
+
+      {/* Door 06 / Terminal Portal — CONTACT (End of corridor at z: -15.96) */}
+      <RoomDoor
+        position={[1.7, 0, -15.94]}
+        rotation={[0, 0, 0]}
+        index="06"
+        title="CONTACT"
+        subtitle="COMMUNICATION"
+        isUnlocked={false}
+        onSelect={() => onSelectRoom?.("contact")}
+        reducedMotion={reducedMotion}
+      />
+
+      {/* Subtle Terminal Glow at Corridor Terminus */}
+      <mesh
+        position={[1.7, 1.4, -15.88]}
+        material={materials.endPortalGlow}
+      >
+        <planeGeometry args={[1.1, 2.1]} />
+      </mesh>
+    </group>
+  );
+}

@@ -5,6 +5,7 @@ import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
 interface AtmosphereProps {
+  scrollProgress?: number;
   reducedMotion?: boolean;
 }
 
@@ -26,12 +27,24 @@ for (let i = 0; i < PARTICLE_COUNT; i++) {
   STATIC_PHASES[i] = seed4 * Math.PI * 2;
 }
 
-export function Atmosphere({ reducedMotion = false }: AtmosphereProps) {
+export function Atmosphere({
+  scrollProgress = 0,
+  reducedMotion = false,
+}: AtmosphereProps) {
   const pointsRef = useRef<THREE.Points>(null);
   const positions = useMemo(() => new Float32Array(STATIC_POSITIONS), []);
   const initialPhases = STATIC_PHASES;
 
-  useFrame((state) => {
+  useFrame((state, delta) => {
+    // 1. Modulate fog distance when entering interior (keeps foyer and corridor clear)
+    if (state.scene.fog && state.scene.fog instanceof THREE.Fog) {
+      const interiorFactor = Math.min(1, Math.max(0, (scrollProgress - 0.28) / 0.2));
+      const targetNear = THREE.MathUtils.lerp(12, 24, interiorFactor);
+      const targetFar = THREE.MathUtils.lerp(44, 65, interiorFactor);
+      state.scene.fog.near = THREE.MathUtils.damp(state.scene.fog.near, targetNear, 4.0, delta);
+      state.scene.fog.far = THREE.MathUtils.damp(state.scene.fog.far, targetFar, 4.0, delta);
+    }
+
     if (reducedMotion || !pointsRef.current) return;
     const time = state.clock.getElapsedTime();
     const positionAttr = pointsRef.current.geometry.attributes
@@ -70,7 +83,7 @@ export function Atmosphere({ reducedMotion = false }: AtmosphereProps) {
             size={0.065}
             color="#fbbf24"
             transparent
-            opacity={0.38}
+            opacity={Math.max(0.04, 0.38 * (1 - scrollProgress * 1.6))}
             blending={THREE.AdditiveBlending}
             depthWrite={false}
           />

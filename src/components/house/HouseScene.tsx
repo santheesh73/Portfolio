@@ -5,22 +5,35 @@ import * as THREE from "three";
 import { CameraRig } from "./CameraRig";
 import { Atmosphere } from "./Atmosphere";
 import { HouseLighting } from "./HouseLighting";
+import { InteriorLighting } from "./InteriorLighting";
 import { Environment } from "./Environment";
 import { ExteriorHouse } from "./ExteriorHouse";
 import { Entrance } from "./Entrance";
+import { Foyer } from "./Foyer";
+import { Corridor } from "./Corridor";
+import { RoomSystem } from "./RoomSystem";
+import { RoomId } from "./SpatialNavigation";
 
 interface HouseSceneProps {
   scrollProgress: number;
+  doorOpenProgress: number;
+  activeRoomId: RoomId;
   isEntranceHovered: boolean;
   onEntranceHoverChange: (hovered: boolean) => void;
+  onDoorClick?: () => void;
+  onSelectRoom?: (roomId: string) => void;
   onSceneReady: () => void;
   reducedMotion?: boolean;
 }
 
 export function HouseScene({
   scrollProgress,
+  doorOpenProgress,
+  activeRoomId,
   isEntranceHovered,
   onEntranceHoverChange,
+  onDoorClick,
+  onSelectRoom,
   onSceneReady,
   reducedMotion = false,
 }: HouseSceneProps) {
@@ -31,7 +44,7 @@ export function HouseScene({
         camera={{
           fov: 42,
           near: 0.1,
-          far: 60,
+          far: 65,
           position: [12.0, 5.2, 18.0],
         }}
         dpr={[1, 1.5]}
@@ -44,37 +57,56 @@ export function HouseScene({
         }}
         onCreated={({ gl }) => {
           gl.setClearColor(new THREE.Color("#080a12"));
-          // Notify parent that WebGL context and shaders are ready
           onSceneReady();
         }}
       >
-        {/* Dynamic camera rig with cinematic inertia */}
+        {/* Dynamic camera rig with cinematic inertia across exterior, foyer, and corridor */}
         <CameraRig
           scrollProgress={scrollProgress}
           reducedMotion={reducedMotion}
         />
 
-        {/* Cinematic blue-hour lighting */}
+        {/* Exterior blue-hour lighting */}
         <HouseLighting
           isEntranceHovered={isEntranceHovered}
           reducedMotion={reducedMotion}
         />
 
-        {/* Environmental atmosphere, fog, and drifting motes */}
-        <Atmosphere reducedMotion={reducedMotion} />
+        {/* Interior warm lighting (foyer cove, corridor downlights) */}
+        <InteriorLighting
+          scrollProgress={scrollProgress}
+          reducedMotion={reducedMotion}
+        />
+
+        {/* Environmental atmosphere, modulated distance fog, and subtle motes */}
+        <Atmosphere
+          scrollProgress={scrollProgress}
+          reducedMotion={reducedMotion}
+        />
 
         {/* Ground, modern staggered pavers, and framing trees */}
         <Environment />
 
-        {/* Modern minimal architectural house */}
+        {/* Modern minimal architectural house exterior */}
         <ExteriorHouse />
 
-        {/* Interactive front door and entrance porch */}
+        {/* Front door with physical pivot opening animation */}
         <Entrance
           isHovered={isEntranceHovered}
           onHoverChange={onEntranceHoverChange}
+          doorOpenProgress={doorOpenProgress}
+          onDoorClick={onDoorClick}
           reducedMotion={reducedMotion}
         />
+
+        {/* Spatial Room System: Foyer and Corridor */}
+        <RoomSystem activeRoomId={activeRoomId}>
+          <Foyer />
+          <Corridor
+            onSelectRoom={onSelectRoom}
+            reducedMotion={reducedMotion}
+          />
+        </RoomSystem>
       </Canvas>
     </div>
   );
