@@ -137,13 +137,13 @@ export function ProofDisplay({
       {/* 6. Timeline Milestone Header Bar */}
       <mesh position={[0.05, 0.25, 0.022]}>
         <boxGeometry args={[0.95, 0.02, 0.002]} />
-        <meshBasicMaterial color={hovered ? accentColor : "#475569"} />
+        <meshBasicMaterial color={hovered ? accentColor : "#64748b"} />
       </mesh>
 
       {/* 7. Milestone Sub-rule */}
       <mesh position={[-0.1, 0.05, 0.022]}>
         <boxGeometry args={[0.65, 0.01, 0.002]} />
-        <meshBasicMaterial color="#334155" />
+        <meshBasicMaterial color="#94a3b8" />
       </mesh>
 
       {/* 8. Floor Spot Spill */}

@@ -305,6 +305,15 @@ export function InteriorLighting({
         decay={2}
       />
 
+      {/* 8b. Room 05: Principle Wall Soft Violet Accent Wash */}
+      <pointLight
+        position={[6.2, 2.6, -16.0]}
+        color="#8b5cf6"
+        intensity={0.5 * targetStudyFactor}
+        distance={4.5}
+        decay={2}
+      />
+
       {/* 9. Room 06: CONTACT PAVILION & TERRACE LIGHTING */}
       <pointLight
         ref={contactAmbientRef}

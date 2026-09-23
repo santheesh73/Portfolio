@@ -2,8 +2,11 @@
 
 import { useMemo } from "react";
 import * as THREE from "three";
+import { useTheme } from "@/theme/ThemeContext";
 
 export function ExteriorHouse() {
+  const { activeAccent } = useTheme();
+
   // Reusable materials for optimal performance and memory efficiency
   const materials = useMemo(() => {
     return {
@@ -54,8 +57,23 @@ export function ExteriorHouse() {
         roughness: 0.25,
         metalness: 0.85,
       }),
+      planterGreenery: new THREE.MeshStandardMaterial({
+        color: "#426b48",
+        roughness: 0.75,
+        metalness: 0.04,
+      }),
+      planterSoil: new THREE.MeshStandardMaterial({
+        color: "#5c5044",
+        roughness: 0.95,
+        metalness: 0.02,
+      }),
+      architecturalAccentStrip: new THREE.MeshBasicMaterial({
+        color: activeAccent.glow3D,
+        transparent: true,
+        opacity: 0.65,
+      }),
     };
-  }, []);
+  }, [activeAccent.glow3D]);
 
   return (
     <group name="exterior-house" position={[0, 0, 0]}>
@@ -182,6 +200,11 @@ export function ExteriorHouse() {
           <boxGeometry args={[7.38, 0.04, 5.5]} />
         </mesh>
 
+        {/* Subtle Architectural Accent LED Reveal Strip under Cantilever */}
+        <mesh position={[0, -1.33, 3.32]} material={materials.architecturalAccentStrip}>
+          <boxGeometry args={[7.2, 0.015, 0.02]} />
+        </mesh>
+
         {/* Upper Level Ribbon Window (Master Suite / Studio) */}
         <group position={[-0.4, 0.1, 3.42]}>
           <mesh material={materials.windowGlass}>
@@ -251,15 +274,28 @@ export function ExteriorHouse() {
         ))}
       </group>
 
-      {/* Foundation Planter Wall / Low Retaining Edge */}
-      <mesh
-        position={[-2.4, 0.35, 3.35]}
-        material={materials.darkConcrete}
-        receiveShadow
-        castShadow
-      >
-        <boxGeometry args={[4.8, 0.45, 0.25]} />
-      </mesh>
+      {/* Foundation Planter Wall / Low Retaining Edge with Structured Greenery */}
+      <group position={[-2.4, 0.35, 3.35]}>
+        <mesh material={materials.darkConcrete} receiveShadow castShadow>
+          <boxGeometry args={[4.8, 0.45, 0.25]} />
+        </mesh>
+        {/* Rich soil bed inside planter */}
+        <mesh position={[0, 0.15, -0.05]} material={materials.planterSoil} receiveShadow>
+          <boxGeometry args={[4.7, 0.1, 0.18]} />
+        </mesh>
+        {/* Structured Low Architectural Boxwood Shrubs & Ornamental Grasses */}
+        {[-1.8, -1.0, -0.2, 0.6, 1.4, 2.0].map((x, i) => (
+          <group key={i} position={[x, 0.28, -0.05]}>
+            <mesh material={materials.planterGreenery} castShadow>
+              <sphereGeometry args={[0.16 + (i % 3) * 0.03, 8, 8]} />
+            </mesh>
+            {/* Low architectural vertical grass accents */}
+            <mesh position={[0, 0.14, 0]} material={materials.planterGreenery} castShadow>
+              <cylinderGeometry args={[0.02, 0.05, 0.22, 6]} />
+            </mesh>
+          </group>
+        ))}
+      </group>
     </group>
   );
 }

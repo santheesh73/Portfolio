@@ -117,6 +117,27 @@ export function Environment() {
         ))}
       </group>
 
+      {/* 5b. Structured Walkway Framing Greenery (Restrained low shrubs flanking path) */}
+      <group name="walkway-landscaping">
+        {[
+          { pos: [0.6, 0.12, 6.0], scale: 0.28 },
+          { pos: [3.4, 0.12, 4.8], scale: 0.25 },
+          { pos: [0.9, 0.12, 9.2], scale: 0.22 },
+          { pos: [3.9, 0.12, 8.4], scale: 0.26 },
+          { pos: [1.3, 0.12, 12.2], scale: 0.24 },
+          { pos: [4.4, 0.12, 11.8], scale: 0.28 },
+        ].map((shrub, idx) => (
+          <mesh
+            key={idx}
+            position={shrub.pos as [number, number, number]}
+            material={materials.darkFoliage}
+            castShadow
+          >
+            <sphereGeometry args={[shrub.scale, 8, 8]} />
+          </mesh>
+        ))}
+      </group>
+
       {/* 6. Sculptural Framing Silhouette Trees (Margins of the scene) */}
       {/* Left Framing Tree (Slender, architectural silhouette) */}
       <group position={[-8.5, 0, 4.0]}>

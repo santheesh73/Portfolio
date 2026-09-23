@@ -2,8 +2,11 @@
 
 import { useMemo } from "react";
 import * as THREE from "three";
+import { useTheme } from "@/theme/ThemeContext";
 
 export function Foyer() {
+  const { activeAccent } = useTheme();
+
   const materials = useMemo(() => {
     return {
       foyerFloor: new THREE.MeshStandardMaterial({
@@ -44,11 +47,16 @@ export function Foyer() {
         roughness: 0.78,
         metalness: 0.05,
       }),
+      ceramicPot: new THREE.MeshStandardMaterial({
+        color: "#f1ede6",
+        roughness: 0.6,
+        metalness: 0.05,
+      }),
       accentLight: new THREE.MeshBasicMaterial({
-        color: "#f59e0b",
+        color: activeAccent.glow3D,
       }),
     };
-  }, []);
+  }, [activeAccent.glow3D]);
 
   return (
     <group name="interior-foyer" position={[0, 0, 0]}>
@@ -165,6 +173,21 @@ export function Foyer() {
           distance={3.5}
           decay={2}
         />
+      </group>
+
+      {/* 4b. Minimalist Ceramic Planter with Architectural Branch */}
+      <group position={[2.7, 0.14, 1.4]}>
+        {/* Fluted Ceramic Pot */}
+        <mesh position={[0, 0.25, 0]} material={materials.ceramicPot} castShadow receiveShadow>
+          <cylinderGeometry args={[0.2, 0.16, 0.5, 16]} />
+        </mesh>
+        {/* Architectural Foliage */}
+        <mesh position={[0, 0.6, 0]} material={materials.plantFoliage} castShadow>
+          <sphereGeometry args={[0.22, 8, 8]} />
+        </mesh>
+        <mesh position={[0.08, 0.78, -0.05]} material={materials.plantFoliage} castShadow>
+          <sphereGeometry args={[0.16, 8, 8]} />
+        </mesh>
       </group>
 
       {/* 5. ARCHITECTURAL SLAT PARTITION (Framing entry into corridor at z: -3.9) */}

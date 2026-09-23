@@ -193,6 +193,7 @@ export function Corridor({ onSelectRoom, reducedMotion = false }: CorridorProps)
         index="02"
         title="WORK"
         subtitle="PROJECT STUDIO"
+        accentColor="#1d4ed8"
         isUnlocked={true}
         isOpen={true}
         onSelect={() => onSelectRoom?.("projects")}
@@ -206,6 +207,7 @@ export function Corridor({ onSelectRoom, reducedMotion = false }: CorridorProps)
         index="03"
         title="LAB"
         subtitle="ENGINEERING LAB"
+        accentColor="#0d9488"
         isUnlocked={true}
         isOpen={true}
         onSelect={() => onSelectRoom?.("lab")}
@@ -219,6 +221,7 @@ export function Corridor({ onSelectRoom, reducedMotion = false }: CorridorProps)
         index="04"
         title="ARCHIVE"
         subtitle="PROOF & MILESTONES"
+        accentColor="#b45309"
         isUnlocked={true}
         isOpen={true}
         onSelect={() => onSelectRoom?.("archive")}
@@ -232,6 +235,7 @@ export function Corridor({ onSelectRoom, reducedMotion = false }: CorridorProps)
         index="05"
         title="STUDY"
         subtitle="ABOUT & PHILOSOPHY"
+        accentColor="#6d28d9"
         isUnlocked={true}
         isOpen={true}
         onSelect={() => onSelectRoom?.("study")}
@@ -245,6 +249,7 @@ export function Corridor({ onSelectRoom, reducedMotion = false }: CorridorProps)
         index="06"
         title="CONTACT"
         subtitle="COMMUNICATION"
+        accentColor="#0f766e"
         isUnlocked={true}
         isOpen={true}
         onSelect={() => onSelectRoom?.("contact")}

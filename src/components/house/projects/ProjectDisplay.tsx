@@ -4,6 +4,7 @@ import { useMemo, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { Project } from "@/types";
+import { getProjectIdentity } from "@/theme/colors";
 
 interface ProjectDisplayProps {
   project: Project;
@@ -25,6 +26,7 @@ export function ProjectDisplay({
   const [hovered, setHovered] = useState(false);
   const glowPlaneRef = useRef<THREE.Mesh>(null);
   const coreRef = useRef<THREE.Mesh>(null);
+  const projectIdentity = useMemo(() => getProjectIdentity(project.id), [project.id]);
 
   const materials = useMemo(() => {
     return {
@@ -34,7 +36,7 @@ export function ProjectDisplay({
         metalness: 0.05,
       }),
       trim: new THREE.MeshStandardMaterial({
-        color: isFeatured ? "#0f766e" : "#cbd5e1",
+        color: isFeatured ? projectIdentity.accent : "#cbd5e1",
         roughness: 0.25,
         metalness: 0.85,
       }),
@@ -46,17 +48,17 @@ export function ProjectDisplay({
         opacity: 0.45,
       }),
       glowEmissive: new THREE.MeshBasicMaterial({
-        color: isFeatured ? "#0f766e" : "#3b82f6",
+        color: projectIdentity.glow,
         transparent: true,
-        opacity: isFeatured ? 0.22 : 0.12,
+        opacity: isFeatured ? 0.24 : 0.14,
         blending: THREE.AdditiveBlending,
         depthWrite: false,
       }),
       statusDot: new THREE.MeshBasicMaterial({
-        color: isFeatured ? "#0f766e" : "#2563eb",
+        color: projectIdentity.accent,
       }),
     };
-  }, [isFeatured]);
+  }, [isFeatured, projectIdentity]);
 
   useFrame((_, delta) => {
     if (reducedMotion) return;
@@ -160,7 +162,7 @@ export function ProjectDisplay({
             args={isFeatured ? [0.9, 0.015, 0.002] : [0.6, 0.012, 0.002]}
           />
           <meshBasicMaterial
-            color={hovered ? (isFeatured ? "#2dd4bf" : "#fbbf24") : "#475569"}
+            color={hovered ? projectIdentity.glow : "#64748b"}
           />
         </mesh>
       </group>
@@ -171,11 +173,11 @@ export function ProjectDisplay({
           {/* Subtle neural ring indicator */}
           <mesh rotation={[Math.PI / 2, 0, 0]}>
             <torusGeometry args={[0.22, 0.008, 12, 32]} />
-            <meshBasicMaterial color="#2dd4bf" transparent opacity={0.6} />
+            <meshBasicMaterial color={projectIdentity.glow} transparent opacity={0.6} />
           </mesh>
           <mesh rotation={[Math.PI / 4, 0, 0]}>
             <torusGeometry args={[0.16, 0.006, 12, 24]} />
-            <meshBasicMaterial color="#2dd4bf" transparent opacity={0.4} />
+            <meshBasicMaterial color={projectIdentity.glow} transparent opacity={0.4} />
           </mesh>
         </group>
       )}

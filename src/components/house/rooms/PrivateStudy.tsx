@@ -65,7 +65,17 @@ export function PrivateStudy({
         metalness: 0.08,
       }),
       principleAccent: new THREE.MeshBasicMaterial({
-        color: "#be123c",
+        color: "#7c3aed",
+      }),
+      plantFoliage: new THREE.MeshStandardMaterial({
+        color: "#476a4f",
+        roughness: 0.78,
+        metalness: 0.05,
+      }),
+      ceramicPot: new THREE.MeshStandardMaterial({
+        color: "#f1ede6",
+        roughness: 0.6,
+        metalness: 0.05,
       }),
     };
   }, []);
@@ -195,6 +205,19 @@ export function PrivateStudy({
         </mesh>
       </group>
 
+      {/* 4b. Minimalist Ceramic Potted Plant beside Desk */}
+      <group position={[4.6, 0.12, -14.1]}>
+        <mesh position={[0, 0.3, 0]} material={materials.ceramicPot} castShadow receiveShadow>
+          <cylinderGeometry args={[0.22, 0.17, 0.6, 16]} />
+        </mesh>
+        <mesh position={[0, 0.72, 0]} material={materials.plantFoliage} castShadow>
+          <sphereGeometry args={[0.26, 8, 8]} />
+        </mesh>
+        <mesh position={[0.08, 0.92, -0.05]} material={materials.plantFoliage} castShadow>
+          <sphereGeometry args={[0.18, 8, 8]} />
+        </mesh>
+      </group>
+
       {/* 5. FOUR WALL PANELS: THE ENGINEERING PRINCIPLES */}
       {principles.map((p, idx) => {
         const isHovered = hoveredPrinciple === idx;
@@ -220,7 +243,7 @@ export function PrivateStudy({
             {/* Glowing Accent Outline */}
             <mesh position={[0, 0, 0.012]}>
               <boxGeometry args={[0.92, 1.37, 0.002]} />
-              <meshBasicMaterial color={isHovered ? "#2dd4bf" : "#334155"} />
+              <meshBasicMaterial color={isHovered ? "#7c3aed" : "#e2e8f0"} />
             </mesh>
 
             {/* Top Indicator Dot */}
@@ -231,21 +254,21 @@ export function PrivateStudy({
             {/* Step Index Line */}
             <mesh position={[0.05, 0.52, 0.015]}>
               <boxGeometry args={[0.55, 0.015, 0.002]} />
-              <meshBasicMaterial color={isHovered ? "#2dd4bf" : "#64748b"} />
+              <meshBasicMaterial color={isHovered ? "#7c3aed" : "#64748b"} />
             </mesh>
 
             {/* Principle Card Body Markings */}
             <mesh position={[0, 0.15, 0.015]}>
               <boxGeometry args={[0.7, 0.012, 0.002]} />
-              <meshBasicMaterial color="#475569" />
+              <meshBasicMaterial color="#64748b" />
             </mesh>
             <mesh position={[0, -0.05, 0.015]}>
               <boxGeometry args={[0.7, 0.012, 0.002]} />
-              <meshBasicMaterial color="#334155" />
+              <meshBasicMaterial color="#94a3b8" />
             </mesh>
             <mesh position={[-0.1, -0.25, 0.015]}>
               <boxGeometry args={[0.5, 0.012, 0.002]} />
-              <meshBasicMaterial color="#334155" />
+              <meshBasicMaterial color="#cbd5e1" />
             </mesh>
           </group>
         );

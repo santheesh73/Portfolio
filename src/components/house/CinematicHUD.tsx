@@ -151,7 +151,7 @@ export function CinematicHUD({
           <span className="text-[0.62rem] text-text-muted/60 mt-0.5">
             {spatialState.isInterior
               ? "INTERIOR · CONTINUOUS NAVIGATION"
-              : "EXTERIOR · BLUE HOUR RESIDENCE"}
+              : "EXTERIOR · DAYLIGHT RESIDENCE"}
           </span>
         </motion.div>
 
@@ -191,7 +191,7 @@ export function CinematicHUD({
                   ? "05 PRIVATE STUDY"
                   : scrollProgress < 0.96
                   ? "06 CONTACT"
-                  : "NIGHT TERRACE"}
+                  : "OBSERVATION TERRACE"}
               </span>
               <span className="size-1 rounded-full bg-accent/60" aria-hidden="true" />
             </div>
