@@ -70,18 +70,18 @@ export function StudyDetailModal({
           aria-modal="true"
           aria-labelledby="study-modal-title"
         >
-          {/* Backdrop */}
+          {/* Backdrop (Soft architectural depth, keeping 3D study visible) */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: reduce ? 0.01 : 0.3 }}
             onClick={onClose}
-            className="absolute inset-0 bg-background/80 backdrop-blur-md"
+            className="absolute inset-0 bg-black/15 backdrop-blur-[2px]"
             aria-hidden="true"
           />
 
-          {/* Modal Card */}
+          {/* Modal Card (Frosted architectural specification sheet) */}
           <motion.div
             initial={reduce ? { opacity: 0 } : { opacity: 0, y: 18, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -90,7 +90,7 @@ export function StudyDetailModal({
               duration: reduce ? 0.01 : 0.35,
               ease: [0.16, 1, 0.3, 1],
             }}
-            className="relative w-full max-w-xl max-h-[85vh] flex flex-col overflow-hidden rounded-xl border border-border-subtle bg-surface/95 p-6 sm:p-8 shadow-elevated text-text-primary"
+            className="relative w-full max-w-xl max-h-[85vh] flex flex-col overflow-hidden rounded-xl border border-black/[0.08] bg-white/92 backdrop-blur-xl p-6 sm:p-8 shadow-2xl text-text-primary"
           >
             {/* Atmospheric top hairline */}
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent to-transparent opacity-60" />

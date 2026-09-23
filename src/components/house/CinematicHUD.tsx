@@ -4,6 +4,7 @@ import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { ChevronDown, ArrowDown, Compass } from "lucide-react";
 import Link from "next/link";
 import { profile } from "@/data/profile";
+import { useTheme } from "@/theme/ThemeContext";
 import {
   RoomId,
   getActiveSpatialState,
@@ -22,6 +23,7 @@ export function CinematicHUD({
 }: CinematicHUDProps) {
   const reduce = useReducedMotion();
   const spatialState = getActiveSpatialState(scrollProgress);
+  const { isProjectFocused, focusedProject } = useTheme();
 
   // In specific zones, show prominent cinematic room title
   const activeRoomTitle =
@@ -72,8 +74,10 @@ export function CinematicHUD({
               AI SOFTWARE ENGINEER
             </span>
             <span className="text-text-muted/40 font-mono text-[0.65rem]">/</span>
-            <span className="font-mono text-[0.68rem] tracking-[0.14em] text-accent font-medium uppercase">
-              {spatialState.name}
+            <span className="font-mono text-[0.68rem] tracking-[0.14em] text-accent font-medium uppercase transition-colors duration-300">
+              {isProjectFocused && focusedProject
+                ? `${spatialState.name} · ${focusedProject.name.toUpperCase()}`
+                : spatialState.name}
             </span>
           </div>
         </motion.div>

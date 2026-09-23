@@ -69,11 +69,14 @@ export function HouseScene({
           toneMapping: THREE.ACESFilmicToneMapping,
           toneMappingExposure: 1.05,
         }}
-        onCreated={({ gl }) => {
+        onCreated={({ gl, scene }) => {
+          scene.background = new THREE.Color("#F5F4EF");
           gl.setClearColor(new THREE.Color("#F5F4EF"));
           onSceneReady();
         }}
       >
+        {/* Architectural daylight background color */}
+        <color attach="background" args={["#F5F4EF"]} />
         {/* Dynamic camera rig with cinematic inertia across full digital house */}
         <CameraRig
           scrollProgress={scrollProgress}

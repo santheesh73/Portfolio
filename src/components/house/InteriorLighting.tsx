@@ -67,7 +67,7 @@ export function InteriorLighting({
     const lerpSpeed = reducedMotion ? 1 : delta * 5;
 
     if (foyerAmbientRef.current) {
-      const target = 0.5 * targetInteriorFactor;
+      const target = 0.95 * targetInteriorFactor;
       foyerAmbientRef.current.intensity = THREE.MathUtils.lerp(
         foyerAmbientRef.current.intensity,
         target,

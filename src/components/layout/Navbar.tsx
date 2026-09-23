@@ -203,7 +203,7 @@ export function Navbar() {
     "sticky top-0 z-50 w-full transition-[transform,background-color,border-color,box-shadow,backdrop-filter]",
     "duration-300 ease-out",
     scrolled
-      ? "bg-background/80 backdrop-blur-md border-b border-border/40 shadow-card"
+      ? "bg-surface/85 backdrop-blur-md border-b border-border/50 shadow-xs"
       : "bg-transparent border-b border-transparent",
     hidden && !open && !reduce ? "-translate-y-full" : "translate-y-0"
   );

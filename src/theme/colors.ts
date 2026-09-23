@@ -91,6 +91,18 @@ export function getProjectIdentity(projectId: string): ProjectIdentity {
   return { accent: "#1D4ED8", glow: "#3B82F6", name: "Blue" };
 }
 
+export function createProjectTokenGroup(identity: ProjectIdentity): ColorTokenGroup {
+  return {
+    name: identity.name,
+    accent: identity.accent,
+    accentHover: identity.glow,
+    accentSoft: `${identity.accent}1A`,
+    accentMuted: `${identity.accent}38`,
+    accentContrast: "#FFFFFF",
+    glow3D: identity.glow,
+  };
+}
+
 export const LIGHT_THEME_BASE = {
   background: "#F5F4EF",
   surface: "rgba(255, 255, 255, 0.85)",
