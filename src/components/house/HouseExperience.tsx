@@ -6,7 +6,10 @@ import { useReducedMotion } from "motion/react";
 import { CinematicHUD } from "./CinematicHUD";
 import { LoadingScene } from "./LoadingScene";
 import { HouseFallback } from "./HouseFallback";
+import { ProjectDetailModal } from "./projects/ProjectDetailModal";
+import { SkillDetailModal } from "./skills/SkillDetailModal";
 import { profile } from "@/data/profile";
+import { Project, SkillGroupData } from "@/types";
 
 import {
   RoomId,
@@ -58,6 +61,10 @@ export function HouseExperience() {
   const [sceneReady, setSceneReady] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isEntranceHovered, setIsEntranceHovered] = useState(false);
+
+  // Selected interactive details for modals
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [selectedSkillGroup, setSelectedSkillGroup] = useState<SkillGroupData | null>(null);
 
   // Compute active spatial room and physical door opening progress
   const spatialState = getActiveSpatialState(scrollProgress);
@@ -124,16 +131,40 @@ export function HouseExperience() {
     [reduce]
   );
 
+  // Hash listener for deep-linking into specific 3D rooms (#projects, #stack, #lab, #foyer)
+  useEffect(() => {
+    const handleHash = () => {
+      const hash = window.location.hash.toLowerCase();
+      if (hash === "#projects" || hash === "#work") {
+        handleNavigateToRoom("projects");
+      } else if (hash === "#stack" || hash === "#skills" || hash === "#lab") {
+        handleNavigateToRoom("lab");
+      } else if (hash === "#foyer") {
+        handleNavigateToRoom("foyer");
+      } else if (hash === "#exterior") {
+        handleNavigateToRoom("exterior");
+      }
+    };
+
+    handleHash();
+    window.addEventListener("hashchange", handleHash);
+    return () => window.removeEventListener("hashchange", handleHash);
+  }, [handleNavigateToRoom]);
+
   // Contextual enter action: advances sequentially through the house
   const handleEnterClick = useCallback(() => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     const totalScrollableDistance = rect.height - window.innerHeight;
 
-    let targetRatio = 0.6; // Enter into Foyer
-    if (scrollProgress >= 0.35 && scrollProgress < 0.7) {
-      targetRatio = 0.88; // Enter Corridor Gallery
-    } else if (scrollProgress >= 0.7) {
+    let targetRatio = 0.32; // Enter into Foyer
+    if (scrollProgress < 0.28) {
+      targetRatio = 0.32; // Step into Foyer
+    } else if (scrollProgress < 0.50) {
+      targetRatio = 0.58; // Enter Project Studio
+    } else if (scrollProgress < 0.78) {
+      targetRatio = 0.85; // Enter Engineering Lab
+    } else {
       // Transition to Identity Narrative
       const narrativeEl = document.getElementById("identity-heading");
       if (narrativeEl) {
@@ -166,16 +197,16 @@ export function HouseExperience() {
     <section
       ref={containerRef}
       id="house-experience"
-      aria-label="Santheesh's Digital House — Phase 2 Cinematic Spatial Experience"
-      className="relative h-[380vh] w-full bg-[#080a12]"
+      aria-label="Santheesh's Digital House — Cinematic Spatial Experience"
+      className="relative h-[520vh] w-full bg-[#080a12]"
     >
       {/* Accessible semantic content for screen readers & SEO */}
       <div className="sr-only">
         <h1>{profile.name} — AI Software Engineer</h1>
         <p>{profile.tagline}</p>
         <p>
-          Welcome inside my digital residence. Phase 2 establishes the physical
-          entrance, architectural foyer, and continuous gallery corridor.
+          Welcome inside my digital residence. Phase 3 establishes the Project
+          Studio featuring live work, and the Engineering Lab displaying core technical skills.
           Current space: {spatialState.name} — {spatialState.subtitle}.
         </p>
         <nav aria-label="Spatial room destinations">
@@ -191,8 +222,13 @@ export function HouseExperience() {
               </button>
             </li>
             <li>
-              <button onClick={() => handleNavigateToRoom("corridor")}>
-                Corridor Gallery
+              <button onClick={() => handleNavigateToRoom("projects")}>
+                Room 02: Project Studio
+              </button>
+            </li>
+            <li>
+              <button onClick={() => handleNavigateToRoom("lab")}>
+                Room 03: Engineering Lab
               </button>
             </li>
             <li>
@@ -200,6 +236,9 @@ export function HouseExperience() {
             </li>
             <li>
               <a href="#projects">Selected Projects</a>
+            </li>
+            <li>
+              <a href="#stack">Technical Stack</a>
             </li>
             <li>
               <a href="#about">About & Philosophy</a>
@@ -226,10 +265,10 @@ export function HouseExperience() {
             onEntranceHoverChange={setIsEntranceHovered}
             onDoorClick={handleDoorClick}
             onSelectRoom={(rId) => {
-              if (rId === "exterior" || rId === "foyer" || rId === "corridor") {
-                handleNavigateToRoom(rId as RoomId);
-              }
+              handleNavigateToRoom(rId as RoomId);
             }}
+            onSelectProject={setSelectedProject}
+            onSelectSkill={setSelectedSkillGroup}
             onSceneReady={() => setSceneReady(true)}
             reducedMotion={Boolean(reduce)}
           />
@@ -240,6 +279,16 @@ export function HouseExperience() {
           scrollProgress={scrollProgress}
           onNavigateToRoom={handleNavigateToRoom}
           onEnterClick={handleEnterClick}
+        />
+
+        {/* Interactive Modals */}
+        <ProjectDetailModal
+          project={selectedProject}
+          onClose={() => setSelectedProject(null)}
+        />
+        <SkillDetailModal
+          group={selectedSkillGroup}
+          onClose={() => setSelectedSkillGroup(null)}
         />
       </div>
     </section>

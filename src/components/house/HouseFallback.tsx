@@ -32,7 +32,7 @@ export function HouseFallback() {
           </span>
         </div>
         <div className="font-mono text-xs tracking-[0.16em] text-text-muted">
-          PHASE 02 / 04 · FOYER & CORRIDOR
+          PHASE 03 / 04 · PROJECT STUDIO & LAB
         </div>
       </div>
 
@@ -40,7 +40,7 @@ export function HouseFallback() {
       <div className="my-auto flex flex-col items-center py-12 text-center">
         <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border-subtle bg-surface-muted/60 px-3.5 py-1 text-xs font-mono text-text-secondary">
           <span className="size-1.5 rounded-full bg-accent" />
-          <span>PHASE 2 · THE DIGITAL RESIDENCE</span>
+          <span>PHASE 3 · WORK & CAPABILITIES</span>
         </div>
 
         <h1 className="type-display max-w-3xl text-balance text-text-primary">
@@ -49,8 +49,8 @@ export function HouseFallback() {
         </h1>
 
         <p className="type-body-large mt-6 max-w-xl text-balance text-text-secondary">
-          Step into the foyer and explore production software engineering,
-          generative AI systems, and architectural principles.
+          Step into the digital house to explore production software engineering,
+          real-world AI systems, and core technical capabilities.
         </p>
 
         {/* Spatial Room Destinations */}
@@ -88,7 +88,7 @@ export function HouseFallback() {
 
       {/* Bottom Status */}
       <div className="flex items-center justify-between border-t border-border-subtle/40 pt-6 text-xs font-mono text-text-muted">
-        <span>01 / FOYER · THE RESIDENCE</span>
+        <span>02 WORK & 03 LAB ACTIVE</span>
         <span>SCROLL DOWN TO EXPLORE</span>
       </div>
     </section>
