@@ -32,7 +32,8 @@ export function Navbar() {
           const currentY = window.scrollY;
           const delta = currentY - lastScrollY.current;
 
-          // Check if at the top of the page
+          // Check if within the opening 3D house scene
+          const inOpeningScene = currentY < 420;
           const isAtTop = currentY <= 24;
           const shouldBeScrolled = !isAtTop;
 
@@ -41,11 +42,12 @@ export function Navbar() {
             setScrolled(shouldBeScrolled);
           }
 
-          // Determine hidden state (hide on scroll down past hero, show on scroll up or at top)
+          // Determine hidden state: stay hidden during the opening 3D house scene
+          // Reveal once user scrolls into the portfolio narrative and projects
           let shouldBeHidden = false;
-          if (isAtTop) {
-            shouldBeHidden = false;
-          } else if (delta > 8 && currentY > 120) {
+          if (inOpeningScene) {
+            shouldBeHidden = true;
+          } else if (delta > 8 && currentY > 550) {
             shouldBeHidden = true;
           } else if (delta < -8) {
             shouldBeHidden = false;
