@@ -7,35 +7,50 @@ import * as THREE from "three";
 interface EntranceProps {
   isHovered: boolean;
   onHoverChange: (hovered: boolean) => void;
+  doorOpenProgress?: number;
+  onDoorClick?: () => void;
   reducedMotion?: boolean;
 }
 
 export function Entrance({
   isHovered,
   onHoverChange,
+  doorOpenProgress = 0,
+  onDoorClick,
   reducedMotion = false,
 }: EntranceProps) {
-  const doorMeshRef = useRef<THREE.Mesh>(null);
+  const doorMeshRef = useRef<THREE.Group>(null);
   const handleMeshRef = useRef<THREE.Mesh>(null);
   const doorGlowPlaneRef = useRef<THREE.Mesh>(null);
 
   useFrame((_, delta) => {
     if (reducedMotion) return;
 
-    // Subtle door glow pulsation / highlight on hover
+    // Subtle door glow pulsation / highlight on hover (fades out as door opens)
     if (doorGlowPlaneRef.current) {
       const mat = doorGlowPlaneRef.current.material as THREE.MeshBasicMaterial;
-      const targetOpacity = isHovered ? 0.32 : 0.08;
+      const baseOpacity = isHovered ? 0.32 : 0.08;
+      const targetOpacity = baseOpacity * Math.max(0, 1 - doorOpenProgress * 2);
       mat.opacity = THREE.MathUtils.lerp(mat.opacity, targetOpacity, delta * 5);
     }
 
-    // Door slight micro-angle response on hover (creates sensation of unlatched readiness)
+    // Physical door rotation on its hinge:
+    // Swings open inwards up to -85 deg (-1.48 rad) as doorOpenProgress reaches 1
     if (doorMeshRef.current) {
-      const targetRotY = isHovered ? -0.06 : 0;
-      doorMeshRef.current.rotation.y = THREE.MathUtils.lerp(
+      let targetRotY = 0;
+      if (doorOpenProgress > 0) {
+        // Physical swing inward
+        targetRotY = -(Math.PI / 2.1) * doorOpenProgress;
+      } else if (isHovered) {
+        // Subtle micro-unlatch on hover outside
+        targetRotY = -0.06;
+      }
+
+      doorMeshRef.current.rotation.y = THREE.MathUtils.damp(
         doorMeshRef.current.rotation.y,
         targetRotY,
-        delta * 3
+        4.5,
+        delta
       );
     }
   });
@@ -44,6 +59,10 @@ export function Entrance({
     <group
       position={[1.65, 0, 2.35]}
       name="entrance-focal-point"
+      onClick={(e) => {
+        e.stopPropagation();
+        if (onDoorClick) onDoorClick();
+      }}
       onPointerOver={(e) => {
         e.stopPropagation();
         onHoverChange(true);
