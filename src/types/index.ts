@@ -89,3 +89,5 @@ export interface ProofItem {
   /** Verified URLs only. */
   href?: string;
 }
+
+export * from "./exhibition";

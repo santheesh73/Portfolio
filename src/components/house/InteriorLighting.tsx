@@ -7,11 +7,13 @@ import { LIGHTING_TOKENS } from "@/theme/lighting";
 
 interface InteriorLightingProps {
   scrollProgress: number;
+  isInspectingProject?: boolean;
   reducedMotion?: boolean;
 }
 
 export function InteriorLighting({
   scrollProgress,
+  isInspectingProject = false,
   reducedMotion = false,
 }: InteriorLightingProps) {
   const { interior, shadow } = LIGHTING_TOKENS;
@@ -67,9 +69,10 @@ export function InteriorLighting({
 
   useFrame((_, delta) => {
     const lerpSpeed = reducedMotion ? 1 : delta * 5;
+    const quietFactor = isInspectingProject ? 0.35 : 1.0;
 
     if (foyerAmbientRef.current) {
-      const target = 0.95 * targetInteriorFactor;
+      const target = 0.95 * targetInteriorFactor * quietFactor;
       foyerAmbientRef.current.intensity = THREE.MathUtils.lerp(
         foyerAmbientRef.current.intensity,
         target,
@@ -78,7 +81,7 @@ export function InteriorLighting({
     }
 
     if (foyerCoveRef.current) {
-      const target = 1.8 * targetInteriorFactor;
+      const target = 1.8 * targetInteriorFactor * quietFactor;
       foyerCoveRef.current.intensity = THREE.MathUtils.lerp(
         foyerCoveRef.current.intensity,
         target,
@@ -89,7 +92,7 @@ export function InteriorLighting({
     if (corridorSpot1Ref.current) {
       corridorSpot1Ref.current.intensity = THREE.MathUtils.lerp(
         corridorSpot1Ref.current.intensity,
-        1.6 * targetInteriorFactor,
+        1.6 * targetInteriorFactor * quietFactor,
         lerpSpeed
       );
     }
@@ -97,7 +100,7 @@ export function InteriorLighting({
     if (corridorSpot2Ref.current) {
       corridorSpot2Ref.current.intensity = THREE.MathUtils.lerp(
         corridorSpot2Ref.current.intensity,
-        1.5 * targetInteriorFactor,
+        1.5 * targetInteriorFactor * quietFactor,
         lerpSpeed
       );
     }
@@ -105,7 +108,7 @@ export function InteriorLighting({
     if (corridorSpot3Ref.current) {
       corridorSpot3Ref.current.intensity = THREE.MathUtils.lerp(
         corridorSpot3Ref.current.intensity,
-        1.4 * targetInteriorFactor,
+        1.4 * targetInteriorFactor * quietFactor,
         lerpSpeed
       );
     }
@@ -119,9 +122,13 @@ export function InteriorLighting({
     }
 
     if (studioAmbientRef.current) {
+      // Soften studio ambient to let inspected exhibit's spotlight & emissives be the hero
+      const studioTarget = isInspectingProject
+        ? 0.7 * targetStudioFactor
+        : 1.8 * targetStudioFactor;
       studioAmbientRef.current.intensity = THREE.MathUtils.lerp(
         studioAmbientRef.current.intensity,
-        1.8 * targetStudioFactor,
+        studioTarget,
         lerpSpeed
       );
     }
