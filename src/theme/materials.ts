@@ -173,6 +173,32 @@ export function createArchitecturalMaterials() {
       transparent: true,
       opacity: 0.18,
     }),
+
+    // 9. Architectural Visualization Benchmark Materials
+    poolWater: new THREE.MeshStandardMaterial({
+      color: "#5eb3c8",
+      roughness: 0.12,
+      metalness: 0.18,
+      transparent: true,
+      opacity: 0.72,
+    }),
+    galleryGlass: new THREE.MeshStandardMaterial({
+      color: "#ffffff",
+      roughness: 0.04,
+      metalness: 0.10,
+      transparent: true,
+      opacity: 0.22,
+    }),
+    naturalWalnutWood: new THREE.MeshStandardMaterial({
+      color: "#936338",
+      roughness: 0.46,
+      metalness: 0.02,
+    }),
+    plinthIlluminated: new THREE.MeshBasicMaterial({
+      color: "#fffbeb",
+      transparent: true,
+      opacity: 0.85,
+    }),
   };
 }
 

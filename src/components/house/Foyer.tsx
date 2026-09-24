@@ -5,18 +5,84 @@ import * as THREE from "three";
 import { useTheme } from "@/theme/ThemeContext";
 import { createArchitecturalMaterials } from "@/theme/materials";
 
+function createFoyerOrientationTexture() {
+  if (typeof document === "undefined") return null;
+  const canvas = document.createElement("canvas");
+  canvas.width = 1024;
+  canvas.height = 1024;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return null;
+
+  ctx.clearRect(0, 0, 1024, 1024);
+
+  // Large Architectural Name
+  ctx.fillStyle = "#ffffff";
+  ctx.font = "bold 46px 'Courier New', monospace";
+  ctx.fillText("SANTHEESH S", 60, 110);
+
+  ctx.fillStyle = "#cbd5e1";
+  ctx.font = "22px 'Courier New', monospace";
+  ctx.fillText("AI SOFTWARE ENGINEER — FULL-STACK DEVELOPER", 60, 160);
+
+  // Architectural rule separator
+  ctx.strokeStyle = "rgba(255, 255, 255, 0.4)";
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(60, 195);
+  ctx.lineTo(960, 195);
+  ctx.stroke();
+
+  ctx.fillStyle = "#94a3b8";
+  ctx.font = "bold 18px 'Courier New', monospace";
+  ctx.fillText("THE EXHIBITION RESIDENCE / SPATIAL INDEX", 60, 245);
+
+  const rooms = [
+    { num: "01", name: "FOYER", desc: "ORIENTATION & ENTRANCE" },
+    { num: "02", name: "PROJECT STUDIO", desc: "FEATURED WORK & ORION SYSTEM" },
+    { num: "03", name: "ENGINEERING LAB", desc: "TECHNICAL CAPABILITIES & TELEMETRY" },
+    { num: "04", name: "ARCHIVE ROOM", desc: "PROOF OF WORK & VERIFIED MILESTONES" },
+    { num: "05", name: "PRIVATE STUDY", desc: "ENGINEERING PHILOSOPHY & WORKSTATION" },
+    { num: "06", name: "CONTACT PAVILION", desc: "COMMUNICATION & OBSERVATION TERRACE" },
+  ];
+
+  rooms.forEach((r, i) => {
+    const y = 320 + i * 80;
+    ctx.fillStyle = "#38bdf8";
+    ctx.font = "bold 22px 'Courier New', monospace";
+    ctx.fillText(r.num, 60, y);
+
+    ctx.fillStyle = "#f8fafc";
+    ctx.font = "bold 22px 'Courier New', monospace";
+    ctx.fillText(r.name, 120, y);
+
+    ctx.fillStyle = "#94a3b8";
+    ctx.font = "18px 'Courier New', monospace";
+    ctx.fillText(`—  ${r.desc}`, 420, y);
+  });
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.anisotropy = 8;
+  texture.needsUpdate = true;
+  return texture;
+}
+
 export function Foyer() {
   const { activeAccent } = useTheme();
 
   const materials = useMemo(() => {
     const arch = createArchitecturalMaterials();
+    const orientationTexture = typeof document !== "undefined" ? createFoyerOrientationTexture() : null;
+
     return {
       foyerFloor: arch.paleStoneFloor,
       foyerWall: arch.ivoryWall,
-      featureWoodWall: arch.naturalOak,
+      featureWoodWall: arch.naturalWalnutWood,
       ceiling: arch.ceiling,
       coveLight: arch.warmCoveGlow,
       pedestal: arch.lightStone,
+      galleryGlass: arch.galleryGlass,
+      metalFrame: arch.darkMetalFrame,
+      deskWood: arch.naturalWalnutWood,
       sculptureMetal: new THREE.MeshStandardMaterial({
         color: "#64748b",
         roughness: 0.25,
@@ -32,12 +98,25 @@ export function Foyer() {
         color: activeAccent.glow3D,
       }),
       groundingShadow: arch.groundingShadow,
+      orientationGraphic: orientationTexture
+        ? new THREE.MeshBasicMaterial({
+            map: orientationTexture,
+            transparent: true,
+            opacity: 0.95,
+          })
+        : new THREE.MeshBasicMaterial({ transparent: true, opacity: 0 }),
+      wireframeGlow: new THREE.MeshBasicMaterial({
+        color: "#38bdf8",
+        wireframe: true,
+        transparent: true,
+        opacity: 0.65,
+      }),
     };
   }, [activeAccent.glow3D]);
 
   return (
     <group name="interior-foyer" position={[0, 0, 0]}>
-      {/* 1. FOYER FLOOR (Warm architectural oak / dark terrazzo) */}
+      {/* 1. FOYER FLOOR (Warm polished limestone with joint reveals) */}
       {/* Spans x: 0.2 to 3.1 (width 2.9), z: -4.0 to 2.15 (depth 6.15), y: 0.12 */}
       <mesh
         position={[1.65, 0.12, -0.925]}
@@ -56,17 +135,55 @@ export function Foyer() {
       </mesh>
 
       {/* 2. FOYER WALLS */}
-      {/* Left Wall (x: 0.2, separating foyer from ground-floor living wing) */}
-      <mesh
-        position={[0.2, 1.7, -0.925]}
-        material={materials.foyerWall}
-        castShadow
-        receiveShadow
-      >
-        <boxGeometry args={[0.08, 3.16, 6.15]} />
+      {/* Left Wall: Architectural Floor-to-Ceiling Glass Gallery Partition (Reference Video 00:04) */}
+      {/* Solid header above glass */}
+      <mesh position={[0.2, 2.95, -0.925]} material={materials.foyerWall} receiveShadow>
+        <boxGeometry args={[0.08, 0.66, 6.15]} />
+      </mesh>
+      {/* Solid bottom sill */}
+      <mesh position={[0.2, 0.19, -0.925]} material={materials.foyerWall} receiveShadow>
+        <boxGeometry args={[0.08, 0.14, 6.15]} />
+      </mesh>
+      {/* South solid end section */}
+      <mesh position={[0.2, 1.55, 1.4]} material={materials.foyerWall} receiveShadow>
+        <boxGeometry args={[0.08, 2.6, 1.5]} />
+      </mesh>
+      {/* North solid end section */}
+      <mesh position={[0.2, 1.55, -3.4]} material={materials.foyerWall} receiveShadow>
+        <boxGeometry args={[0.08, 2.6, 1.2]} />
       </mesh>
 
-      {/* Right Feature Wall (x: 3.1, warm vertical wood-slat accent wall) */}
+      {/* Ultra-Clear Glass Wall Panel looking into executive technology studio */}
+      <mesh position={[0.2, 1.55, -1.0]} material={materials.galleryGlass}>
+        <boxGeometry args={[0.02, 2.6, 3.4]} />
+      </mesh>
+      {/* Slim Dark Metal Mullions on Glass */}
+      {[-2.1, -1.0, 0.1].map((zMullion) => (
+        <mesh key={zMullion} position={[0.2, 1.55, zMullion]} material={materials.metalFrame}>
+          <boxGeometry args={[0.04, 2.62, 0.04]} />
+        </mesh>
+      ))}
+
+      {/* Sightline: Executive Walnut Workstation visible through glass */}
+      <group position={[-0.8, 0.14, -1.1]}>
+        {/* Desk top */}
+        <mesh position={[0, 0.72, 0]} material={materials.deskWood} castShadow receiveShadow>
+          <boxGeometry args={[0.7, 0.04, 1.5]} />
+        </mesh>
+        {/* Desk legs */}
+        <mesh position={[0, 0.36, -0.65]} material={materials.metalFrame} castShadow>
+          <boxGeometry args={[0.65, 0.72, 0.03]} />
+        </mesh>
+        <mesh position={[0, 0.36, 0.65]} material={materials.metalFrame} castShadow>
+          <boxGeometry args={[0.65, 0.72, 0.03]} />
+        </mesh>
+        {/* Glowing holographic technical schematic display on desk (matching 00:05) */}
+        <mesh position={[0, 1.05, 0]} material={materials.wireframeGlow}>
+          <boxGeometry args={[0.3, 0.3, 0.45]} />
+        </mesh>
+      </group>
+
+      {/* Right Feature Wall: Warm Vertical Walnut Wall with Orientation Graphic (Reference Video 00:04) */}
       <mesh
         position={[3.1, 1.7, -0.925]}
         material={materials.featureWoodWall}
@@ -75,6 +192,29 @@ export function Foyer() {
       >
         <boxGeometry args={[0.08, 3.16, 6.15]} />
       </mesh>
+
+      {/* Orientation Graphic Panel Stenciled on Walnut Wall */}
+      <mesh
+        position={[3.05, 1.85, -0.8]}
+        rotation={[0, -Math.PI / 2, 0]}
+        material={materials.orientationGraphic}
+      >
+        <planeGeometry args={[2.8, 2.0]} />
+      </mesh>
+
+      {/* Floating Low Travertine / Walnut Plinth Bench along Feature Wall (Reference Video 00:04) */}
+      <group position={[2.88, 0.14, -0.8]}>
+        <mesh
+          position={[0, 0.002, 0]}
+          rotation={[-Math.PI / 2, 0, 0]}
+          material={materials.groundingShadow}
+        >
+          <planeGeometry args={[0.45, 3.2]} />
+        </mesh>
+        <mesh position={[0, 0.1, 0]} material={materials.foyerFloor} receiveShadow castShadow>
+          <boxGeometry args={[0.4, 0.16, 3.0]} />
+        </mesh>
+      </group>
 
       {/* Front Entrance Wall Frame (Interior side of front wall around the door) */}
       {/* Left panel of front entrance wall */}

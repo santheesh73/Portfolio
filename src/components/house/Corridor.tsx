@@ -19,11 +19,22 @@ export function Corridor({
   const materials = useMemo(() => {
     const arch = createArchitecturalMaterials();
     return {
-      floor: arch.lightStone,
+      floor: arch.paleStoneFloor,
       wall: arch.ivoryWall,
       ceiling: arch.ceiling,
+      galleryGlass: arch.galleryGlass,
+      metalFrame: arch.darkMetalFrame,
+      walnutNiche: arch.naturalWalnutWood,
       downlightBezel: arch.trackLightBezel,
       downlightLens: arch.trackLens,
+      jointStrip: new THREE.MeshBasicMaterial({
+        color: "#cbd5e1",
+        transparent: true,
+        opacity: 0.45,
+      }),
+      nicheGlow: new THREE.MeshBasicMaterial({
+        color: "#fffbeb",
+      }),
       endPortalGlow: new THREE.MeshBasicMaterial({
         color: "#0f766e",
         transparent: true,
@@ -35,6 +46,8 @@ export function Corridor({
 
   // Downlights placed along the corridor ceiling (y: 2.98, x: 1.7)
   const downlightZPositions = [-5.2, -7.6, -10.0, -12.4, -14.8];
+  // Transverse architectural floor joint lines
+  const floorJointPositions = [-5.2, -7.6, -10.0, -12.4, -14.8];
 
   return (
     <group name="interior-corridor" position={[0, 0, 0]}>
@@ -47,6 +60,13 @@ export function Corridor({
       >
         <boxGeometry args={[2.4, 0.04, 12.0]} />
       </mesh>
+
+      {/* Rhythmic Architectural Floor Joints (Transverse limestone seams) */}
+      {floorJointPositions.map((zPos) => (
+        <mesh key={zPos} position={[1.7, 0.141, zPos]} material={materials.jointStrip}>
+          <boxGeometry args={[2.36, 0.002, 0.015]} />
+        </mesh>
+      ))}
 
       {/* 2. CORRIDOR CEILING */}
       <mesh
@@ -88,15 +108,27 @@ export function Corridor({
       >
         <boxGeometry args={[0.04, 0.34, 1.4]} />
       </mesh>
-      {/* Middle section of left wall (z: -6.9 to -10.4) */}
-      <mesh
-        position={[0.48, 1.57, -8.65]}
-        material={materials.wall}
-        castShadow
-        receiveShadow
-      >
-        <boxGeometry args={[0.04, 2.9, 3.5]} />
+
+      {/* Middle section: Floor-to-Ceiling Ultra-Clear Glass Gallery Partition looking into Project Studio (Reference Video 00:04-00:06) */}
+      {/* Lintel header above glass */}
+      <mesh position={[0.48, 2.85, -8.65]} material={materials.wall} receiveShadow>
+        <boxGeometry args={[0.04, 0.34, 3.5]} />
       </mesh>
+      {/* Bottom sill under glass */}
+      <mesh position={[0.48, 0.18, -8.65]} material={materials.wall} receiveShadow>
+        <boxGeometry args={[0.04, 0.12, 3.5]} />
+      </mesh>
+      {/* Glass Pane */}
+      <mesh position={[0.48, 1.51, -8.65]} material={materials.galleryGlass}>
+        <boxGeometry args={[0.02, 2.54, 3.46]} />
+      </mesh>
+      {/* Vertical Slim Mullions */}
+      {[-7.8, -9.5].map((zMullion) => (
+        <mesh key={zMullion} position={[0.48, 1.51, zMullion]} material={materials.metalFrame}>
+          <boxGeometry args={[0.04, 2.56, 0.04]} />
+        </mesh>
+      ))}
+
       {/* Lintel header above Door 04 (z: -10.4 to -11.6) */}
       <mesh
         position={[0.48, 2.85, -11.0]}
@@ -125,6 +157,18 @@ export function Corridor({
       >
         <boxGeometry args={[0.04, 2.9, 4.0]} />
       </mesh>
+
+      {/* Recessed Architectural Walnut Exhibition Niche (z: -5.8) */}
+      <group position={[2.9, 1.6, -5.8]}>
+        <mesh material={materials.walnutNiche} receiveShadow>
+          <boxGeometry args={[0.06, 1.1, 0.9]} />
+        </mesh>
+        {/* Warm Niche Downlight Reveal */}
+        <mesh position={[-0.02, 0.52, 0]} material={materials.nicheGlow}>
+          <boxGeometry args={[0.02, 0.015, 0.8]} />
+        </mesh>
+      </group>
+
       {/* Lintel header above Door 03 (z: -8.0 to -9.2) */}
       <mesh
         position={[2.92, 2.85, -8.6]}
@@ -142,6 +186,18 @@ export function Corridor({
       >
         <boxGeometry args={[0.04, 2.9, 3.6]} />
       </mesh>
+
+      {/* Recessed Architectural Walnut Exhibition Niche (z: -11.0) */}
+      <group position={[2.9, 1.6, -11.0]}>
+        <mesh material={materials.walnutNiche} receiveShadow>
+          <boxGeometry args={[0.06, 1.1, 0.9]} />
+        </mesh>
+        {/* Warm Niche Downlight Reveal */}
+        <mesh position={[-0.02, 0.52, 0]} material={materials.nicheGlow}>
+          <boxGeometry args={[0.02, 0.015, 0.8]} />
+        </mesh>
+      </group>
+
       {/* Lintel header above Door 05 (z: -12.8 to -14.0) */}
       <mesh
         position={[2.92, 2.85, -13.4]}

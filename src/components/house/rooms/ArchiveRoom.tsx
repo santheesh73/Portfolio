@@ -19,11 +19,11 @@ export function ArchiveRoom({
   const materials = useMemo(() => {
     const arch = createArchitecturalMaterials();
     return {
-      floor: arch.parchmentFloor,
-      darkWall: arch.parchmentWall,
-      woodAccent: arch.naturalOak,
+      floor: arch.paleStoneFloor,
+      darkWall: arch.ivoryWall,
+      woodAccent: arch.naturalWalnutWood,
       ceiling: arch.ceiling,
-      shelfWood: arch.warmWalnut,
+      shelfWood: arch.naturalWalnutWood,
       timelineRail: new THREE.MeshBasicMaterial({
         color: "#b45309",
         transparent: true,

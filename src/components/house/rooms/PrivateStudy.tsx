@@ -18,13 +18,13 @@ export function PrivateStudy({
     return {
       walnutFloor: arch.studyFloor,
       darkConcreteWall: arch.ivoryWall,
-      walnutWoodWall: arch.naturalOak,
+      walnutWoodWall: arch.naturalWalnutWood,
       ceiling: arch.ceiling,
-      deskWood: arch.warmWalnut,
+      deskWood: arch.naturalWalnutWood,
       deskMetalLeg: arch.brushedMetal,
       lampBrass: arch.lampBrass,
       lampLight: arch.warmCoveGlow,
-      windowGlass: arch.tintedGlass,
+      windowGlass: arch.galleryGlass,
       principlePlaque: new THREE.MeshStandardMaterial({
         color: "#ffffff",
         roughness: 0.35,
