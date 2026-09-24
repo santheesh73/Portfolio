@@ -197,6 +197,32 @@ export function ContactRoom({
         <boxGeometry args={[0.06, 3.1, 6.0]} />
       </mesh>
 
+      {/* East Wall Interior Planters */}
+      <group position={[4.6, 0.25, -19.0]}>
+        {[-2.0, 0, 2.0].map((zPos) => (
+          <group key={zPos} position={[0, 0, zPos]}>
+            <mesh material={materials.frameDark} castShadow receiveShadow>
+              <boxGeometry args={[0.5, 0.4, 1.2]} />
+            </mesh>
+            <mesh position={[0, 0.3, 0]} material={materials.terraceGreenery} castShadow>
+              <sphereGeometry args={[0.3, 8, 8]} />
+            </mesh>
+          </group>
+        ))}
+      </group>
+
+      {/* Ceiling Light Track */}
+      <group position={[1.7, 3.15, -19.0]}>
+         <mesh material={materials.frameDark}>
+            <boxGeometry args={[0.08, 0.04, 5.0]} />
+         </mesh>
+         {[-2.0, -1.0, 0, 1.0, 2.0].map((zPos) => (
+            <mesh key={zPos} position={[0, -0.04, zPos]} material={materials.terminalEmail}>
+               <cylinderGeometry args={[0.03, 0.03, 0.04, 16]} />
+            </mesh>
+         ))}
+      </group>
+
       {/* South Wall (z: -15.98) with Corridor Entrance Portal */}
       {/* West section: x: -1.5 to 0.5 (width 2.0, center -0.5) */}
       <mesh
