@@ -3,12 +3,12 @@
 import { useEffect, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
-import { Project } from "@/types";
+import { Project, SkillGroupData } from "@/types";
 import { ExhibitionState, getExhibitTransform } from "@/types/exhibition";
 
 interface CameraRigProps {
   scrollProgress: number;
-  inspectedProject?: Project | null;
+  inspectedExhibit?: Project | SkillGroupData | null;
   exhibitionState?: ExhibitionState;
   onExhibitionStateChange?: (state: ExhibitionState) => void;
   reducedMotion?: boolean;
@@ -16,7 +16,7 @@ interface CameraRigProps {
 
 export function CameraRig({
   scrollProgress,
-  inspectedProject = null,
+  inspectedExhibit = null,
   exhibitionState = "IDLE",
   onExhibitionStateChange,
   reducedMotion = false,
@@ -38,7 +38,7 @@ export function CameraRig({
   // 360° ORBIT INTERACTION STATE
   // =========================================================================
   const isOrbitActive =
-    inspectedProject !== null &&
+    inspectedExhibit !== null &&
     (exhibitionState === "SELECTED" ||
       exhibitionState === "EXHIBITION_360" ||
       exhibitionState === "DETAIL");
@@ -66,13 +66,13 @@ export function CameraRig({
   const initialPinchRadius = useRef<number>(2.1);
 
   // Keep track of previously inspected project to detect changes
-  const prevProjectRef = useRef<Project | null>(null);
+  const prevExhibitRef = useRef<Project | SkillGroupData | null>(null);
 
   // 1. Detect project selection & initiate smooth entry/exit transition (Sections 12 & 13)
   useEffect(() => {
-    if (inspectedProject && inspectedProject.id !== prevProjectRef.current?.id) {
-      prevProjectRef.current = inspectedProject;
-      const transform = getExhibitTransform(inspectedProject.id);
+    if (inspectedExhibit && inspectedExhibit.id !== prevExhibitRef.current?.id) {
+      prevExhibitRef.current = inspectedExhibit;
+      const transform = getExhibitTransform(inspectedExhibit.id);
 
       targetRadius.current = transform.defaultDistance;
       targetPhi.current = transform.defaultPhi;
@@ -81,25 +81,25 @@ export function CameraRig({
       transitionT.current = 0;
       transitionMode.current = "ENTERING";
     } else if (
-      (!inspectedProject && prevProjectRef.current !== null) ||
+      (!inspectedExhibit && prevExhibitRef.current !== null) ||
       (exhibitionState === "EXITING" && transitionMode.current !== "EXITING")
     ) {
       transitionT.current = 0;
       transitionMode.current = "EXITING";
     }
-  }, [inspectedProject, exhibitionState]);
+  }, [inspectedExhibit, exhibitionState]);
 
   // Handle Escape key to cleanly exit 360° mode
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && inspectedProject) {
+      if (e.key === "Escape" && inspectedExhibit) {
         e.preventDefault();
         onExhibitionStateChange?.("EXITING");
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [inspectedProject, onExhibitionStateChange]);
+  }, [inspectedExhibit, onExhibitionStateChange]);
 
   // 2. Track pointer movement for room parallax (when not in 360° orbit)
   useEffect(() => {
@@ -143,8 +143,8 @@ export function CameraRig({
       const dy = e.clientY - lastPointer.current.y;
       lastPointer.current = { x: e.clientX, y: e.clientY };
 
-      if (!inspectedProject) return;
-      const transform = getExhibitTransform(inspectedProject.id);
+      if (!inspectedExhibit) return;
+      const transform = getExhibitTransform(inspectedExhibit.id);
 
       // Horizontal orbit (azimuth theta): unlimited 360° full rotation
       targetTheta.current -= dx * 0.0075;
@@ -166,8 +166,8 @@ export function CameraRig({
     };
 
     const onWheel = (e: WheelEvent) => {
-      if (!inspectedProject) return;
-      const transform = getExhibitTransform(inspectedProject.id);
+      if (!inspectedExhibit) return;
+      const transform = getExhibitTransform(inspectedExhibit.id);
 
       // Controlled zoom: clamped within safe exhibit distance bounds
       targetRadius.current += e.deltaY * 0.0018;
@@ -182,7 +182,7 @@ export function CameraRig({
     // Mobile touch management: cleanly separate 1-finger orbit from 2-finger pinch
     const onTouchStart = (e: TouchEvent) => {
       touchCount.current = e.touches.length;
-      if (e.touches.length === 2 && inspectedProject) {
+      if (e.touches.length === 2 && inspectedExhibit) {
         isDragging.current = false;
         activePointerId.current = null;
         const touch1 = e.touches[0];
@@ -197,7 +197,7 @@ export function CameraRig({
 
     const onTouchMove = (e: TouchEvent) => {
       touchCount.current = e.touches.length;
-      if (e.touches.length === 2 && inspectedProject && initialPinchDist.current !== null) {
+      if (e.touches.length === 2 && inspectedExhibit && initialPinchDist.current !== null) {
         const touch1 = e.touches[0];
         const touch2 = e.touches[1];
         const dist = Math.hypot(
@@ -205,7 +205,7 @@ export function CameraRig({
           touch1.clientY - touch2.clientY
         );
         const factor = initialPinchDist.current / Math.max(1, dist);
-        const transform = getExhibitTransform(inspectedProject.id);
+        const transform = getExhibitTransform(inspectedExhibit.id);
         targetRadius.current = THREE.MathUtils.clamp(
           initialPinchRadius.current * factor,
           transform.minDistance,
@@ -247,7 +247,7 @@ export function CameraRig({
       dom.removeEventListener("touchend", onTouchEnd);
       dom.removeEventListener("touchcancel", onTouchEnd);
     };
-  }, [isOrbitActive, inspectedProject, gl]);
+  }, [isOrbitActive, inspectedExhibit, gl]);
 
   // =========================================================================
   // MAIN FRAME TICK: COMPOSITE TRAJECTORY & ORBIT ANIMATION
@@ -460,8 +460,8 @@ export function CameraRig({
     let orbitCamPos = baseTargetPos;
     let orbitLookAt = baseTargetLook;
 
-    if (inspectedProject) {
-      const transform = getExhibitTransform(inspectedProject.id);
+    if (inspectedExhibit) {
+      const transform = getExhibitTransform(inspectedExhibit.id);
       const center = new THREE.Vector3(
         transform.position[0] + transform.centerOffset[0],
         transform.position[1] + transform.centerOffset[1],
@@ -518,8 +518,8 @@ export function CameraRig({
         transitionStartPos.current.copy(camera.position);
         transitionStartLook.current.copy(currentLookAt.current);
 
-        if (inspectedProject) {
-          const transform = getExhibitTransform(inspectedProject.id);
+        if (inspectedExhibit) {
+          const transform = getExhibitTransform(inspectedExhibit.id);
           const center = new THREE.Vector3(
             transform.position[0] + transform.centerOffset[0],
             transform.position[1] + transform.centerOffset[1],
@@ -588,7 +588,7 @@ export function CameraRig({
 
       if (transitionT.current >= 1.0) {
         transitionMode.current = "NONE";
-        prevProjectRef.current = null;
+        prevExhibitRef.current = null;
         onExhibitionStateChange?.("IDLE");
       }
       return;
@@ -649,3 +649,4 @@ export function CameraRig({
 
   return null;
 }
+

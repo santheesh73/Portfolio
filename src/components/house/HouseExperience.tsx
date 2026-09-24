@@ -13,6 +13,9 @@ import { ProofDetailModal } from "./proof/ProofDetailModal";
 import { StudyDetailModal } from "./about/StudyDetailModal";
 import { FinalExitOverlay } from "./FinalExitOverlay";
 import { profile } from "@/data/profile";
+import { projects } from "@/data/projects";
+import { SKILL_GROUPS } from "@/data/skills";
+import { PROOF_HACKATHONS, PROOF_MILESTONES, PROOF_OPEN_SOURCE } from "@/data/proof";
 import { Project, SkillGroupData, ProofItem, ExhibitionState } from "@/types";
 import { useTheme } from "@/theme/ThemeContext";
 
@@ -81,6 +84,11 @@ export function HouseExperience() {
     setExhibitionState("SELECTED");
   }, []);
 
+  const handleSelectSkill = useCallback((group: SkillGroupData) => {
+    setSelectedSkillGroup(group);
+    setExhibitionState("SELECTED");
+  }, []);
+
   const handleCloseProject = useCallback(() => {
     setExhibitionState("EXITING");
   }, []);
@@ -89,6 +97,7 @@ export function HouseExperience() {
     setExhibitionState(newState);
     if (newState === "IDLE") {
       setSelectedProject(null);
+      setSelectedSkillGroup(null);
     }
   }, []);
 
@@ -366,11 +375,12 @@ export function HouseExperience() {
                 handleNavigateToRoom(rId as RoomId);
               }}
               selectedProject={selectedProject}
+              selectedSkillGroup={selectedSkillGroup}
               exhibitionState={exhibitionState}
               onExhibitionStateChange={handleExhibitionStateChange}
               onSelectProject={handleSelectProject}
               onHoverProject={setHoveredProject}
-              onSelectSkill={setSelectedSkillGroup}
+              onSelectSkill={handleSelectSkill}
               onSelectProof={setSelectedProof}
               onOpenStudyModal={() => setIsStudyModalOpen(true)}
               onSceneReady={() => setSceneReady(true)}
@@ -395,7 +405,9 @@ export function HouseExperience() {
         />
         <SkillDetailModal
           group={selectedSkillGroup}
-          onClose={() => setSelectedSkillGroup(null)}
+          exhibitionState={exhibitionState}
+          onExhibitionStateChange={handleExhibitionStateChange}
+          onClose={() => setExhibitionState("EXITING")}
         />
         <ProofDetailModal
           item={selectedProof}
@@ -416,3 +428,6 @@ export function HouseExperience() {
     </section>
   );
 }
+
+
+

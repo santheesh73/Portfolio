@@ -10,7 +10,7 @@ export type ExhibitionState =
   | "EXITING";
 
 export interface ExhibitTransform {
-  id: ProjectId;
+  id: ProjectId | string;
   position: [number, number, number];
   rotation: [number, number, number];
   centerOffset: [number, number, number];
@@ -23,7 +23,8 @@ export interface ExhibitTransform {
   initialTheta?: number;
 }
 
-export const EXHIBIT_TRANSFORMS: Record<ProjectId, ExhibitTransform> = {
+export const EXHIBIT_TRANSFORMS: Record<string, ExhibitTransform> = {
+  // Project Transforms
   orion: {
     id: "orion",
     position: [-4.5, 0.14, -6.5],
@@ -115,8 +116,62 @@ export const EXHIBIT_TRANSFORMS: Record<ProjectId, ExhibitTransform> = {
     maxPhi: Math.PI / 2.3,
     initialTheta: Math.PI,
   },
+  
+  // Skill Group Transforms (P3)
+  ai: {
+    id: "ai",
+    position: [5.0, 0.12, -7.6],
+    rotation: [0, Math.PI / 6, 0],
+    centerOffset: [0, 1.4, 0],
+    defaultDistance: 1.8,
+    minDistance: 1.2,
+    maxDistance: 2.5,
+    defaultPhi: Math.PI / 2.5,
+    minPhi: Math.PI / 8,
+    maxPhi: Math.PI / 2.3,
+    initialTheta: Math.PI / 4,
+  },
+  frontend: {
+    id: "frontend",
+    position: [7.4, 0.12, -7.6],
+    rotation: [0, -Math.PI / 6, 0],
+    centerOffset: [0, 1.35, 0],
+    defaultDistance: 1.8,
+    minDistance: 1.2,
+    maxDistance: 2.5,
+    defaultPhi: Math.PI / 2.5,
+    minPhi: Math.PI / 8,
+    maxPhi: Math.PI / 2.3,
+    initialTheta: -Math.PI / 4,
+  },
+  backend: {
+    id: "backend",
+    position: [5.0, 0.12, -10.4],
+    rotation: [0, (5 * Math.PI) / 6, 0],
+    centerOffset: [0, 1.4, 0],
+    defaultDistance: 1.8,
+    minDistance: 1.2,
+    maxDistance: 2.5,
+    defaultPhi: Math.PI / 2.5,
+    minPhi: Math.PI / 8,
+    maxPhi: Math.PI / 2.3,
+    initialTheta: (3 * Math.PI) / 4,
+  },
+  "data-infra": {
+    id: "data-infra",
+    position: [7.4, 0.12, -10.4],
+    rotation: [0, -(5 * Math.PI) / 6, 0],
+    centerOffset: [0, 1.35, 0],
+    defaultDistance: 1.8,
+    minDistance: 1.2,
+    maxDistance: 2.5,
+    defaultPhi: Math.PI / 2.5,
+    minPhi: Math.PI / 8,
+    maxPhi: Math.PI / 2.3,
+    initialTheta: -(3 * Math.PI) / 4,
+  },
 };
 
-export function getExhibitTransform(id: ProjectId): ExhibitTransform {
+export function getExhibitTransform(id: string): ExhibitTransform {
   return EXHIBIT_TRANSFORMS[id] || EXHIBIT_TRANSFORMS.orion;
 }

@@ -3,17 +3,23 @@
 import { useEffect, useRef } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
 import { X, Sparkles, Cpu } from "lucide-react";
-import { SkillGroupData } from "@/types";
+import { SkillGroupData, ExhibitionState } from "@/types";
 
 interface SkillDetailModalProps {
   group: SkillGroupData | null;
+  exhibitionState?: ExhibitionState;
+  onExhibitionStateChange?: (state: ExhibitionState) => void;
   onClose: () => void;
 }
 
 export function SkillDetailModal({
   group,
+  exhibitionState,
+  onExhibitionStateChange,
   onClose,
 }: SkillDetailModalProps) {
+  const isVisible = group !== null && exhibitionState !== "EXITING" && exhibitionState !== "IDLE";
+
   const reduce = useReducedMotion();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -40,7 +46,7 @@ export function SkillDetailModal({
 
   return (
     <AnimatePresence>
-      {group && (
+      {isVisible && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 lg:p-8"
           role="dialog"
@@ -166,3 +172,5 @@ export function SkillDetailModal({
     </AnimatePresence>
   );
 }
+
+
