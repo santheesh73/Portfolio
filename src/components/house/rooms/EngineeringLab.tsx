@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import * as THREE from "three";
 import { SKILL_GROUPS } from "@/data/skills";
 import { SkillGroupData } from "@/types";
-import { SkillSystemNode } from "../skills/SkillSystemNode";
+import { TechExhibitInstallation } from "../skills/TechExhibitInstallation";
 import { createArchitecturalMaterials } from "@/theme/materials";
 
 interface EngineeringLabProps {
@@ -40,12 +40,17 @@ export function EngineeringLab({
         roughness: 0.25,
         metalness: 0.35,
       }),
+      floorMarking: new THREE.MeshBasicMaterial({
+        color: "#cbd5e1",
+        transparent: true,
+        opacity: 0.6,
+      }),
     };
   }, []);
 
   // Map accents to the 4 skill groups (AI: Teal, Frontend: Azure Blue, Backend: Amber, Infra: Violet)
   const nodeConfigs: {
-    id: string;
+    id: 'ai' | 'frontend' | 'backend' | 'data-infra';
     accent: string;
     pos: [number, number, number];
     rot: [number, number, number];
@@ -75,6 +80,43 @@ export function EngineeringLab({
           <meshBasicMaterial color="#94a3b8" transparent opacity={0.35} />
         </mesh>
       ))}
+
+      {/* Floor zone markings & Conduit Connections */}
+      <group position={[6.2, 0.142, -9.0]}>
+        {/* Central connecting lines */}
+        <mesh material={materials.conduit} position={[0, 0, 0]}>
+          <boxGeometry args={[2.4, 0.002, 0.02]} />
+        </mesh>
+        <mesh material={materials.conduit} position={[0, 0, 0]}>
+          <boxGeometry args={[0.02, 0.002, 2.8]} />
+        </mesh>
+        <mesh material={materials.conduit} position={[-1.2, 0, 1.4]} rotation={[0, Math.PI/4, 0]}>
+           <boxGeometry args={[0.5, 0.002, 0.02]} />
+        </mesh>
+        <mesh material={materials.conduit} position={[1.2, 0, 1.4]} rotation={[0, -Math.PI/4, 0]}>
+           <boxGeometry args={[0.5, 0.002, 0.02]} />
+        </mesh>
+        <mesh material={materials.conduit} position={[-1.2, 0, -1.4]} rotation={[0, -Math.PI/4, 0]}>
+           <boxGeometry args={[0.5, 0.002, 0.02]} />
+        </mesh>
+        <mesh material={materials.conduit} position={[1.2, 0, -1.4]} rotation={[0, Math.PI/4, 0]}>
+           <boxGeometry args={[0.5, 0.002, 0.02]} />
+        </mesh>
+        
+        {/* Category specific floor markings */}
+        <mesh position={[-1.2, 0, 1.4]} rotation={[-Math.PI/2, 0, 0]} material={materials.floorMarking}>
+          <ringGeometry args={[0.5, 0.52, 32]} />
+        </mesh>
+        <mesh position={[1.2, 0, 1.4]} rotation={[-Math.PI/2, 0, 0]} material={materials.floorMarking}>
+          <ringGeometry args={[0.5, 0.52, 32]} />
+        </mesh>
+        <mesh position={[-1.2, 0, -1.4]} rotation={[-Math.PI/2, 0, 0]} material={materials.floorMarking}>
+          <ringGeometry args={[0.5, 0.52, 32]} />
+        </mesh>
+        <mesh position={[1.2, 0, -1.4]} rotation={[-Math.PI/2, 0, 0]} material={materials.floorMarking}>
+          <ringGeometry args={[0.5, 0.52, 32]} />
+        </mesh>
+      </group>
 
       {/* 2. ROOM CEILING */}
       <mesh
@@ -171,8 +213,18 @@ export function EngineeringLab({
         <mesh position={[0, 0.51, 0]} material={materials.luminaireCyan}>
           <cylinderGeometry args={[0.62, 0.62, 0.02, 8]} />
         </mesh>
+        {/* Exhibition signage / glass plate on bench */}
+        <mesh position={[0, 0.75, 0]} rotation={[-Math.PI / 4, 0, 0]} material={materials.galleryGlass} castShadow>
+          <boxGeometry args={[0.6, 0.4, 0.02]} />
+        </mesh>
+        <mesh position={[0, 0.75, 0.01]} rotation={[-Math.PI / 4, 0, 0]} material={materials.conduit}>
+           <boxGeometry args={[0.5, 0.02, 0.02]} />
+        </mesh>
+        <mesh position={[0, 0.55, -0.1]} material={materials.metalFrame}>
+          <cylinderGeometry args={[0.02, 0.02, 0.4, 8]} />
+        </mesh>
         {/* Subtle AI technical core central indicator ring */}
-        <mesh position={[0, 0.72, 0]} rotation={[Math.PI / 2, 0, 0]}>
+        <mesh position={[0, 0.95, 0]} rotation={[Math.PI / 2, 0, 0]}>
           <torusGeometry args={[0.35, 0.008, 12, 32]} />
           <meshBasicMaterial color="#2dd4bf" transparent opacity={0.65} />
         </mesh>
@@ -183,9 +235,10 @@ export function EngineeringLab({
         const group = SKILL_GROUPS.find((g) => g.id === config.id);
         if (!group) return null;
         return (
-          <SkillSystemNode
+          <TechExhibitInstallation
             key={group.id}
             group={group}
+            categoryId={config.id}
             position={config.pos}
             rotation={config.rot}
             accentColor={config.accent}

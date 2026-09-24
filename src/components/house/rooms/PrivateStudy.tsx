@@ -174,6 +174,19 @@ export function PrivateStudy({
         <mesh position={[-0.2, 0.77, 0]} rotation={[0, 0.1, 0]} material={materials.principlePlaque}>
           <boxGeometry args={[0.32, 0.01, 0.24]} />
         </mesh>
+
+        {/* Books Stack */}
+        <group position={[-0.7, 0.78, -0.15]} rotation={[0, -0.2, 0]}>
+          <mesh position={[0, 0, 0]} material={materials.deskMetalLeg} castShadow>
+             <boxGeometry args={[0.25, 0.02, 0.35]} />
+          </mesh>
+          <mesh position={[0.02, 0.03, 0.02]} rotation={[0, 0.1, 0]} material={materials.darkConcreteWall} castShadow>
+             <boxGeometry args={[0.24, 0.025, 0.34]} />
+          </mesh>
+          <mesh position={[-0.01, 0.06, -0.01]} rotation={[0, -0.05, 0]} material={materials.principlePlaque} castShadow>
+             <boxGeometry args={[0.23, 0.015, 0.33]} />
+          </mesh>
+        </group>
       </group>
 
       {/* 4b. Minimalist Ceramic Potted Plant beside Desk */}
@@ -190,6 +203,22 @@ export function PrivateStudy({
         </mesh>
         <mesh position={[0.08, 0.92, -0.05]} material={materials.plantFoliage} castShadow>
           <sphereGeometry args={[0.18, 8, 8]} />
+        </mesh>
+      </group>
+
+      {/* 4c. Identity Plaque on North Wall */}
+      <group position={[4.5, 1.7, -11.95]}>
+        {/* Walnut Frame */}
+        <mesh material={materials.walnutFloor} castShadow>
+          <boxGeometry args={[0.5, 0.7, 0.02]} />
+        </mesh>
+        {/* Glass Front */}
+        <mesh position={[0, 0, 0.015]} material={materials.windowGlass}>
+          <boxGeometry args={[0.46, 0.66, 0.01]} />
+        </mesh>
+        {/* Plaque inside */}
+        <mesh position={[0, 0, 0.005]} material={materials.principlePlaque}>
+          <boxGeometry args={[0.46, 0.66, 0.01]} />
         </mesh>
       </group>
 

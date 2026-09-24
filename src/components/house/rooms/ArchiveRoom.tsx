@@ -165,21 +165,49 @@ export function ArchiveRoom({
         ))}
       </group>
 
-      {/* 6. TIMELINE PROOF PLAQUES */}
+      {/* 6. TIMELINE PROOF PLAQUES WITH FRAMES & SPOTLIGHTS */}
       {timelineItems.map((item, idx) => {
         const layout = itemCoordinates[idx];
         if (!layout) return null;
         return (
-          <ProofDisplay
-            key={item.id}
-            item={item}
-            position={layout.pos}
-            rotation={layout.rot}
-            onSelect={onSelectProof}
-            reducedMotion={reducedMotion}
-          />
+          <group key={item.id} position={layout.pos} rotation={layout.rot}>
+            {/* Walnut Frame Background (slightly larger than typical proof plaque) */}
+            <mesh position={[0, 0, -0.02]} material={materials.shelfWood} castShadow>
+              <boxGeometry args={[1.1, 1.5, 0.02]} />
+            </mesh>
+            {/* Spotlight above plaque */}
+            <group position={[0, 1.0, 0.1]}>
+              <mesh material={materials.darkWall} castShadow>
+                <cylinderGeometry args={[0.04, 0.04, 0.1, 16]} />
+              </mesh>
+              <mesh position={[0, -0.06, 0]} material={materials.coveLight}>
+                <sphereGeometry args={[0.03, 8, 8]} />
+              </mesh>
+            </group>
+            <ProofDisplay
+              item={item}
+              position={[0, 0, 0]}
+              rotation={[0, 0, 0]}
+              onSelect={onSelectProof}
+              reducedMotion={reducedMotion}
+            />
+          </group>
         );
       })}
+
+      {/* 7. CENTRAL EXHIBITION BENCH */}
+      <group position={[-4.0, 0.12, -12.0]}>
+        {/* Walnut Seat */}
+        <mesh position={[0, 0.45, 0]} material={materials.shelfWood} castShadow receiveShadow>
+          <boxGeometry args={[2.4, 0.05, 0.6]} />
+        </mesh>
+        {/* Metal Legs */}
+        {[-1.0, 1.0].map((x) => (
+          <mesh key={x} position={[x, 0.225, 0]} material={materials.darkWall} castShadow>
+             <boxGeometry args={[0.05, 0.45, 0.4]} />
+          </mesh>
+        ))}
+      </group>
     </group>
   );
 }
