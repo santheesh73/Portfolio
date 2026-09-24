@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import * as THREE from "three";
+import { createArchitecturalMaterials } from "@/theme/materials";
 
 interface PrivateStudyProps {
   onOpenStudyModal: () => void;
@@ -13,52 +14,17 @@ export function PrivateStudy({
   const [hoveredPrinciple, setHoveredPrinciple] = useState<number | null>(null);
 
   const materials = useMemo(() => {
+    const arch = createArchitecturalMaterials();
     return {
-      walnutFloor: new THREE.MeshStandardMaterial({
-        color: "#e2d9cd",
-        roughness: 0.52,
-        metalness: 0.04,
-      }),
-      darkConcreteWall: new THREE.MeshStandardMaterial({
-        color: "#f5f3ec",
-        roughness: 0.88,
-        metalness: 0.02,
-      }),
-      walnutWoodWall: new THREE.MeshStandardMaterial({
-        color: "#c89a65",
-        roughness: 0.52,
-        metalness: 0.02,
-      }),
-      ceiling: new THREE.MeshStandardMaterial({
-        color: "#faf9f6",
-        roughness: 0.92,
-        metalness: 0.02,
-      }),
-      deskWood: new THREE.MeshStandardMaterial({
-        color: "#be8e56",
-        roughness: 0.45,
-        metalness: 0.04,
-      }),
-      deskMetalLeg: new THREE.MeshStandardMaterial({
-        color: "#cbd5e1",
-        roughness: 0.25,
-        metalness: 0.85,
-      }),
-      lampBrass: new THREE.MeshStandardMaterial({
-        color: "#d97706",
-        roughness: 0.25,
-        metalness: 0.9,
-      }),
-      lampLight: new THREE.MeshBasicMaterial({
-        color: "#fffbeb",
-      }),
-      windowGlass: new THREE.MeshStandardMaterial({
-        color: "#e0f2fe",
-        roughness: 0.08,
-        metalness: 0.3,
-        transparent: true,
-        opacity: 0.3,
-      }),
+      walnutFloor: arch.parchmentFloor,
+      darkConcreteWall: arch.ivoryWall,
+      walnutWoodWall: arch.naturalOak,
+      ceiling: arch.ceiling,
+      deskWood: arch.warmWalnut,
+      deskMetalLeg: arch.brushedMetal,
+      lampBrass: arch.lampBrass,
+      lampLight: arch.warmCoveGlow,
+      windowGlass: arch.tintedGlass,
       principlePlaque: new THREE.MeshStandardMaterial({
         color: "#ffffff",
         roughness: 0.35,

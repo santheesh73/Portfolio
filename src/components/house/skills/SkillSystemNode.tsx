@@ -4,6 +4,7 @@ import { useMemo, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { SkillGroupData } from "@/types";
+import { createArchitecturalMaterials } from "@/theme/materials";
 
 interface SkillSystemNodeProps {
   group: SkillGroupData;
@@ -27,24 +28,11 @@ export function SkillSystemNode({
   const glowRef = useRef<THREE.Mesh>(null);
 
   const materials = useMemo(() => {
+    const arch = createArchitecturalMaterials();
     return {
-      pedestal: new THREE.MeshStandardMaterial({
-        color: "#ffffff",
-        roughness: 0.45,
-        metalness: 0.05,
-      }),
-      trim: new THREE.MeshStandardMaterial({
-        color: "#cbd5e1",
-        roughness: 0.25,
-        metalness: 0.85,
-      }),
-      telemetryPanel: new THREE.MeshStandardMaterial({
-        color: "#ffffff",
-        roughness: 0.1,
-        metalness: 0.2,
-        transparent: true,
-        opacity: 0.65,
-      }),
+      pedestal: arch.plinthBase,
+      trim: arch.brushedMetal,
+      telemetryPanel: arch.clearGlass,
       accentGlow: new THREE.MeshBasicMaterial({
         color: accentColor,
         transparent: true,

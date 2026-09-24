@@ -3,6 +3,7 @@
 import { useMemo, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import { createArchitecturalMaterials } from "@/theme/materials";
 
 interface RoomDoorProps {
   position: [number, number, number];
@@ -35,27 +36,12 @@ export function RoomDoor({
   const hingeRef = useRef<THREE.Group>(null);
 
   const materials = useMemo(() => {
+    const arch = createArchitecturalMaterials();
     return {
-      frame: new THREE.MeshStandardMaterial({
-        color: "#33373c",
-        roughness: 0.35,
-        metalness: 0.75,
-      }),
-      doorPanel: new THREE.MeshStandardMaterial({
-        color: "#a06d3b",
-        roughness: 0.48,
-        metalness: 0.04,
-      }),
-      doorTrim: new THREE.MeshStandardMaterial({
-        color: "#64748b",
-        roughness: 0.3,
-        metalness: 0.8,
-      }),
-      handle: new THREE.MeshStandardMaterial({
-        color: "#f1f5f9",
-        roughness: 0.15,
-        metalness: 0.92,
-      }),
+      frame: arch.darkMetalFrame,
+      doorPanel: arch.honeyOak,
+      doorTrim: arch.brushedMetal,
+      handle: arch.brushedMetal,
       lightSpill: new THREE.MeshBasicMaterial({
         color: accentColor,
         transparent: true,

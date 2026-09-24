@@ -3,45 +3,21 @@
 import { useMemo } from "react";
 import * as THREE from "three";
 import { useTheme } from "@/theme/ThemeContext";
+import { createArchitecturalMaterials } from "@/theme/materials";
 
 export function ExteriorHouse() {
   const { activeAccent } = useTheme();
 
   // Reusable materials for optimal performance and memory efficiency
   const materials = useMemo(() => {
+    const arch = createArchitecturalMaterials();
     return {
-      darkConcrete: new THREE.MeshStandardMaterial({
-        color: "#e5e1d8",
-        roughness: 0.82,
-        metalness: 0.04,
-      }),
-      charcoalWall: new THREE.MeshStandardMaterial({
-        color: "#f6f5f0",
-        roughness: 0.85,
-        metalness: 0.02,
-      }),
-      darkFascia: new THREE.MeshStandardMaterial({
-        color: "#2d3136",
-        roughness: 0.35,
-        metalness: 0.75,
-      }),
-      warmWoodSoffit: new THREE.MeshStandardMaterial({
-        color: "#c89a65",
-        roughness: 0.55,
-        metalness: 0.02,
-      }),
-      warmWoodPanel: new THREE.MeshStandardMaterial({
-        color: "#be8e56",
-        roughness: 0.55,
-        metalness: 0.02,
-      }),
-      windowGlass: new THREE.MeshStandardMaterial({
-        color: "#e0f2fe",
-        roughness: 0.08,
-        metalness: 0.4,
-        transparent: true,
-        opacity: 0.35,
-      }),
+      darkConcrete: arch.paleStoneFloor,
+      charcoalWall: arch.plasterWall,
+      darkFascia: arch.darkMetalFrame,
+      warmWoodSoffit: arch.naturalOak,
+      warmWoodPanel: arch.warmWalnut,
+      windowGlass: arch.tintedGlass,
       windowGlowInterior: new THREE.MeshBasicMaterial({
         color: "#fffbeb",
         transparent: true,

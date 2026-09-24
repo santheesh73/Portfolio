@@ -1,10 +1,10 @@
 "use client";
 
 import { useMemo } from "react";
-import * as THREE from "three";
 import { projects } from "@/data/projects";
 import { Project } from "@/types";
 import { ProjectDisplay } from "../projects/ProjectDisplay";
+import { createArchitecturalMaterials } from "@/theme/materials";
 
 interface ProjectStudioProps {
   onSelectProject: (project: Project) => void;
@@ -16,35 +16,14 @@ export function ProjectStudio({
   reducedMotion = false,
 }: ProjectStudioProps) {
   const materials = useMemo(() => {
+    const arch = createArchitecturalMaterials();
     return {
-      floor: new THREE.MeshStandardMaterial({
-        color: "#e6e2d8",
-        roughness: 0.58,
-        metalness: 0.04,
-      }),
-      concreteWall: new THREE.MeshStandardMaterial({
-        color: "#f4f2ed",
-        roughness: 0.85,
-        metalness: 0.02,
-      }),
-      woodAccentWall: new THREE.MeshStandardMaterial({
-        color: "#be8e56",
-        roughness: 0.55,
-        metalness: 0.02,
-      }),
-      ceiling: new THREE.MeshStandardMaterial({
-        color: "#faf9f6",
-        roughness: 0.9,
-        metalness: 0.02,
-      }),
-      trackLight: new THREE.MeshStandardMaterial({
-        color: "#cbd5e1",
-        roughness: 0.3,
-        metalness: 0.8,
-      }),
-      trackLens: new THREE.MeshBasicMaterial({
-        color: "#fffdf5",
-      }),
+      floor: arch.lightStone,
+      concreteWall: arch.ivoryWall,
+      woodAccentWall: arch.warmWalnut,
+      ceiling: arch.ceiling,
+      trackLight: arch.trackLightBezel,
+      trackLens: arch.trackLens,
     };
   }, []);
 

@@ -5,6 +5,7 @@ import { ChevronDown, ArrowDown, Compass } from "lucide-react";
 import Link from "next/link";
 import { profile } from "@/data/profile";
 import { useTheme } from "@/theme/ThemeContext";
+import { RoomTitle } from "@/components/ui/RoomTitle";
 import {
   RoomId,
   getActiveSpatialState,
@@ -107,29 +108,13 @@ export function CinematicHUD({
           ======================================================== */}
       <AnimatePresence mode="wait">
         {activeRoomTitle && (
-          <motion.div
-            key={activeRoomTitle.index}
-            initial={reduce ? { opacity: 1 } : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={reduce ? { opacity: 0 } : { opacity: 0, y: -12 }}
-            transition={
-              reduce
-                ? { duration: 0.01 }
-                : { duration: 0.7, ease: [0.16, 1, 0.3, 1] }
-            }
-            className="my-auto mx-auto flex flex-col items-center text-center pointer-events-none"
-          >
-            <span className="font-mono text-xs tracking-[0.3em] text-accent uppercase">
-              {activeRoomTitle.index}
-            </span>
-            <h2 className="type-h1 mt-1 font-semibold tracking-[0.1em] text-text-primary">
-              {activeRoomTitle.title}
-            </h2>
-            <div className="mt-2 h-px w-16 bg-gradient-to-r from-transparent via-accent/60 to-transparent" />
-            <p className="mt-2 font-mono text-xs tracking-[0.2em] text-text-secondary uppercase">
-              {activeRoomTitle.subtitle}
-            </p>
-          </motion.div>
+          <div key={activeRoomTitle.index} className="my-auto mx-auto pointer-events-none">
+            <RoomTitle
+              index={activeRoomTitle.index}
+              title={activeRoomTitle.title}
+              subtitle={activeRoomTitle.subtitle}
+            />
+          </div>
         )}
       </AnimatePresence>
 

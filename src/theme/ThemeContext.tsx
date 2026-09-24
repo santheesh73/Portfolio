@@ -63,7 +63,9 @@ export function ThemeProvider({
     const root = document.documentElement;
     root.style.setProperty("--accent", activeAccent.accent);
     root.style.setProperty("--accent-hover", activeAccent.accentHover);
-    root.style.setProperty("--accent-muted", activeAccent.accentSoft);
+    root.style.setProperty("--accent-strong", activeAccent.accentHover);
+    root.style.setProperty("--accent-soft", activeAccent.accentSoft);
+    root.style.setProperty("--accent-muted", activeAccent.accentMuted || activeAccent.accentSoft);
     root.style.setProperty("--accent-foreground", activeAccent.accentContrast);
   }, [activeAccent]);
 

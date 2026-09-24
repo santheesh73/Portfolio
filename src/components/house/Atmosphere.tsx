@@ -3,6 +3,7 @@
 import { useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import { LIGHTING_TOKENS } from "@/theme/lighting";
 
 interface AtmosphereProps {
   scrollProgress?: number;
@@ -34,13 +35,14 @@ export function Atmosphere({
   const pointsRef = useRef<THREE.Points>(null);
   const positions = useMemo(() => new Float32Array(STATIC_POSITIONS), []);
   const initialPhases = STATIC_PHASES;
+  const { atmosphere } = LIGHTING_TOKENS;
 
   useFrame((state, delta) => {
     // 1. Modulate fog distance when entering interior (keeps foyer and corridor clear)
     if (state.scene.fog && state.scene.fog instanceof THREE.Fog) {
       const interiorFactor = Math.min(1, Math.max(0, (scrollProgress - 0.28) / 0.2));
-      const targetNear = THREE.MathUtils.lerp(16, 26, interiorFactor);
-      const targetFar = THREE.MathUtils.lerp(55, 75, interiorFactor);
+      const targetNear = THREE.MathUtils.lerp(atmosphere.fogNearExterior, atmosphere.fogNearInterior, interiorFactor);
+      const targetFar = THREE.MathUtils.lerp(atmosphere.fogFarExterior, atmosphere.fogFarInterior, interiorFactor);
       state.scene.fog.near = THREE.MathUtils.damp(state.scene.fog.near, targetNear, 4.0, delta);
       state.scene.fog.far = THREE.MathUtils.damp(state.scene.fog.far, targetFar, 4.0, delta);
     }
@@ -68,7 +70,7 @@ export function Atmosphere({
   return (
     <>
       {/* Soft Daylight Architectural Fog */}
-      <fog attach="fog" args={["#F5F4EF", 16, 55]} />
+      <fog attach="fog" args={[atmosphere.fogColor, atmosphere.fogNearExterior, atmosphere.fogFarExterior]} />
 
       {/* Subtle Sunlit Dust Motes in Morning Light */}
       {!reducedMotion && (

@@ -3,40 +3,20 @@
 import { useMemo } from "react";
 import * as THREE from "three";
 import { useTheme } from "@/theme/ThemeContext";
+import { createArchitecturalMaterials } from "@/theme/materials";
 
 export function Foyer() {
   const { activeAccent } = useTheme();
 
   const materials = useMemo(() => {
+    const arch = createArchitecturalMaterials();
     return {
-      foyerFloor: new THREE.MeshStandardMaterial({
-        color: "#e8dfd3",
-        roughness: 0.52,
-        metalness: 0.04,
-      }),
-      foyerWall: new THREE.MeshStandardMaterial({
-        color: "#f7f6f2",
-        roughness: 0.85,
-        metalness: 0.02,
-      }),
-      featureWoodWall: new THREE.MeshStandardMaterial({
-        color: "#c89a65",
-        roughness: 0.55,
-        metalness: 0.02,
-      }),
-      ceiling: new THREE.MeshStandardMaterial({
-        color: "#faf9f6",
-        roughness: 0.9,
-        metalness: 0.02,
-      }),
-      coveLight: new THREE.MeshBasicMaterial({
-        color: "#fffbeb",
-      }),
-      pedestal: new THREE.MeshStandardMaterial({
-        color: "#dedad0",
-        roughness: 0.6,
-        metalness: 0.1,
-      }),
+      foyerFloor: arch.paleStoneFloor,
+      foyerWall: arch.ivoryWall,
+      featureWoodWall: arch.naturalOak,
+      ceiling: arch.ceiling,
+      coveLight: arch.warmCoveGlow,
+      pedestal: arch.lightStone,
       sculptureMetal: new THREE.MeshStandardMaterial({
         color: "#64748b",
         roughness: 0.25,
