@@ -242,9 +242,10 @@ export function CameraRig({
       parallaxScale = 0.4;
     }
 
-    // 3. Pointer Parallax with Inertia
-    const parallaxOffsetX = smoothedPointer.current.x * 0.4 * parallaxScale;
-    const parallaxOffsetY = -smoothedPointer.current.y * 0.22 * parallaxScale;
+    // 3. Pointer Parallax with Inertia (calibrated for desktop, dialed back on mobile touch devices)
+    const deviceScale = isMobile ? 0.25 : 1.0;
+    const parallaxOffsetX = smoothedPointer.current.x * 0.4 * parallaxScale * deviceScale;
+    const parallaxOffsetY = -smoothedPointer.current.y * 0.22 * parallaxScale * deviceScale;
 
     const targetPos = new THREE.Vector3(
       trajectoryPos.x + parallaxOffsetX,
@@ -277,13 +278,13 @@ export function CameraRig({
 
     currentLookAt.current.x = THREE.MathUtils.damp(
       currentLookAt.current.x,
-      targetLookAt.current.x + smoothedPointer.current.x * 0.12 * parallaxScale,
+      targetLookAt.current.x + smoothedPointer.current.x * 0.12 * parallaxScale * deviceScale,
       4.5,
       delta
     );
     currentLookAt.current.y = THREE.MathUtils.damp(
       currentLookAt.current.y,
-      targetLookAt.current.y - smoothedPointer.current.y * 0.08 * parallaxScale,
+      targetLookAt.current.y - smoothedPointer.current.y * 0.08 * parallaxScale * deviceScale,
       4.5,
       delta
     );

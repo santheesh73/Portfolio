@@ -17,9 +17,10 @@ export function ProofDetailModal({
   const reduce = useReducedMotion();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
-  // Focus trap & Escape key handler
+  // Focus trap, Escape key handler, and focus restoration
   useEffect(() => {
     if (!item) return;
+    const previouslyFocused = document.activeElement as HTMLElement | null;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -31,7 +32,10 @@ export function ProofDetailModal({
     window.addEventListener("keydown", handleKeyDown);
     closeButtonRef.current?.focus();
 
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      previouslyFocused?.focus();
+    };
   }, [item, onClose]);
 
   return (

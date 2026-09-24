@@ -29,6 +29,7 @@ interface HouseSceneProps {
   onDoorClick?: () => void;
   onSelectRoom?: (roomId: string) => void;
   onSelectProject: (project: Project) => void;
+  onHoverProject?: (project: Project | null) => void;
   onSelectSkill: (group: SkillGroupData) => void;
   onSelectProof: (item: ProofItem) => void;
   onOpenStudyModal: () => void;
@@ -45,6 +46,7 @@ export function HouseScene({
   onDoorClick,
   onSelectRoom,
   onSelectProject,
+  onHoverProject,
   onSelectSkill,
   onSelectProof,
   onOpenStudyModal,
@@ -121,6 +123,7 @@ export function HouseScene({
           </group>
           <group visible={scrollProgress >= 0.15 && scrollProgress <= 0.98}>
             <Corridor
+              scrollProgress={scrollProgress}
               onSelectRoom={onSelectRoom}
               reducedMotion={reducedMotion}
             />
@@ -128,6 +131,7 @@ export function HouseScene({
           <group visible={scrollProgress >= 0.18 && scrollProgress <= 0.62}>
             <ProjectStudio
               onSelectProject={onSelectProject}
+              onHoverProject={onHoverProject}
               reducedMotion={reducedMotion}
             />
           </group>

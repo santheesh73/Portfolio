@@ -11,6 +11,9 @@ interface SkillSystemNodeProps {
   position: [number, number, number];
   rotation?: [number, number, number];
   accentColor?: string;
+  isFocused?: boolean;
+  isAnyFocused?: boolean;
+  onFocusChange?: (focused: boolean) => void;
   onSelect: (group: SkillGroupData) => void;
   reducedMotion?: boolean;
 }
@@ -20,6 +23,9 @@ export function SkillSystemNode({
   position,
   rotation = [0, 0, 0],
   accentColor = "#2dd4bf",
+  isFocused = false,
+  isAnyFocused = false,
+  onFocusChange,
   onSelect,
   reducedMotion = false,
 }: SkillSystemNodeProps) {
@@ -49,14 +55,20 @@ export function SkillSystemNode({
 
   useFrame((_, delta) => {
     if (reducedMotion) return;
+    const active = hovered || isFocused;
 
     if (ringRef.current) {
-      ringRef.current.rotation.y += delta * (hovered ? 0.8 : 0.25);
+      ringRef.current.rotation.y += delta * (active ? 0.85 : 0.22);
     }
 
     if (glowRef.current) {
       const mat = glowRef.current.material as THREE.MeshBasicMaterial;
-      const targetOpacity = hovered ? 0.48 : 0.22;
+      let targetOpacity = 0.20;
+      if (active) {
+        targetOpacity = 0.58;
+      } else if (isAnyFocused) {
+        targetOpacity = 0.08; // Quieter surrounding systems
+      }
       mat.opacity = THREE.MathUtils.lerp(mat.opacity, targetOpacity, delta * 6);
     }
   });
@@ -69,8 +81,12 @@ export function SkillSystemNode({
       onPointerOver={(e) => {
         e.stopPropagation();
         setHovered(true);
+        onFocusChange?.(true);
       }}
-      onPointerOut={() => setHovered(false)}
+      onPointerOut={() => {
+        setHovered(false);
+        onFocusChange?.(false);
+      }}
       onClick={(e) => {
         e.stopPropagation();
         onSelect(group);

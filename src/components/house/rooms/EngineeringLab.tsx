@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import * as THREE from "three";
 import { SKILL_GROUPS } from "@/data/skills";
 import { SkillGroupData } from "@/types";
@@ -16,6 +16,7 @@ export function EngineeringLab({
   onSelectSkill,
   reducedMotion = false,
 }: EngineeringLabProps) {
+  const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
   const materials = useMemo(() => {
     const arch = createArchitecturalMaterials();
     return {
@@ -174,6 +175,9 @@ export function EngineeringLab({
             position={config.pos}
             rotation={config.rot}
             accentColor={config.accent}
+            isFocused={hoveredNodeId === group.id}
+            isAnyFocused={hoveredNodeId !== null}
+            onFocusChange={(focused) => setHoveredNodeId(focused ? group.id : null)}
             onSelect={onSelectSkill}
             reducedMotion={reducedMotion}
           />

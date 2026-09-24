@@ -12,6 +12,9 @@ interface ProjectDisplayProps {
   position: [number, number, number];
   rotation?: [number, number, number];
   isFeatured?: boolean;
+  isFocused?: boolean;
+  isAnyFocused?: boolean;
+  onFocusChange?: (focused: boolean) => void;
   onSelect: (project: Project) => void;
   reducedMotion?: boolean;
 }
@@ -21,6 +24,9 @@ export function ProjectDisplay({
   position,
   rotation = [0, 0, 0],
   isFeatured = false,
+  isFocused = false,
+  isAnyFocused = false,
+  onFocusChange,
   onSelect,
   reducedMotion = false,
 }: ProjectDisplayProps) {
@@ -57,20 +63,23 @@ export function ProjectDisplay({
 
   useFrame((_, delta) => {
     if (reducedMotion) return;
+    const active = hovered || isFocused;
 
     if (glowPlaneRef.current) {
       const mat = glowPlaneRef.current.material as THREE.MeshBasicMaterial;
-      const targetOpacity = hovered
-        ? (isFeatured ? 0.55 : 0.35)
-        : (isFeatured ? 0.28 : 0.14);
+      let targetOpacity = isFeatured ? 0.24 : 0.14;
+      if (active) {
+        targetOpacity = isFeatured ? 0.58 : 0.44;
+      } else if (isAnyFocused) {
+        targetOpacity = 0.05; // Quieter surrounding exhibits
+      }
       mat.opacity = THREE.MathUtils.lerp(mat.opacity, targetOpacity, delta * 6);
     }
 
-    if (coreRef.current) {
-      // Gentle micro-pulse for featured project
-      if (isFeatured) {
-        coreRef.current.rotation.y += delta * 0.4;
-      }
+    if (coreRef.current && isFeatured) {
+      // Gentle micro-pulse: accelerates smoothly when active
+      const spinSpeed = active ? 0.8 : 0.35;
+      coreRef.current.rotation.y += delta * spinSpeed;
     }
   });
 
@@ -82,8 +91,12 @@ export function ProjectDisplay({
       onPointerOver={(e) => {
         e.stopPropagation();
         setHovered(true);
+        onFocusChange?.(true);
       }}
-      onPointerOut={() => setHovered(false)}
+      onPointerOut={() => {
+        setHovered(false);
+        onFocusChange?.(false);
+      }}
       onClick={(e) => {
         e.stopPropagation();
         onSelect(project);

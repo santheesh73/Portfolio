@@ -81,11 +81,13 @@ export function RoomDoor({
     }
 
     if (hingeRef.current) {
-      const targetAngle = isOpen ? -Math.PI * 0.48 : 0;
-      hingeRef.current.rotation.y = THREE.MathUtils.lerp(
+      // Physical hinge motion: swings wide when open (-86 deg), subtly unlatches on hover (-9 deg)
+      const targetAngle = isOpen ? -Math.PI * 0.48 : (hovered ? -0.16 : 0);
+      hingeRef.current.rotation.y = THREE.MathUtils.damp(
         hingeRef.current.rotation.y,
         targetAngle,
-        delta * 4
+        4.0,
+        delta
       );
     }
   });

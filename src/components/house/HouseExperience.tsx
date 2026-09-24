@@ -67,8 +67,9 @@ export function HouseExperience() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isEntranceHovered, setIsEntranceHovered] = useState(false);
 
-  // Selected interactive details for modals
+  // Selected interactive details for modals & spatial focus
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [hoveredProject, setHoveredProject] = useState<Project | null>(null);
   const [selectedSkillGroup, setSelectedSkillGroup] = useState<SkillGroupData | null>(null);
   const [selectedProof, setSelectedProof] = useState<ProofItem | null>(null);
   const [isStudyModalOpen, setIsStudyModalOpen] = useState(false);
@@ -84,16 +85,17 @@ export function HouseExperience() {
     updateAccentForRoom(activeRoomId);
   }, [activeRoomId, updateAccentForRoom]);
 
-  // Dynamic Color Intelligence: elevate accent to project identity during selection and restore on close
+  // Dynamic Color Intelligence: elevate accent to project identity during focus/selection and restore on departure
   useEffect(() => {
-    if (selectedProject) {
-      setInteractingProject(selectedProject.id);
+    const activeProject = selectedProject || hoveredProject;
+    if (activeProject) {
+      setInteractingProject(activeProject.id);
     } else {
       setInteractingProject(null);
     }
-  }, [selectedProject, setInteractingProject]);
+  }, [selectedProject, hoveredProject, setInteractingProject]);
 
-  // Scroll tracking across the full 650vh spatial track
+  // Scroll tracking across the full 650vh spatial track & Room Departure Boundaries
   useEffect(() => {
     let animationFrameId: number;
 
@@ -115,6 +117,21 @@ export function HouseExperience() {
       );
 
       setScrollProgress(progress);
+
+      // Room Departure & Spatial Boundaries: Release modals and project focus on departure
+      if (progress < 0.22 || progress > 0.52) {
+        setHoveredProject((prev) => (prev !== null ? null : prev));
+        setSelectedProject((prev) => (prev !== null ? null : prev));
+      }
+      if (progress < 0.36 || progress > 0.66) {
+        setSelectedSkillGroup((prev) => (prev !== null ? null : prev));
+      }
+      if (progress < 0.50 || progress > 0.80) {
+        setSelectedProof((prev) => (prev !== null ? null : prev));
+      }
+      if (progress < 0.64 || progress > 0.94) {
+        setIsStudyModalOpen((prev) => (prev ? false : prev));
+      }
     };
 
     const onScroll = () => {
@@ -136,6 +153,13 @@ export function HouseExperience() {
   // Programmatic direct spatial navigation to specific waypoints
   const handleNavigateToRoom = useCallback(
     (targetRoomId: RoomId) => {
+      // Cleanly dismiss active modals and object focus before room jump
+      setSelectedProject(null);
+      setSelectedSkillGroup(null);
+      setSelectedProof(null);
+      setIsStudyModalOpen(false);
+      setHoveredProject(null);
+
       if (!containerRef.current) return;
       const waypoint = ROOM_WAYPOINTS.find((w) => w.id === targetRoomId);
       if (!waypoint) return;
@@ -322,6 +346,7 @@ export function HouseExperience() {
                 handleNavigateToRoom(rId as RoomId);
               }}
               onSelectProject={setSelectedProject}
+              onHoverProject={setHoveredProject}
               onSelectSkill={setSelectedSkillGroup}
               onSelectProof={setSelectedProof}
               onOpenStudyModal={() => setIsStudyModalOpen(true)}

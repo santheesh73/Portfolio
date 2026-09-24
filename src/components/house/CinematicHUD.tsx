@@ -164,22 +164,24 @@ export function CinematicHUD({
             <div className="flex items-center gap-2 font-mono text-xs tracking-[0.2em] text-text-secondary uppercase transition-colors group-hover:text-text-primary">
               <span className="size-1 rounded-full bg-accent/60" aria-hidden="true" />
               <span>
-                {scrollProgress < 0.1
+                {isProjectFocused && focusedProject
+                  ? `INSPECT ${focusedProject.name.toUpperCase()} · CLICK TO OPEN`
+                  : scrollProgress < 0.1
                   ? "SCROLL TO ENTER"
                   : scrollProgress < 0.2
                   ? "STEP TO THRESHOLD"
                   : scrollProgress < 0.32
-                  ? "01 FOYER"
+                  ? "01 FOYER · RESIDENCE"
                   : scrollProgress < 0.46
-                  ? "02 PROJECT STUDIO"
+                  ? "02 PROJECT STUDIO · SELECT EXHIBIT"
                   : scrollProgress < 0.6
-                  ? "03 ENGINEERING LAB"
+                  ? "03 ENGINEERING LAB · INSPECT SYSTEMS"
                   : scrollProgress < 0.74
-                  ? "04 ARCHIVE"
+                  ? "04 ARCHIVE · VERIFIED MILESTONES"
                   : scrollProgress < 0.86
-                  ? "05 PRIVATE STUDY"
+                  ? "05 PRIVATE STUDY · PRINCIPLES & ABOUT"
                   : scrollProgress < 0.96
-                  ? "06 CONTACT"
+                  ? "06 CONTACT · DIRECT TRANSMISSION"
                   : "OBSERVATION TERRACE"}
               </span>
               <span className="size-1 rounded-full bg-accent/60" aria-hidden="true" />

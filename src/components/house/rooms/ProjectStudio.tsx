@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { projects } from "@/data/projects";
 import { Project } from "@/types";
 import { ProjectDisplay } from "../projects/ProjectDisplay";
@@ -8,13 +8,16 @@ import { createArchitecturalMaterials } from "@/theme/materials";
 
 interface ProjectStudioProps {
   onSelectProject: (project: Project) => void;
+  onHoverProject?: (project: Project | null) => void;
   reducedMotion?: boolean;
 }
 
 export function ProjectStudio({
   onSelectProject,
+  onHoverProject,
   reducedMotion = false,
 }: ProjectStudioProps) {
+  const [hoveredProjectId, setHoveredProjectId] = useState<string | null>(null);
   const materials = useMemo(() => {
     const arch = createArchitecturalMaterials();
     return {
@@ -174,6 +177,12 @@ export function ProjectStudio({
         position={[-4.5, 0.14, -6.5]}
         rotation={[0, 0, 0]}
         isFeatured={true}
+        isFocused={hoveredProjectId === featuredProject.id}
+        isAnyFocused={hoveredProjectId !== null}
+        onFocusChange={(focused) => {
+          setHoveredProjectId(focused ? featuredProject.id : null);
+          onHoverProject?.(focused ? featuredProject : null);
+        }}
         onSelect={onSelectProject}
         reducedMotion={reducedMotion}
       />
@@ -191,6 +200,12 @@ export function ProjectStudio({
             position={[layout.pos[0], 0.14, layout.pos[2]]}
             rotation={layout.rot as [number, number, number]}
             isFeatured={false}
+            isFocused={hoveredProjectId === project.id}
+            isAnyFocused={hoveredProjectId !== null}
+            onFocusChange={(focused) => {
+              setHoveredProjectId(focused ? project.id : null);
+              onHoverProject?.(focused ? project : null);
+            }}
             onSelect={onSelectProject}
             reducedMotion={reducedMotion}
           />
