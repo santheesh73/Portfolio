@@ -51,6 +51,7 @@ export function ProjectDisplay({
       statusDot: new THREE.MeshBasicMaterial({
         color: projectIdentity.accent,
       }),
+      groundingShadow: arch.groundingShadow,
     };
   }, [isFeatured, projectIdentity]);
 
@@ -88,6 +89,17 @@ export function ProjectDisplay({
         onSelect(project);
       }}
     >
+      {/* 0. Plinth Grounding Contact Shadow */}
+      <mesh
+        position={[0, 0.002, 0]}
+        rotation={[-Math.PI / 2, 0, 0]}
+        material={materials.groundingShadow}
+      >
+        <planeGeometry
+          args={isFeatured ? [1.5, 0.9] : [1.05, 0.65]}
+        />
+      </mesh>
+
       {/* 1. Base Pedestal / Workstation Plinth */}
       <mesh
         material={materials.plinth}

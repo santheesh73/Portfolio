@@ -23,21 +23,9 @@ export function ExteriorHouse() {
         transparent: true,
         opacity: 0.16,
       }),
-      windowMullion: new THREE.MeshStandardMaterial({
-        color: "#33373c",
-        roughness: 0.35,
-        metalness: 0.7,
-      }),
-      architecturalSteel: new THREE.MeshStandardMaterial({
-        color: "#94a3b8",
-        roughness: 0.25,
-        metalness: 0.85,
-      }),
-      planterGreenery: new THREE.MeshStandardMaterial({
-        color: "#426b48",
-        roughness: 0.75,
-        metalness: 0.04,
-      }),
+      windowMullion: arch.darkMetalFrame,
+      architecturalSteel: arch.brushedMetal,
+      planterGreenery: arch.greenery,
       planterSoil: new THREE.MeshStandardMaterial({
         color: "#5c5044",
         roughness: 0.95,

@@ -16,7 +16,7 @@ export function PrivateStudy({
   const materials = useMemo(() => {
     const arch = createArchitecturalMaterials();
     return {
-      walnutFloor: arch.parchmentFloor,
+      walnutFloor: arch.studyFloor,
       darkConcreteWall: arch.ivoryWall,
       walnutWoodWall: arch.naturalOak,
       ceiling: arch.ceiling,
@@ -33,16 +33,13 @@ export function PrivateStudy({
       principleAccent: new THREE.MeshBasicMaterial({
         color: "#7c3aed",
       }),
-      plantFoliage: new THREE.MeshStandardMaterial({
-        color: "#476a4f",
-        roughness: 0.78,
-        metalness: 0.05,
-      }),
+      plantFoliage: arch.greenery,
       ceramicPot: new THREE.MeshStandardMaterial({
         color: "#f1ede6",
         roughness: 0.6,
         metalness: 0.05,
       }),
+      groundingShadow: arch.groundingShadow,
     };
   }, []);
 
@@ -137,6 +134,14 @@ export function PrivateStudy({
 
       {/* 4. ARCHITECTURAL DESK & WORKSTATION */}
       <group position={[6.2, 0.12, -14.1]}>
+        {/* Grounding shadow strips under desk legs */}
+        <mesh position={[-0.95, 0.002, 0]} rotation={[-Math.PI / 2, 0, 0]} material={materials.groundingShadow}>
+          <planeGeometry args={[0.12, 0.9]} />
+        </mesh>
+        <mesh position={[0.95, 0.002, 0]} rotation={[-Math.PI / 2, 0, 0]} material={materials.groundingShadow}>
+          <planeGeometry args={[0.12, 0.9]} />
+        </mesh>
+
         {/* Cantilevered walnut desktop */}
         <mesh position={[0, 0.74, 0]} material={materials.deskWood} castShadow receiveShadow>
           <boxGeometry args={[2.2, 0.05, 0.9]} />
@@ -173,6 +178,10 @@ export function PrivateStudy({
 
       {/* 4b. Minimalist Ceramic Potted Plant beside Desk */}
       <group position={[4.6, 0.12, -14.1]}>
+        {/* Contact shadow under pot */}
+        <mesh position={[0, 0.002, 0]} rotation={[-Math.PI / 2, 0, 0]} material={materials.groundingShadow}>
+          <circleGeometry args={[0.24, 16]} />
+        </mesh>
         <mesh position={[0, 0.3, 0]} material={materials.ceramicPot} castShadow receiveShadow>
           <cylinderGeometry args={[0.22, 0.17, 0.6, 16]} />
         </mesh>

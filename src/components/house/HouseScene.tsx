@@ -54,7 +54,7 @@ export function HouseScene({
   return (
     <div className="relative h-full w-full bg-[#F5F4EF]">
       <Canvas
-        shadows={{ type: THREE.PCFShadowMap }}
+        shadows={{ type: THREE.PCFSoftShadowMap }}
         camera={{
           fov: 42,
           near: 0.1,

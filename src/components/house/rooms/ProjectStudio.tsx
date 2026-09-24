@@ -18,7 +18,7 @@ export function ProjectStudio({
   const materials = useMemo(() => {
     const arch = createArchitecturalMaterials();
     return {
-      floor: arch.lightStone,
+      floor: arch.studioFloor,
       concreteWall: arch.ivoryWall,
       woodAccentWall: arch.warmWalnut,
       ceiling: arch.ceiling,

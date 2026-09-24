@@ -22,11 +22,7 @@ export function Foyer() {
         roughness: 0.25,
         metalness: 0.85,
       }),
-      plantFoliage: new THREE.MeshStandardMaterial({
-        color: "#476a4f",
-        roughness: 0.78,
-        metalness: 0.05,
-      }),
+      plantFoliage: arch.greenery,
       ceramicPot: new THREE.MeshStandardMaterial({
         color: "#f1ede6",
         roughness: 0.6,
@@ -35,6 +31,7 @@ export function Foyer() {
       accentLight: new THREE.MeshBasicMaterial({
         color: activeAccent.glow3D,
       }),
+      groundingShadow: arch.groundingShadow,
     };
   }, [activeAccent.glow3D]);
 
@@ -126,6 +123,15 @@ export function Foyer() {
 
       {/* 4. MINIMALIST ART PLINTH / CONSOLE (Left side of foyer at z: -1.8) */}
       <group position={[0.65, 0.14, -1.8]}>
+        {/* Plinth Grounding Contact Shadow */}
+        <mesh
+          position={[0, 0.002, 0]}
+          rotation={[-Math.PI / 2, 0, 0]}
+          material={materials.groundingShadow}
+        >
+          <planeGeometry args={[0.65, 0.65]} />
+        </mesh>
+
         {/* Dark stone pedestal */}
         <mesh position={[0, 0.45, 0]} material={materials.pedestal} castShadow receiveShadow>
           <boxGeometry args={[0.55, 0.9, 0.55]} />
@@ -157,6 +163,15 @@ export function Foyer() {
 
       {/* 4b. Minimalist Ceramic Planter with Architectural Branch */}
       <group position={[2.7, 0.14, 1.4]}>
+        {/* Contact shadow under planter */}
+        <mesh
+          position={[0, 0.002, 0]}
+          rotation={[-Math.PI / 2, 0, 0]}
+          material={materials.groundingShadow}
+        >
+          <circleGeometry args={[0.22, 16]} />
+        </mesh>
+
         {/* Fluted Ceramic Pot */}
         <mesh position={[0, 0.25, 0]} material={materials.ceramicPot} castShadow receiveShadow>
           <cylinderGeometry args={[0.2, 0.16, 0.5, 16]} />

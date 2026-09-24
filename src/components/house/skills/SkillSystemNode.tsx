@@ -43,6 +43,7 @@ export function SkillSystemNode({
       accentBright: new THREE.MeshBasicMaterial({
         color: accentColor,
       }),
+      groundingShadow: arch.groundingShadow,
     };
   }, [accentColor]);
 
@@ -75,6 +76,15 @@ export function SkillSystemNode({
         onSelect(group);
       }}
     >
+      {/* 0. Pedestal Grounding Contact Shadow */}
+      <mesh
+        position={[0, 0.002, 0]}
+        rotation={[-Math.PI / 2, 0, 0]}
+        material={materials.groundingShadow}
+      >
+        <planeGeometry args={[1.3, 0.8]} />
+      </mesh>
+
       {/* 1. Technical Modular Rack / Pedestal */}
       <mesh
         material={materials.pedestal}
