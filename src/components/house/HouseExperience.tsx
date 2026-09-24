@@ -13,7 +13,7 @@ import { ProofDetailModal } from "./proof/ProofDetailModal";
 import { StudyDetailModal } from "./about/StudyDetailModal";
 import { FinalExitOverlay } from "./FinalExitOverlay";
 import { profile } from "@/data/profile";
-import { Project, SkillGroupData, ProofItem } from "@/types";
+import { Project, SkillGroupData, ProofItem, ExhibitionState } from "@/types";
 import { useTheme } from "@/theme/ThemeContext";
 
 import {
@@ -69,10 +69,28 @@ export function HouseExperience() {
 
   // Selected interactive details for modals & spatial focus
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [exhibitionState, setExhibitionState] = useState<ExhibitionState>("IDLE");
   const [hoveredProject, setHoveredProject] = useState<Project | null>(null);
   const [selectedSkillGroup, setSelectedSkillGroup] = useState<SkillGroupData | null>(null);
   const [selectedProof, setSelectedProof] = useState<ProofItem | null>(null);
   const [isStudyModalOpen, setIsStudyModalOpen] = useState(false);
+
+  // Exhibition State transitions
+  const handleSelectProject = useCallback((project: Project) => {
+    setSelectedProject(project);
+    setExhibitionState("SELECTED");
+  }, []);
+
+  const handleCloseProject = useCallback(() => {
+    setExhibitionState("EXITING");
+  }, []);
+
+  const handleExhibitionStateChange = useCallback((newState: ExhibitionState) => {
+    setExhibitionState(newState);
+    if (newState === "IDLE") {
+      setSelectedProject(null);
+    }
+  }, []);
 
   // Compute active spatial room and physical door opening progress
   const spatialState = getActiveSpatialState(scrollProgress);
@@ -122,6 +140,7 @@ export function HouseExperience() {
       if (progress < 0.22 || progress > 0.52) {
         setHoveredProject((prev) => (prev !== null ? null : prev));
         setSelectedProject((prev) => (prev !== null ? null : prev));
+        setExhibitionState((prev) => (prev !== "IDLE" ? "IDLE" : prev));
       }
       if (progress < 0.36 || progress > 0.66) {
         setSelectedSkillGroup((prev) => (prev !== null ? null : prev));
@@ -155,6 +174,7 @@ export function HouseExperience() {
     (targetRoomId: RoomId) => {
       // Cleanly dismiss active modals and object focus before room jump
       setSelectedProject(null);
+      setExhibitionState("IDLE");
       setSelectedSkillGroup(null);
       setSelectedProof(null);
       setIsStudyModalOpen(false);
@@ -345,7 +365,10 @@ export function HouseExperience() {
               onSelectRoom={(rId) => {
                 handleNavigateToRoom(rId as RoomId);
               }}
-              onSelectProject={setSelectedProject}
+              selectedProject={selectedProject}
+              exhibitionState={exhibitionState}
+              onExhibitionStateChange={handleExhibitionStateChange}
+              onSelectProject={handleSelectProject}
               onHoverProject={setHoveredProject}
               onSelectSkill={setSelectedSkillGroup}
               onSelectProof={setSelectedProof}
@@ -363,10 +386,12 @@ export function HouseExperience() {
           onEnterClick={handleEnterClick}
         />
 
-        {/* Interactive Modals */}
+        {/* Contextual Exhibition Signage & Modals */}
         <ProjectDetailModal
           project={selectedProject}
-          onClose={() => setSelectedProject(null)}
+          exhibitionState={exhibitionState}
+          onExhibitionStateChange={handleExhibitionStateChange}
+          onClose={handleCloseProject}
         />
         <SkillDetailModal
           group={selectedSkillGroup}

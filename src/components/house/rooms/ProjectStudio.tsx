@@ -3,16 +3,21 @@
 import { useMemo, useState } from "react";
 import { projects } from "@/data/projects";
 import { Project } from "@/types";
+import { ExhibitionState, EXHIBIT_TRANSFORMS } from "@/types/exhibition";
 import { ProjectDisplay } from "../projects/ProjectDisplay";
 import { createArchitecturalMaterials } from "@/theme/materials";
 
 interface ProjectStudioProps {
+  selectedProject?: Project | null;
+  exhibitionState?: ExhibitionState;
   onSelectProject: (project: Project) => void;
   onHoverProject?: (project: Project | null) => void;
   reducedMotion?: boolean;
 }
 
 export function ProjectStudio({
+  selectedProject = null,
+  exhibitionState = "IDLE",
   onSelectProject,
   onHoverProject,
   reducedMotion = false,
@@ -38,19 +43,6 @@ export function ProjectStudio({
   // Split featured project (ORION) from secondary projects
   const featuredProject = useMemo(() => projects.find((p) => p.featured) || projects[0], []);
   const secondaryProjects = useMemo(() => projects.filter((p) => p.id !== featuredProject.id), [featuredProject]);
-
-  // Spatial coordinates for secondary projects
-  const secondaryPositions: {
-    pos: [number, number, number];
-    rot: [number, number, number];
-  }[] = [
-    { pos: [-2.4, 0, -4.8], rot: [0, Math.PI / 4, 0] },     // HeartTune
-    { pos: [-2.4, 0, -7.8], rot: [0, (3 * Math.PI) / 4, 0] }, // NISF
-    { pos: [-6.6, 0, -4.8], rot: [0, -Math.PI / 4, 0] },    // AHAL AI
-    { pos: [-6.6, 0, -7.8], rot: [0, -(3 * Math.PI) / 4, 0] },// PRYSM
-    { pos: [-4.5, 0, -4.4], rot: [0, 0, 0] },               // BHOOMI
-    { pos: [-4.5, 0, -8.6], rot: [0, Math.PI, 0] },          // MINCHAL
-  ];
 
   return (
     <group name="room-02-project-studio" position={[0, 0, 0]}>
@@ -222,11 +214,13 @@ export function ProjectStudio({
       {/* Featured Centerpiece Exhibit: ORION */}
       <ProjectDisplay
         project={featuredProject}
-        position={[-4.5, 0.14, -6.5]}
-        rotation={[0, 0, 0]}
+        position={EXHIBIT_TRANSFORMS.orion.position}
+        rotation={EXHIBIT_TRANSFORMS.orion.rotation}
         isFeatured={true}
         isFocused={hoveredProjectId === featuredProject.id}
-        isAnyFocused={hoveredProjectId !== null}
+        exhibitionState={selectedProject?.id === featuredProject.id ? exhibitionState : undefined}
+        isInspected={selectedProject?.id === featuredProject.id}
+        isAnyInspected={selectedProject !== null}
         onFocusChange={(focused) => {
           setHoveredProjectId(focused ? featuredProject.id : null);
           onHoverProject?.(focused ? featuredProject : null);
@@ -236,16 +230,16 @@ export function ProjectStudio({
       />
 
       {/* 5. SECONDARY PROJECT EXHIBITION PLATFORMS */}
-      {secondaryProjects.map((project, idx) => {
-        const layout = secondaryPositions[idx] || {
-          pos: [-3.0 - idx * 0.8, 0, -5.0],
-          rot: [0, 0, 0],
+      {secondaryProjects.map((project) => {
+        const transform = EXHIBIT_TRANSFORMS[project.id] || {
+          position: [-3.0, 0.14, -5.0] as [number, number, number],
+          rotation: [0, 0, 0] as [number, number, number],
         };
         return (
           <group key={project.id}>
             {/* Low architectural display platform disk */}
             <mesh
-              position={[layout.pos[0], 0.13, layout.pos[2]]}
+              position={[transform.position[0], 0.13, transform.position[2]]}
               material={materials.floor}
               receiveShadow
             >
@@ -253,11 +247,13 @@ export function ProjectStudio({
             </mesh>
             <ProjectDisplay
               project={project}
-              position={[layout.pos[0], 0.14, layout.pos[2]]}
-              rotation={layout.rot as [number, number, number]}
+              position={transform.position}
+              rotation={transform.rotation}
               isFeatured={false}
               isFocused={hoveredProjectId === project.id}
-              isAnyFocused={hoveredProjectId !== null}
+              exhibitionState={selectedProject?.id === project.id ? exhibitionState : undefined}
+              isInspected={selectedProject?.id === project.id}
+              isAnyInspected={selectedProject !== null}
               onFocusChange={(focused) => {
                 setHoveredProjectId(focused ? project.id : null);
                 onHoverProject?.(focused ? project : null);

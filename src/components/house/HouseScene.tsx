@@ -18,7 +18,7 @@ import { PrivateStudy } from "./rooms/PrivateStudy";
 import { ContactRoom } from "./rooms/ContactRoom";
 import { RoomSystem } from "./RoomSystem";
 import { RoomId } from "./SpatialNavigation";
-import { Project, SkillGroupData, ProofItem } from "@/types";
+import { Project, SkillGroupData, ProofItem, ExhibitionState } from "@/types";
 
 interface HouseSceneProps {
   scrollProgress: number;
@@ -28,6 +28,9 @@ interface HouseSceneProps {
   onEntranceHoverChange: (hovered: boolean) => void;
   onDoorClick?: () => void;
   onSelectRoom?: (roomId: string) => void;
+  selectedProject?: Project | null;
+  exhibitionState?: ExhibitionState;
+  onExhibitionStateChange?: (state: ExhibitionState) => void;
   onSelectProject: (project: Project) => void;
   onHoverProject?: (project: Project | null) => void;
   onSelectSkill: (group: SkillGroupData) => void;
@@ -45,6 +48,9 @@ export function HouseScene({
   onEntranceHoverChange,
   onDoorClick,
   onSelectRoom,
+  selectedProject = null,
+  exhibitionState = "IDLE",
+  onExhibitionStateChange,
   onSelectProject,
   onHoverProject,
   onSelectSkill,
@@ -54,7 +60,11 @@ export function HouseScene({
   reducedMotion = false,
 }: HouseSceneProps) {
   return (
-    <div className="relative h-full w-full bg-[#F5F4EF] touch-pan-y">
+    <div
+      className={`relative h-full w-full bg-[#F5F4EF] ${
+        selectedProject ? "touch-none" : "touch-pan-y"
+      }`}
+    >
       <Canvas
         shadows={{ type: THREE.PCFSoftShadowMap }}
         camera={{
@@ -79,9 +89,12 @@ export function HouseScene({
       >
         {/* Architectural daylight background color */}
         <color attach="background" args={["#F5F4EF"]} />
-        {/* Dynamic camera rig with cinematic inertia across full digital house */}
+        {/* Dynamic camera rig with cinematic inertia across full digital house and 360 orbit mode */}
         <CameraRig
           scrollProgress={scrollProgress}
+          inspectedProject={selectedProject}
+          exhibitionState={exhibitionState}
+          onExhibitionStateChange={onExhibitionStateChange}
           reducedMotion={reducedMotion}
         />
 
@@ -91,9 +104,10 @@ export function HouseScene({
           reducedMotion={reducedMotion}
         />
 
-        {/* Interior multi-zone dynamic lighting */}
+        {/* Interior multi-zone dynamic lighting with exhibition quieting */}
         <InteriorLighting
           scrollProgress={scrollProgress}
+          isInspectingProject={Boolean(selectedProject)}
           reducedMotion={reducedMotion}
         />
 
@@ -128,8 +142,10 @@ export function HouseScene({
               reducedMotion={reducedMotion}
             />
           </group>
-          <group visible={scrollProgress >= 0.18 && scrollProgress <= 0.62}>
+          <group visible={Boolean(selectedProject) || (scrollProgress >= 0.18 && scrollProgress <= 0.62)}>
             <ProjectStudio
+              selectedProject={selectedProject}
+              exhibitionState={exhibitionState}
               onSelectProject={onSelectProject}
               onHoverProject={onHoverProject}
               reducedMotion={reducedMotion}
