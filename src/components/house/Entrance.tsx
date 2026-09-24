@@ -32,14 +32,18 @@ export function Entrance({
       stepLow: arch.paleStoneFloor,
       stepMid: arch.lightStone,
       stepTop: arch.studioFloor,
-      woodAlcove: arch.honeyOak,
-      woodSoffit: arch.naturalOak,
+      woodAlcove: arch.naturalWalnutWood,
+      woodSoffit: arch.naturalWalnutWood,
       doorFrame: arch.darkMetalFrame,
-      doorPanel: arch.honeyOak,
+      doorPanel: arch.naturalWalnutWood,
       doorHandle: arch.brushedMetal,
+      handleGlow: new THREE.MeshBasicMaterial({
+        color: activeAccent.glow3D,
+      }),
       handleMount: arch.darkMetalFrame,
       downlightBezel: arch.darkMetalFrame,
       downlightLens: arch.trackLens,
+      sidelightGlass: arch.galleryGlass,
       stepLed: new THREE.MeshBasicMaterial({ color: "#fde68a" }),
       doorGlow: new THREE.MeshBasicMaterial({
         color: activeAccent.glow3D,
@@ -161,12 +165,27 @@ export function Entrance({
         <boxGeometry args={[1.56, 2.44, 0.06]} />
       </mesh>
 
-      {/* Modern Pivot Door Panel (Subtle horizontal architectural wood slats) */}
+      {/* Flanking Floor-to-Ceiling Glass Sidelights (Reference Benchmark) */}
+      <mesh position={[-0.82, 1.55, -0.2]} material={materials.sidelightGlass}>
+        <boxGeometry args={[0.16, 2.44, 0.03]} />
+      </mesh>
+      <mesh position={[0.82, 1.55, -0.2]} material={materials.sidelightGlass}>
+        <boxGeometry args={[0.16, 2.44, 0.03]} />
+      </mesh>
+
+      {/* Modern Pivot Door Panel (Rich book-matched horizontal walnut slats) */}
       <group position={[-0.65, 0.35, -0.2]} ref={doorMeshRef}>
         {/* Door rotates around its pivot axis */}
         <mesh position={[0.65, 1.15, 0]} castShadow receiveShadow material={materials.doorPanel}>
           <boxGeometry args={[1.3, 2.3, 0.06]} />
         </mesh>
+
+        {/* Horizontal Walnut Grain Groove Lines */}
+        {[0.3, 0.6, 0.9, 1.2, 1.5, 1.8, 2.1].map((yOffset) => (
+          <mesh key={yOffset} position={[0.65, yOffset, 0.032]} material={materials.doorFrame}>
+            <boxGeometry args={[1.28, 0.006, 0.004]} />
+          </mesh>
+        ))}
 
         {/* Vertical Architectural Brushed Metal Pull Handle */}
         <mesh
@@ -177,6 +196,12 @@ export function Entrance({
         >
           <cylinderGeometry args={[0.016, 0.016, 1.1, 12]} />
         </mesh>
+
+        {/* Integrated Luminous Accent Indicator Stripe (Reference Video Benchmark) */}
+        <mesh position={[1.2, 1.1, 0.076]} material={materials.handleGlow}>
+          <boxGeometry args={[0.006, 1.05, 0.004]} />
+        </mesh>
+
         {/* Handle mounts */}
         <mesh position={[1.2, 1.55, 0.035]} material={materials.handleMount}>
           <boxGeometry args={[0.03, 0.03, 0.05]} />

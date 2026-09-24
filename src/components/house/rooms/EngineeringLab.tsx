@@ -21,9 +21,12 @@ export function EngineeringLab({
     const arch = createArchitecturalMaterials();
     return {
       floor: arch.technicalTerrazzo,
-      darkConcreteWall: arch.coolWall,
+      stoneFloor: arch.paleStoneFloor,
+      wall: arch.coolWall,
       steelPanel: arch.brushedMetal,
       ceiling: arch.ceiling,
+      galleryGlass: arch.galleryGlass,
+      metalFrame: arch.darkMetalFrame,
       conduit: new THREE.MeshStandardMaterial({
         color: "#94a3b8",
         roughness: 0.3,
@@ -33,9 +36,9 @@ export function EngineeringLab({
         color: "#0d9488",
       }),
       benchSurface: new THREE.MeshStandardMaterial({
-        color: "#e2e8f0",
+        color: "#f1f5f9",
         roughness: 0.25,
-        metalness: 0.3,
+        metalness: 0.35,
       }),
     };
   }, []);
@@ -55,7 +58,7 @@ export function EngineeringLab({
 
   return (
     <group name="room-03-engineering-lab" position={[0, 0, 0]}>
-      {/* 1. ROOM FLOOR */}
+      {/* 1. ROOM FLOOR (Technical Terrazzo with Precision Aluminum Inlay Grid) */}
       {/* Width x: 2.9 to 9.5 (width 6.6, center x: 6.2), Depth z: -6.0 to -12.0 (depth 6.0, center z: -9.0) */}
       <mesh
         position={[6.2, 0.12, -9.0]}
@@ -82,7 +85,7 @@ export function EngineeringLab({
         <boxGeometry args={[6.6, 0.04, 6.0]} />
       </mesh>
 
-      {/* Ceiling Conduits and Industrial Trays */}
+      {/* Ceiling Architectural Trays & Cyan Luminaire Spine */}
       <group position={[6.2, 3.12, -9.0]}>
         <mesh material={materials.conduit}>
           <boxGeometry args={[6.2, 0.06, 0.14]} />
@@ -96,14 +99,14 @@ export function EngineeringLab({
       {/* North Wall (z: -12.02) */}
       <mesh
         position={[6.2, 1.67, -12.02]}
-        material={materials.darkConcreteWall}
+        material={materials.wall}
         castShadow
         receiveShadow
       >
         <boxGeometry args={[6.6, 3.1, 0.06]} />
       </mesh>
 
-      {/* South Wall (z: -5.98) */}
+      {/* South Wall with Brushed Architectural Steel Panels (z: -5.98) */}
       <mesh
         position={[6.2, 1.67, -5.98]}
         material={materials.steelPanel}
@@ -113,29 +116,40 @@ export function EngineeringLab({
         <boxGeometry args={[6.6, 3.1, 0.06]} />
       </mesh>
 
-      {/* East Wall (x: 9.52) */}
+      {/* East Wall (x: 9.52) with High Architectural Ribbon Clerestory Window */}
       <mesh
-        position={[9.52, 1.67, -9.0]}
-        material={materials.darkConcreteWall}
+        position={[9.52, 1.3, -9.0]}
+        material={materials.wall}
         castShadow
         receiveShadow
       >
-        <boxGeometry args={[0.06, 3.1, 6.0]} />
+        <boxGeometry args={[0.06, 2.36, 6.0]} />
+      </mesh>
+      {/* Clerestory ribbon window glass */}
+      <mesh position={[9.52, 2.75, -9.0]} material={materials.galleryGlass}>
+        <boxGeometry args={[0.02, 0.7, 5.6]} />
+      </mesh>
+      {/* Top lintel above clerestory */}
+      <mesh position={[9.52, 3.15, -9.0]} material={materials.wall} receiveShadow>
+        <boxGeometry args={[0.06, 0.14, 6.0]} />
       </mesh>
 
-      {/* West Wall (x: 2.88) with Doorway Opening at z: -8.6 */}
-      {/* South section: z: -6.0 to -8.0 (length 2.0, center z: -7.0) */}
-      <mesh
-        position={[2.88, 1.67, -7.0]}
-        material={materials.darkConcreteWall}
-        receiveShadow
-      >
-        <boxGeometry args={[0.06, 3.1, 2.0]} />
+      {/* West Wall (x: 2.88) with Doorway Opening at z: -8.6 & Glass Sidelight Partition */}
+      {/* South section: Floor-to-ceiling Glass Gallery Partition looking into corridor */}
+      <mesh position={[2.88, 1.55, -7.0]} material={materials.galleryGlass}>
+        <boxGeometry args={[0.02, 2.6, 1.8]} />
       </mesh>
-      {/* North section: z: -9.2 to -12.0 (length 2.8, center z: -10.6) */}
+      <mesh position={[2.88, 2.95, -7.0]} material={materials.wall} receiveShadow>
+        <boxGeometry args={[0.06, 0.34, 2.0]} />
+      </mesh>
+      <mesh position={[2.88, 0.18, -7.0]} material={materials.wall} receiveShadow>
+        <boxGeometry args={[0.06, 0.12, 2.0]} />
+      </mesh>
+
+      {/* North section: Solid architectural drywall (z: -9.2 to -12.0) */}
       <mesh
         position={[2.88, 1.67, -10.6]}
-        material={materials.darkConcreteWall}
+        material={materials.wall}
         receiveShadow
       >
         <boxGeometry args={[0.06, 3.1, 2.8]} />
@@ -143,7 +157,7 @@ export function EngineeringLab({
       {/* Lintel header above doorway */}
       <mesh
         position={[2.88, 2.85, -8.6]}
-        material={materials.darkConcreteWall}
+        material={materials.wall}
         receiveShadow
       >
         <boxGeometry args={[0.06, 0.74, 1.2]} />

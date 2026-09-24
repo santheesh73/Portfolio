@@ -27,8 +27,8 @@ export function ContactRoom({
       terraceFloor: arch.paleStoneFloor,
       wall: arch.ivoryWall,
       ceiling: arch.ceiling,
-      glass: arch.tintedGlass,
-      frameDark: arch.brushedMetal,
+      glass: arch.galleryGlass,
+      frameDark: arch.darkMetalFrame,
       consolePedestal: arch.plinthBase,
       terminalEmail: new THREE.MeshBasicMaterial({
         color: "#2dd4bf",

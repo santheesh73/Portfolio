@@ -21,10 +21,15 @@ export function ProjectStudio({
   const materials = useMemo(() => {
     const arch = createArchitecturalMaterials();
     return {
-      floor: arch.studioFloor,
+      floor: arch.paleStoneFloor,
       concreteWall: arch.ivoryWall,
-      woodAccentWall: arch.warmWalnut,
+      woodAccentWall: arch.naturalWalnutWood,
       ceiling: arch.ceiling,
+      galleryGlass: arch.galleryGlass,
+      metalFrame: arch.darkMetalFrame,
+      coveLight: arch.warmCoveGlow,
+      plinthIlluminated: arch.plinthIlluminated,
+      groundingShadow: arch.groundingShadow,
       trackLight: arch.trackLightBezel,
       trackLens: arch.trackLens,
     };
@@ -49,7 +54,7 @@ export function ProjectStudio({
 
   return (
     <group name="room-02-project-studio" position={[0, 0, 0]}>
-      {/* 1. ROOM FLOOR */}
+      {/* 1. ROOM FLOOR (Continuous Pale Limestone Exhibition Floor) */}
       {/* Width x: -0.5 to -8.5 (width 8.0), Depth z: -3.5 to -9.5 (depth 6.0), y: 0.12 */}
       <mesh
         position={[-4.5, 0.12, -6.5]}
@@ -59,13 +64,21 @@ export function ProjectStudio({
         <boxGeometry args={[8.0, 0.04, 6.0]} />
       </mesh>
 
-      {/* 2. ROOM CEILING */}
+      {/* 2. ROOM CEILING WITH RECESSED GALLERY LIGHTING & COVES */}
       <mesh
         position={[-4.5, 3.22, -6.5]}
         material={materials.ceiling}
         receiveShadow
       >
         <boxGeometry args={[8.0, 0.04, 6.0]} />
+      </mesh>
+
+      {/* Architectural Perimeter Cove Lighting (North & South soffits) */}
+      <mesh position={[-4.5, 3.19, -9.42]} material={materials.coveLight}>
+        <boxGeometry args={[7.8, 0.02, 0.06]} />
+      </mesh>
+      <mesh position={[-4.5, 3.19, -3.58]} material={materials.coveLight}>
+        <boxGeometry args={[7.8, 0.02, 0.06]} />
       </mesh>
 
       {/* Architectural Ceiling Track Lighting Rails */}
@@ -82,8 +95,8 @@ export function ProjectStudio({
         </group>
       ))}
 
-      {/* 3. STUDIO WALLS */}
-      {/* North Wall (z: -9.5) */}
+      {/* 3. STUDIO GALLERY WALLS */}
+      {/* North Exhibition Wall (z: -9.5) */}
       <mesh
         position={[-4.5, 1.67, -9.52]}
         material={materials.concreteWall}
@@ -93,7 +106,7 @@ export function ProjectStudio({
         <boxGeometry args={[8.0, 3.1, 0.06]} />
       </mesh>
 
-      {/* South Wall (z: -3.5) */}
+      {/* South Wall with Warm Walnut Paneling (z: -3.5) */}
       <mesh
         position={[-4.5, 1.67, -3.48]}
         material={materials.woodAccentWall}
@@ -103,15 +116,34 @@ export function ProjectStudio({
         <boxGeometry args={[8.0, 3.1, 0.06]} />
       </mesh>
 
-      {/* West Wall (x: -8.5) */}
-      <mesh
-        position={[-8.52, 1.67, -6.5]}
-        material={materials.concreteWall}
-        castShadow
-        receiveShadow
-      >
-        <boxGeometry args={[0.06, 3.1, 6.0]} />
+      {/* West Wall: Floor-to-Ceiling Panoramic Glass Facade to Landscape (Reference Video 00:06-00:07) */}
+      {/* Top lintel */}
+      <mesh position={[-8.52, 3.0, -6.5]} material={materials.concreteWall} receiveShadow>
+        <boxGeometry args={[0.06, 0.44, 6.0]} />
       </mesh>
+      {/* Bottom sill */}
+      <mesh position={[-8.52, 0.22, -6.5]} material={materials.concreteWall} receiveShadow>
+        <boxGeometry args={[0.06, 0.2, 6.0]} />
+      </mesh>
+      {/* North jamb */}
+      <mesh position={[-8.52, 1.67, -9.2]} material={materials.concreteWall} receiveShadow>
+        <boxGeometry args={[0.06, 2.7, 0.6]} />
+      </mesh>
+      {/* South jamb */}
+      <mesh position={[-8.52, 1.67, -3.8]} material={materials.concreteWall} receiveShadow>
+        <boxGeometry args={[0.06, 2.7, 0.6]} />
+      </mesh>
+
+      {/* Panoramic Glass Pane */}
+      <mesh position={[-8.52, 1.61, -6.5]} material={materials.galleryGlass}>
+        <boxGeometry args={[0.02, 2.58, 4.8]} />
+      </mesh>
+      {/* Slim Dark Metal Mullions dividing the panoramic glass */}
+      {[-7.7, -6.5, -5.3].map((zMullion) => (
+        <mesh key={zMullion} position={[-8.52, 1.61, zMullion]} material={materials.metalFrame}>
+          <boxGeometry args={[0.04, 2.6, 0.04]} />
+        </mesh>
+      ))}
 
       {/* East Wall (x: -0.5) with Doorway Opening leading to Corridor */}
       {/* North section of east wall */}
@@ -171,7 +203,23 @@ export function ProjectStudio({
         </mesh>
       </group>
 
-      {/* 4. FEATURED CENTERPIECE: ORION */}
+      {/* 4. ILLUMINATED CENTERPIECE EXHIBITION PLINTH (Reference Video 00:06-00:07) */}
+      <group position={[-4.5, 0.12, -6.5]}>
+        {/* Soft grounding contact shadow */}
+        <mesh position={[0, 0.002, 0]} rotation={[-Math.PI / 2, 0, 0]} material={materials.groundingShadow}>
+          <planeGeometry args={[2.5, 2.5]} />
+        </mesh>
+        {/* Under-edge warm glowing illuminated reveal */}
+        <mesh position={[0, 0.02, 0]} material={materials.plinthIlluminated}>
+          <boxGeometry args={[2.1, 0.03, 2.1]} />
+        </mesh>
+        {/* Elevated pale limestone exhibition plinth base */}
+        <mesh position={[0, 0.06, 0]} material={materials.floor} receiveShadow castShadow>
+          <boxGeometry args={[2.0, 0.06, 2.0]} />
+        </mesh>
+      </group>
+
+      {/* Featured Centerpiece Exhibit: ORION */}
       <ProjectDisplay
         project={featuredProject}
         position={[-4.5, 0.14, -6.5]}
@@ -187,28 +235,37 @@ export function ProjectStudio({
         reducedMotion={reducedMotion}
       />
 
-      {/* 5. SECONDARY PROJECT DISPLAYS */}
+      {/* 5. SECONDARY PROJECT EXHIBITION PLATFORMS */}
       {secondaryProjects.map((project, idx) => {
         const layout = secondaryPositions[idx] || {
           pos: [-3.0 - idx * 0.8, 0, -5.0],
           rot: [0, 0, 0],
         };
         return (
-          <ProjectDisplay
-            key={project.id}
-            project={project}
-            position={[layout.pos[0], 0.14, layout.pos[2]]}
-            rotation={layout.rot as [number, number, number]}
-            isFeatured={false}
-            isFocused={hoveredProjectId === project.id}
-            isAnyFocused={hoveredProjectId !== null}
-            onFocusChange={(focused) => {
-              setHoveredProjectId(focused ? project.id : null);
-              onHoverProject?.(focused ? project : null);
-            }}
-            onSelect={onSelectProject}
-            reducedMotion={reducedMotion}
-          />
+          <group key={project.id}>
+            {/* Low architectural display platform disk */}
+            <mesh
+              position={[layout.pos[0], 0.13, layout.pos[2]]}
+              material={materials.floor}
+              receiveShadow
+            >
+              <cylinderGeometry args={[0.65, 0.7, 0.02, 24]} />
+            </mesh>
+            <ProjectDisplay
+              project={project}
+              position={[layout.pos[0], 0.14, layout.pos[2]]}
+              rotation={layout.rot as [number, number, number]}
+              isFeatured={false}
+              isFocused={hoveredProjectId === project.id}
+              isAnyFocused={hoveredProjectId !== null}
+              onFocusChange={(focused) => {
+                setHoveredProjectId(focused ? project.id : null);
+                onHoverProject?.(focused ? project : null);
+              }}
+              onSelect={onSelectProject}
+              reducedMotion={reducedMotion}
+            />
+          </group>
         );
       })}
     </group>
