@@ -29,6 +29,7 @@ interface HouseSceneProps {
   onDoorClick?: () => void;
   onSelectRoom?: (roomId: string) => void;
   selectedProject?: Project | null;
+  selectedSkillGroup?: SkillGroupData | null;
   exhibitionState?: ExhibitionState;
   onExhibitionStateChange?: (state: ExhibitionState) => void;
   onSelectProject: (project: Project) => void;
@@ -49,6 +50,7 @@ export function HouseScene({
   onDoorClick,
   onSelectRoom,
   selectedProject = null,
+  selectedSkillGroup = null,
   exhibitionState = "IDLE",
   onExhibitionStateChange,
   onSelectProject,
@@ -92,7 +94,7 @@ export function HouseScene({
         {/* Dynamic camera rig with cinematic inertia across full digital house and 360 orbit mode */}
         <CameraRig
           scrollProgress={scrollProgress}
-          inspectedProject={selectedProject}
+          inspectedExhibit={selectedProject || selectedSkillGroup}
           exhibitionState={exhibitionState}
           onExhibitionStateChange={onExhibitionStateChange}
           reducedMotion={reducedMotion}
@@ -179,3 +181,6 @@ export function HouseScene({
     </div>
   );
 }
+
+
+
