@@ -4,6 +4,7 @@ import { useMemo, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { profile } from "@/data/profile";
+import { createArchitecturalMaterials } from "@/theme/materials";
 
 interface ContactRoomProps {
   scrollProgress: number;
@@ -20,44 +21,15 @@ export function ContactRoom({
   const githubGlowRef = useRef<THREE.Mesh>(null);
 
   const materials = useMemo(() => {
+    const arch = createArchitecturalMaterials();
     return {
-      floor: new THREE.MeshStandardMaterial({
-        color: "#ece8e0",
-        roughness: 0.55,
-        metalness: 0.05,
-      }),
-      terraceFloor: new THREE.MeshStandardMaterial({
-        color: "#e4dfd6",
-        roughness: 0.75,
-        metalness: 0.04,
-      }),
-      wall: new THREE.MeshStandardMaterial({
-        color: "#f5f4ef",
-        roughness: 0.88,
-        metalness: 0.02,
-      }),
-      ceiling: new THREE.MeshStandardMaterial({
-        color: "#faf9f6",
-        roughness: 0.95,
-        metalness: 0.02,
-      }),
-      glass: new THREE.MeshStandardMaterial({
-        color: "#e0f2fe",
-        roughness: 0.08,
-        metalness: 0.3,
-        transparent: true,
-        opacity: 0.32,
-      }),
-      frameDark: new THREE.MeshStandardMaterial({
-        color: "#cbd5e1",
-        roughness: 0.35,
-        metalness: 0.8,
-      }),
-      consolePedestal: new THREE.MeshStandardMaterial({
-        color: "#ffffff",
-        roughness: 0.4,
-        metalness: 0.1,
-      }),
+      floor: arch.lightStone,
+      terraceFloor: arch.paleStoneFloor,
+      wall: arch.ivoryWall,
+      ceiling: arch.ceiling,
+      glass: arch.tintedGlass,
+      frameDark: arch.brushedMetal,
+      consolePedestal: arch.plinthBase,
       terminalEmail: new THREE.MeshBasicMaterial({
         color: "#2dd4bf",
       }),

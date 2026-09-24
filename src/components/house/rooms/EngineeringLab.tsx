@@ -5,6 +5,7 @@ import * as THREE from "three";
 import { SKILL_GROUPS } from "@/data/skills";
 import { SkillGroupData } from "@/types";
 import { SkillSystemNode } from "../skills/SkillSystemNode";
+import { createArchitecturalMaterials } from "@/theme/materials";
 
 interface EngineeringLabProps {
   onSelectSkill: (group: SkillGroupData) => void;
@@ -16,27 +17,12 @@ export function EngineeringLab({
   reducedMotion = false,
 }: EngineeringLabProps) {
   const materials = useMemo(() => {
+    const arch = createArchitecturalMaterials();
     return {
-      floor: new THREE.MeshStandardMaterial({
-        color: "#e4e6eb",
-        roughness: 0.45,
-        metalness: 0.2,
-      }),
-      darkConcreteWall: new THREE.MeshStandardMaterial({
-        color: "#f1f3f7",
-        roughness: 0.85,
-        metalness: 0.05,
-      }),
-      steelPanel: new THREE.MeshStandardMaterial({
-        color: "#cbd5e1",
-        roughness: 0.35,
-        metalness: 0.75,
-      }),
-      ceiling: new THREE.MeshStandardMaterial({
-        color: "#faf9f6",
-        roughness: 0.95,
-        metalness: 0.02,
-      }),
+      floor: arch.technicalTerrazzo,
+      darkConcreteWall: arch.coolWall,
+      steelPanel: arch.brushedMetal,
+      ceiling: arch.ceiling,
       conduit: new THREE.MeshStandardMaterial({
         color: "#94a3b8",
         roughness: 0.3,

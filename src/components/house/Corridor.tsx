@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import * as THREE from "three";
 import { RoomDoor } from "./RoomDoor";
+import { createArchitecturalMaterials } from "@/theme/materials";
 
 interface CorridorProps {
   onSelectRoom?: (roomId: string) => void;
@@ -11,30 +12,13 @@ interface CorridorProps {
 
 export function Corridor({ onSelectRoom, reducedMotion = false }: CorridorProps) {
   const materials = useMemo(() => {
+    const arch = createArchitecturalMaterials();
     return {
-      floor: new THREE.MeshStandardMaterial({
-        color: "#e5e0d6",
-        roughness: 0.55,
-        metalness: 0.04,
-      }),
-      wall: new THREE.MeshStandardMaterial({
-        color: "#f5f4ef",
-        roughness: 0.88,
-        metalness: 0.02,
-      }),
-      ceiling: new THREE.MeshStandardMaterial({
-        color: "#faf9f6",
-        roughness: 0.92,
-        metalness: 0.02,
-      }),
-      downlightBezel: new THREE.MeshStandardMaterial({
-        color: "#cbd5e1",
-        roughness: 0.3,
-        metalness: 0.8,
-      }),
-      downlightLens: new THREE.MeshBasicMaterial({
-        color: "#fffdf5",
-      }),
+      floor: arch.lightStone,
+      wall: arch.ivoryWall,
+      ceiling: arch.ceiling,
+      downlightBezel: arch.trackLightBezel,
+      downlightLens: arch.trackLens,
       endPortalGlow: new THREE.MeshBasicMaterial({
         color: "#0f766e",
         transparent: true,

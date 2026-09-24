@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import { LIGHTING_TOKENS } from "@/theme/lighting";
 
 interface HouseLightingProps {
   isEntranceHovered?: boolean;
@@ -37,38 +38,40 @@ export function HouseLighting({
     }
   });
 
+  const { daylight, shadow } = LIGHTING_TOKENS;
+
   return (
     <group name="house-lighting">
       {/* 1. Soft Daylight Ambient Fill */}
-      <ambientLight color="#fbf9f4" intensity={0.65} />
+      <ambientLight color={daylight.ambientColor} intensity={daylight.ambientIntensity} />
 
       {/* 2. Hemisphere Light: Pale morning sky above, warm limestone ground bounce below */}
       <hemisphereLight
-        args={["#e0f2fe", "#f5ede4", 0.85]}
+        args={[daylight.hemisphereSky, daylight.hemisphereGround, daylight.hemisphereIntensity]}
       />
 
       {/* 3. Directional Sun Key Light (Main Architectural Daylight Source) */}
       <directionalLight
-        position={[14, 22, 12]}
-        color="#fffcf4"
-        intensity={1.8}
+        position={daylight.sunPosition}
+        color={daylight.sunColor}
+        intensity={daylight.sunIntensity}
         castShadow
-        shadow-mapSize-width={1024}
-        shadow-mapSize-height={1024}
+        shadow-mapSize-width={shadow.mapSizeLarge}
+        shadow-mapSize-height={shadow.mapSizeLarge}
         shadow-camera-near={0.5}
         shadow-camera-far={42}
         shadow-camera-left={-14}
         shadow-camera-right={14}
         shadow-camera-top={14}
         shadow-camera-bottom={-8}
-        shadow-bias={-0.0002}
+        shadow-bias={shadow.biasDirectional}
       />
 
       {/* 4. Soft Sky Fill Light (Softens contrast on western facades) */}
       <directionalLight
-        position={[-12, 16, 8]}
-        color="#f0f9ff"
-        intensity={0.5}
+        position={daylight.skyFillPosition}
+        color={daylight.skyFillColor}
+        intensity={daylight.skyFillIntensity}
       />
 
       {/* 5. Window Interior Daylight Ambient Wash */}

@@ -4,6 +4,7 @@ import { useMemo, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { ProofItem } from "@/types";
+import { createArchitecturalMaterials } from "@/theme/materials";
 
 interface ProofDisplayProps {
   item: ProofItem;
@@ -37,19 +38,10 @@ export function ProofDisplay({
   }, [item.category]);
 
   const materials = useMemo(() => {
+    const arch = createArchitecturalMaterials();
     return {
-      glassBackplate: new THREE.MeshStandardMaterial({
-        color: "#ffffff",
-        roughness: 0.15,
-        metalness: 0.2,
-        transparent: true,
-        opacity: 0.75,
-      }),
-      frame: new THREE.MeshStandardMaterial({
-        color: "#cbd5e1",
-        roughness: 0.35,
-        metalness: 0.8,
-      }),
+      glassBackplate: arch.clearGlass,
+      frame: arch.brushedMetal,
       glow: new THREE.MeshBasicMaterial({
         color: accentColor,
         transparent: true,

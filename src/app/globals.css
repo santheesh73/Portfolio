@@ -34,11 +34,16 @@
 
   --border: var(--border-light);
   --border-subtle: var(--border-subtle-light);
+  --border-strong: rgba(0, 0, 0, 0.16);
 
   --accent: var(--teal);
   --accent-hover: var(--teal-bright);
+  --accent-strong: var(--teal-bright);
+  --accent-soft: rgba(15, 118, 110, 0.10);
   --accent-foreground: var(--teal-deep);
   --accent-muted: rgba(15, 118, 110, 0.12);
+
+  --surface-architectural: #FAF9F6;
 
   --success: #16a34a;
   --warning: #d97706;
@@ -95,11 +100,16 @@
 
   --color-border: var(--border);
   --color-border-subtle: var(--border-subtle);
+  --color-border-strong: var(--border-strong);
 
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent-muted: var(--accent-muted);
+
+  --color-surface-architectural: var(--surface-architectural);
 
   --color-success: var(--success);
   --color-warning: var(--warning);
@@ -114,6 +124,8 @@
   --radius-xl: var(--radius-xl);
   --radius-pill: var(--radius-pill);
 
+  --shadow-soft: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.06);
   --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
   --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
   --shadow-elevated: 0 20px 25px -5px rgba(0, 0, 0, 0.07), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
@@ -263,6 +275,54 @@ body::after {
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+}
+
+.type-heading {
+  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+  line-height: 1.1;
+  letter-spacing: -0.028em;
+  font-weight: 620;
+  text-wrap: balance;
+}
+
+.type-subheading {
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  font-weight: 550;
+}
+
+.type-metadata {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  line-height: 1.4;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* ---- Reusable Design System Surface Styles ---- */
+.surface-base {
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+.surface-elevated {
+  background-color: var(--surface-elevated);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+}
+
+.surface-glass {
+  background-color: var(--surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
+}
+
+.surface-architectural {
+  background-color: var(--surface-architectural);
+  border: 1px solid var(--border-subtle);
 }
 
 /* ---- Atmospheric primitives (reusable, CSS-first) ----

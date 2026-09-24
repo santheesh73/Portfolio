@@ -3,6 +3,7 @@
 import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
+import { LIGHTING_TOKENS } from "@/theme/lighting";
 
 interface InteriorLightingProps {
   scrollProgress: number;
@@ -13,6 +14,7 @@ export function InteriorLighting({
   scrollProgress,
   reducedMotion = false,
 }: InteriorLightingProps) {
+  const { interior, shadow } = LIGHTING_TOKENS;
   const foyerAmbientRef = useRef<THREE.AmbientLight>(null);
   const foyerCoveRef = useRef<THREE.PointLight>(null);
   const corridorSpot1Ref = useRef<THREE.SpotLight>(null);
@@ -178,7 +180,7 @@ export function InteriorLighting({
       {/* 1. Foyer Ambient Warm Fill */}
       <ambientLight
         ref={foyerAmbientRef}
-        color="#fdfbf7"
+        color={interior.ambientColor}
         intensity={0}
       />
 
@@ -186,7 +188,7 @@ export function InteriorLighting({
       <pointLight
         ref={foyerCoveRef}
         position={[1.65, 3.1, -1.2]}
-        color="#fffbeb"
+        color={interior.foyerCoveColor}
         intensity={0}
         distance={6.5}
         decay={2}
@@ -195,7 +197,7 @@ export function InteriorLighting({
       {/* 3. Foyer Feature Art Wash */}
       <pointLight
         position={[0.65, 2.4, -1.8]}
-        color="#fef3c7"
+        color={interior.archiveAmbientColor}
         intensity={0.8 * targetInteriorFactor}
         distance={4.0}
         decay={2}
@@ -206,22 +208,22 @@ export function InteriorLighting({
         ref={corridorSpot1Ref}
         position={[1.7, 2.95, -6.0]}
         target-position={[1.7, 0.12, -6.0]}
-        color="#fffdf5"
+        color={interior.corridorSpotColor}
         intensity={0}
         angle={Math.PI / 3.8}
         penumbra={0.6}
         distance={6.0}
         castShadow
-        shadow-mapSize-width={512}
-        shadow-mapSize-height={512}
-        shadow-bias={-0.0001}
+        shadow-mapSize-width={shadow.mapSizeStandard}
+        shadow-mapSize-height={shadow.mapSizeStandard}
+        shadow-bias={shadow.biasSpot}
       />
 
       <spotLight
         ref={corridorSpot2Ref}
         position={[1.7, 2.95, -10.0]}
         target-position={[1.7, 0.12, -10.0]}
-        color="#fffdf5"
+        color={interior.corridorSpotColor}
         intensity={0}
         angle={Math.PI / 3.8}
         penumbra={0.6}
@@ -232,7 +234,7 @@ export function InteriorLighting({
         ref={corridorSpot3Ref}
         position={[1.7, 2.95, -14.0]}
         target-position={[1.7, 0.12, -14.0]}
-        color="#fffdf5"
+        color={interior.corridorSpotColor}
         intensity={0}
         angle={Math.PI / 3.8}
         penumbra={0.6}
@@ -244,21 +246,21 @@ export function InteriorLighting({
         ref={studioSpotRef}
         position={[-4.5, 3.15, -6.5]}
         target-position={[-4.5, 0.5, -6.5]}
-        color="#ffffff"
+        color={interior.studioSpotColor}
         intensity={0}
         angle={Math.PI / 4}
         penumbra={0.5}
         distance={7.0}
         castShadow
-        shadow-mapSize-width={512}
-        shadow-mapSize-height={512}
-        shadow-bias={-0.0001}
+        shadow-mapSize-width={shadow.mapSizeStandard}
+        shadow-mapSize-height={shadow.mapSizeStandard}
+        shadow-bias={shadow.biasSpot}
       />
 
       <pointLight
         ref={studioAmbientRef}
         position={[-4.5, 2.8, -6.5]}
-        color="#f8fafc"
+        color={interior.studioAmbientColor}
         intensity={0}
         distance={8.5}
         decay={2}
@@ -269,7 +271,7 @@ export function InteriorLighting({
         ref={labSpotRef}
         position={[6.2, 3.15, -9.0]}
         target-position={[6.2, 0.3, -9.0]}
-        color="#f0fdfa"
+        color={interior.labSpotColor}
         intensity={0}
         angle={Math.PI / 3.5}
         penumbra={0.6}
@@ -279,7 +281,7 @@ export function InteriorLighting({
       <pointLight
         ref={labCoreRef}
         position={[6.2, 1.0, -9.0]}
-        color="#0d9488"
+        color={interior.labCoreColor}
         intensity={0}
         distance={6.0}
         decay={2}
@@ -289,7 +291,7 @@ export function InteriorLighting({
       <pointLight
         ref={archiveAmbientRef}
         position={[-4.0, 2.7, -12.0]}
-        color="#fef3c7"
+        color={interior.archiveAmbientColor}
         intensity={0}
         distance={7.0}
         decay={2}
@@ -299,7 +301,7 @@ export function InteriorLighting({
       <pointLight
         ref={studyLampRef}
         position={[6.95, 1.25, -14.3]}
-        color="#ffedd5"
+        color={interior.studyLampColor}
         intensity={0}
         distance={5.0}
         decay={2}
@@ -318,7 +320,7 @@ export function InteriorLighting({
       <pointLight
         ref={contactAmbientRef}
         position={[1.7, 2.8, -19.0]}
-        color="#f8fafc"
+        color={interior.contactAmbientColor}
         intensity={0}
         distance={7.5}
         decay={2}
@@ -328,7 +330,7 @@ export function InteriorLighting({
       <directionalLight
         ref={terraceMoonRef}
         position={[1.7, 7.0, -25.0]}
-        color="#e0f2fe"
+        color={interior.terraceSkyColor}
         intensity={0}
       />
     </group>

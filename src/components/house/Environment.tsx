@@ -2,40 +2,30 @@
 
 import { useMemo } from "react";
 import * as THREE from "three";
+import { createArchitecturalMaterials } from "@/theme/materials";
 
 export function Environment() {
   const materials = useMemo(() => {
+    const arch = createArchitecturalMaterials();
     return {
       ground: new THREE.MeshStandardMaterial({
         color: "#dcd7cc",
         roughness: 0.94,
         metalness: 0.02,
       }),
-      pathPaver: new THREE.MeshStandardMaterial({
-        color: "#f3efe6",
-        roughness: 0.72,
-        metalness: 0.04,
-      }),
+      pathPaver: arch.plasterWall,
       gravelBed: new THREE.MeshStandardMaterial({
         color: "#e8e4dc",
         roughness: 0.95,
         metalness: 0.04,
       }),
-      darkFoliage: new THREE.MeshStandardMaterial({
-        color: "#426b48",
-        roughness: 0.78,
-        metalness: 0.04,
-      }),
+      darkFoliage: arch.greenery,
       treeTrunk: new THREE.MeshStandardMaterial({
         color: "#78695d",
         roughness: 0.88,
         metalness: 0.02,
       }),
-      bollardMetal: new THREE.MeshStandardMaterial({
-        color: "#cbd5e1",
-        roughness: 0.35,
-        metalness: 0.8,
-      }),
+      bollardMetal: arch.brushedMetal,
     };
   }, []);
 

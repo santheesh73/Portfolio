@@ -5,6 +5,7 @@ import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { Project } from "@/types";
 import { getProjectIdentity } from "@/theme/colors";
+import { createArchitecturalMaterials } from "@/theme/materials";
 
 interface ProjectDisplayProps {
   project: Project;
@@ -29,24 +30,17 @@ export function ProjectDisplay({
   const projectIdentity = useMemo(() => getProjectIdentity(project.id), [project.id]);
 
   const materials = useMemo(() => {
+    const arch = createArchitecturalMaterials();
     return {
-      plinth: new THREE.MeshStandardMaterial({
-        color: isFeatured ? "#ffffff" : "#f5f4ef",
-        roughness: 0.5,
-        metalness: 0.05,
-      }),
-      trim: new THREE.MeshStandardMaterial({
-        color: isFeatured ? projectIdentity.accent : "#cbd5e1",
-        roughness: 0.25,
-        metalness: 0.85,
-      }),
-      glassPlaque: new THREE.MeshStandardMaterial({
-        color: "#ffffff",
-        roughness: 0.08,
-        metalness: 0.2,
-        transparent: true,
-        opacity: 0.45,
-      }),
+      plinth: isFeatured ? arch.plinthBase : arch.ivoryWall,
+      trim: isFeatured
+        ? new THREE.MeshStandardMaterial({
+            color: projectIdentity.accent,
+            roughness: 0.25,
+            metalness: 0.85,
+          })
+        : arch.brushedMetal,
+      glassPlaque: arch.clearGlass,
       glowEmissive: new THREE.MeshBasicMaterial({
         color: projectIdentity.glow,
         transparent: true,

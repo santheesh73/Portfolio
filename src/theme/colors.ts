@@ -1,50 +1,19 @@
-export interface ColorTokenGroup {
-  name: string;
-  accent: string;          // Main brand accent (WCAG AA on light)
-  accentHover: string;     // Active/hover state
-  accentSoft: string;      // 10-14% opacity tint for card/pill backgrounds
-  accentMuted: string;     // 22% tint for borders
-  accentContrast: string;  // High-contrast text on accent button (#ffffff)
-  glow3D: string;          // Hex for Three.js lights, LEDs, emissive strips
-}
+/**
+ * DESIGN SYSTEM COLOR BRIDGE
+ * Connects legacy interfaces to tokens.ts and rooms.ts
+ */
+
+import { COLOR_TOKENS, DerivedAccentTokens } from "./tokens";
+import { ROOM_THEMES, PROJECT_THEMES, getProjectTheme, getRoomTheme } from "./rooms";
+
+export type ColorTokenGroup = DerivedAccentTokens;
 
 export const ACCENT_PALETTES: Record<string, ColorTokenGroup> = {
-  emerald: {
-    name: "Emerald",
-    accent: "#0F766E",
-    accentHover: "#14B8A6",
-    accentSoft: "rgba(15, 118, 110, 0.10)",
-    accentMuted: "rgba(15, 118, 110, 0.22)",
-    accentContrast: "#FFFFFF",
-    glow3D: "#14B8A6",
-  },
-  amber: {
-    name: "Amber",
-    accent: "#B45309",
-    accentHover: "#D97706",
-    accentSoft: "rgba(180, 83, 9, 0.10)",
-    accentMuted: "rgba(180, 83, 9, 0.22)",
-    accentContrast: "#FFFFFF",
-    glow3D: "#F59E0B",
-  },
-  blue: {
-    name: "Blue",
-    accent: "#1D4ED8",
-    accentHover: "#2563EB",
-    accentSoft: "rgba(29, 78, 216, 0.10)",
-    accentMuted: "rgba(29, 78, 216, 0.22)",
-    accentContrast: "#FFFFFF",
-    glow3D: "#3B82F6",
-  },
-  teal: {
-    name: "Teal",
-    accent: "#0D9488",
-    accentHover: "#14B8A6",
-    accentSoft: "rgba(13, 148, 136, 0.10)",
-    accentMuted: "rgba(13, 148, 136, 0.22)",
-    accentContrast: "#FFFFFF",
-    glow3D: "#2DD4BF",
-  },
+  emerald: ROOM_THEMES.exterior.tokens,
+  amber: ROOM_THEMES.foyer.tokens,
+  blue: ROOM_THEMES.projects.tokens,
+  teal: ROOM_THEMES.lab.tokens,
+  violet: ROOM_THEMES.study.tokens,
   rose: {
     name: "Rose",
     accent: "#BE123C",
@@ -54,15 +23,6 @@ export const ACCENT_PALETTES: Record<string, ColorTokenGroup> = {
     accentContrast: "#FFFFFF",
     glow3D: "#F43F5E",
   },
-  violet: {
-    name: "Violet",
-    accent: "#6D28D9",
-    accentHover: "#7C3AED",
-    accentSoft: "rgba(109, 40, 217, 0.10)",
-    accentMuted: "rgba(109, 40, 217, 0.22)",
-    accentContrast: "#FFFFFF",
-    glow3D: "#8B5CF6",
-  },
 };
 
 export interface ProjectIdentity {
@@ -71,24 +31,20 @@ export interface ProjectIdentity {
   name: string;
 }
 
-export const PROJECT_IDENTITIES: Record<string, ProjectIdentity> = {
-  orion: { accent: "#0D9488", glow: "#2DD4BF", name: "Teal" },
-  hearttune: { accent: "#7C3AED", glow: "#A855F7", name: "Violet" },
-  nisf: { accent: "#1D4ED8", glow: "#38BDF8", name: "Blue" },
-  ahal: { accent: "#059669", glow: "#34D399", name: "Emerald" },
-  prysm: { accent: "#D97706", glow: "#FBBF24", name: "Amber" },
-  bhoomi: { accent: "#15803D", glow: "#4ADE80", name: "Green" },
-  minchal: { accent: "#EA580C", glow: "#FB923C", name: "Orange" },
-};
+export const PROJECT_IDENTITIES: Record<string, ProjectIdentity> = Object.fromEntries(
+  Object.entries(PROJECT_THEMES).map(([k, v]) => [
+    k,
+    { accent: v.tokens.accent, glow: v.tokens.accentHover, name: v.name },
+  ])
+);
 
 export function getProjectIdentity(projectId: string): ProjectIdentity {
-  const normalized = projectId.toLowerCase().replace(/[^a-z0-9]/g, "");
-  for (const [key, identity] of Object.entries(PROJECT_IDENTITIES)) {
-    if (normalized.includes(key)) {
-      return identity;
-    }
-  }
-  return { accent: "#1D4ED8", glow: "#3B82F6", name: "Blue" };
+  const theme = getProjectTheme(projectId);
+  return {
+    accent: theme.tokens.accent,
+    glow: theme.tokens.accentHover,
+    name: theme.name,
+  };
 }
 
 export function createProjectTokenGroup(identity: ProjectIdentity): ColorTokenGroup {
@@ -104,17 +60,17 @@ export function createProjectTokenGroup(identity: ProjectIdentity): ColorTokenGr
 }
 
 export const LIGHT_THEME_BASE = {
-  background: "#F5F4EF",
-  surface: "rgba(255, 255, 255, 0.85)",
-  surfaceElevated: "#FFFFFF",
-  surfaceWarm: "#F0EDE4",
-  border: "rgba(0, 0, 0, 0.09)",
-  borderSubtle: "rgba(0, 0, 0, 0.05)",
-  textPrimary: "#171918",
-  textSecondary: "#4B524D",
-  textMuted: "#717770",
-  // 3D daylight parameters
-  skyClearColor: "#F5F4EF",
+  background: COLOR_TOKENS.background,
+  surface: COLOR_TOKENS.surface,
+  surfaceElevated: COLOR_TOKENS.surfaceElevated,
+  surfaceWarm: COLOR_TOKENS.surfaceMuted,
+  border: COLOR_TOKENS.border,
+  borderSubtle: COLOR_TOKENS.borderSubtle,
+  borderStrong: COLOR_TOKENS.borderStrong,
+  textPrimary: COLOR_TOKENS.foreground,
+  textSecondary: COLOR_TOKENS.foregroundSecondary,
+  textMuted: COLOR_TOKENS.foregroundMuted,
+  skyClearColor: COLOR_TOKENS.background,
   fogNear: 16,
   fogFar: 55,
   sunColor: "#FFFDF7",
@@ -123,24 +79,6 @@ export const LIGHT_THEME_BASE = {
 };
 
 export function getRoomAccentKey(roomId: string): string {
-  switch (roomId) {
-    case "exterior":
-    case "entrance":
-      return "emerald";
-    case "foyer":
-      return "amber";
-    case "projects":
-      return "blue";
-    case "lab":
-      return "teal";
-    case "archive":
-      return "amber";
-    case "study":
-      return "violet";
-    case "contact":
-    case "exit":
-      return "emerald";
-    default:
-      return "emerald";
-  }
+  const room = getRoomTheme(roomId);
+  return room.tokens.name.toLowerCase();
 }

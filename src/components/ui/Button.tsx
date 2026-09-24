@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes, AnchorHTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
-type Variant = "primary" | "secondary" | "outline" | "ghost";
+type Variant = "primary" | "secondary" | "outline" | "ghost" | "icon";
 type Size = "sm" | "md" | "lg";
 
 const variantStyles: Record<Variant, string> = {
@@ -12,6 +12,7 @@ const variantStyles: Record<Variant, string> = {
   outline:
     "bg-transparent text-text-primary border border-border hover:border-text-muted hover:bg-surface-muted",
   ghost: "bg-transparent text-text-secondary hover:text-text-primary hover:bg-surface-muted",
+  icon: "bg-surface text-text-secondary border border-border hover:text-text-primary hover:border-border-strong hover:bg-surface-muted shadow-subtle",
 };
 
 const sizeStyles: Record<Size, string> = {
@@ -45,13 +46,15 @@ export function Button(props: ButtonProps) {
     ...rest
   } = props as ButtonProps & { href?: string };
 
+  const isIcon = variant === "icon";
+
   const styles = cn(
     "type-button inline-flex cursor-pointer items-center justify-center gap-2 rounded-md",
     "transition-[background-color,border-color,color,box-shadow,transform] duration-150 ease-out",
     "active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50",
-    "focus-visible:outline-accent focus-visible:outline-2 focus-visible:outline-offset-2",
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background",
     variantStyles[variant],
-    sizeStyles[size],
+    isIcon ? "size-10 p-0 rounded-md" : sizeStyles[size],
     className
   );
 

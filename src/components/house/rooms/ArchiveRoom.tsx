@@ -5,6 +5,7 @@ import * as THREE from "three";
 import { PROOF_HACKATHONS, PROOF_OPEN_SOURCE, PROOF_MILESTONES } from "@/data/proof";
 import { ProofItem } from "@/types";
 import { ProofDisplay } from "../proof/ProofDisplay";
+import { createArchitecturalMaterials } from "@/theme/materials";
 
 interface ArchiveRoomProps {
   onSelectProof: (item: ProofItem) => void;
@@ -16,40 +17,19 @@ export function ArchiveRoom({
   reducedMotion = false,
 }: ArchiveRoomProps) {
   const materials = useMemo(() => {
+    const arch = createArchitecturalMaterials();
     return {
-      floor: new THREE.MeshStandardMaterial({
-        color: "#dfd6c8",
-        roughness: 0.6,
-        metalness: 0.05,
-      }),
-      darkWall: new THREE.MeshStandardMaterial({
-        color: "#f6f4ee",
-        roughness: 0.88,
-        metalness: 0.02,
-      }),
-      woodAccent: new THREE.MeshStandardMaterial({
-        color: "#c4955c",
-        roughness: 0.5,
-        metalness: 0.04,
-      }),
-      ceiling: new THREE.MeshStandardMaterial({
-        color: "#faf9f6",
-        roughness: 0.95,
-        metalness: 0.02,
-      }),
-      shelfWood: new THREE.MeshStandardMaterial({
-        color: "#b8864d",
-        roughness: 0.45,
-        metalness: 0.05,
-      }),
+      floor: arch.parchmentFloor,
+      darkWall: arch.parchmentWall,
+      woodAccent: arch.naturalOak,
+      ceiling: arch.ceiling,
+      shelfWood: arch.warmWalnut,
       timelineRail: new THREE.MeshBasicMaterial({
         color: "#b45309",
         transparent: true,
         opacity: 0.5,
       }),
-      coveLight: new THREE.MeshBasicMaterial({
-        color: "#fffbeb",
-      }),
+      coveLight: arch.warmCoveGlow,
     };
   }, []);
 
