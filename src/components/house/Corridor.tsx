@@ -6,11 +6,16 @@ import { RoomDoor } from "./RoomDoor";
 import { createArchitecturalMaterials } from "@/theme/materials";
 
 interface CorridorProps {
+  scrollProgress?: number;
   onSelectRoom?: (roomId: string) => void;
   reducedMotion?: boolean;
 }
 
-export function Corridor({ onSelectRoom, reducedMotion = false }: CorridorProps) {
+export function Corridor({
+  scrollProgress = 0,
+  onSelectRoom,
+  reducedMotion = false,
+}: CorridorProps) {
   const materials = useMemo(() => {
     const arch = createArchitecturalMaterials();
     return {
@@ -179,7 +184,7 @@ export function Corridor({ onSelectRoom, reducedMotion = false }: CorridorProps)
         subtitle="PROJECT STUDIO"
         accentColor="#1d4ed8"
         isUnlocked={true}
-        isOpen={true}
+        isOpen={scrollProgress >= 0.24 && scrollProgress <= 0.46}
         onSelect={() => onSelectRoom?.("projects")}
         reducedMotion={reducedMotion}
       />
@@ -193,7 +198,7 @@ export function Corridor({ onSelectRoom, reducedMotion = false }: CorridorProps)
         subtitle="ENGINEERING LAB"
         accentColor="#0d9488"
         isUnlocked={true}
-        isOpen={true}
+        isOpen={scrollProgress >= 0.38 && scrollProgress <= 0.60}
         onSelect={() => onSelectRoom?.("lab")}
         reducedMotion={reducedMotion}
       />
@@ -207,7 +212,7 @@ export function Corridor({ onSelectRoom, reducedMotion = false }: CorridorProps)
         subtitle="PROOF & MILESTONES"
         accentColor="#b45309"
         isUnlocked={true}
-        isOpen={true}
+        isOpen={scrollProgress >= 0.52 && scrollProgress <= 0.74}
         onSelect={() => onSelectRoom?.("archive")}
         reducedMotion={reducedMotion}
       />
@@ -221,7 +226,7 @@ export function Corridor({ onSelectRoom, reducedMotion = false }: CorridorProps)
         subtitle="ABOUT & PHILOSOPHY"
         accentColor="#6d28d9"
         isUnlocked={true}
-        isOpen={true}
+        isOpen={scrollProgress >= 0.66 && scrollProgress <= 0.88}
         onSelect={() => onSelectRoom?.("study")}
         reducedMotion={reducedMotion}
       />
@@ -235,7 +240,7 @@ export function Corridor({ onSelectRoom, reducedMotion = false }: CorridorProps)
         subtitle="COMMUNICATION"
         accentColor="#0f766e"
         isUnlocked={true}
-        isOpen={true}
+        isOpen={scrollProgress >= 0.80}
         onSelect={() => onSelectRoom?.("contact")}
         reducedMotion={reducedMotion}
       />

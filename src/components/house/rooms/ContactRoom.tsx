@@ -23,7 +23,7 @@ export function ContactRoom({
   const materials = useMemo(() => {
     const arch = createArchitecturalMaterials();
     return {
-      floor: arch.lightStone,
+      floor: arch.contactFloor,
       terraceFloor: arch.paleStoneFloor,
       wall: arch.ivoryWall,
       ceiling: arch.ceiling,
@@ -56,11 +56,8 @@ export function ContactRoom({
       outdoorBeacon: new THREE.MeshBasicMaterial({
         color: "#93c5fd",
       }),
-      terraceGreenery: new THREE.MeshStandardMaterial({
-        color: "#426b48",
-        roughness: 0.75,
-        metalness: 0.04,
-      }),
+      terraceGreenery: arch.greenery,
+      groundingShadow: arch.groundingShadow,
     };
   }, []);
 
@@ -256,6 +253,15 @@ export function ContactRoom({
 
       {/* 5. CENTRAL ARCHITECTURAL CONTACT CONSOLE */}
       <group position={[1.7, 0.12, -18.5]}>
+        {/* Grounding Contact Shadow */}
+        <mesh
+          position={[0, 0.002, 0]}
+          rotation={[-Math.PI / 2, 0, 0]}
+          material={materials.groundingShadow}
+        >
+          <planeGeometry args={[2.55, 0.9]} />
+        </mesh>
+
         {/* Monolith Console Base */}
         <mesh position={[0, 0.5, 0]} material={materials.consolePedestal} castShadow receiveShadow>
           <boxGeometry args={[2.4, 0.95, 0.75]} />

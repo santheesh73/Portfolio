@@ -51,8 +51,8 @@ export function RoomTitle({
         </span>
       </div>
 
-      {/* 2. Main Title with Foreground Contrast */}
-      <h2 className="type-h1 mt-1 font-semibold tracking-[0.08em] text-text-primary uppercase">
+      {/* 2. Main Title with Foreground Contrast & Fluid Mobile Scaling */}
+      <h2 className="text-2xl sm:text-4xl lg:text-5xl mt-1 font-semibold tracking-[0.08em] text-text-primary uppercase leading-tight text-balance">
         {title}
       </h2>
 
@@ -65,7 +65,7 @@ export function RoomTitle({
 
       {/* 4. Subtitle / Architectural Descriptor */}
       {subtitle && (
-        <p className="mt-2.5 font-mono text-xs tracking-[0.2em] text-text-secondary uppercase">
+        <p className="mt-2 font-mono text-[0.7rem] sm:text-xs tracking-[0.2em] text-text-secondary uppercase">
           {subtitle}
         </p>
       )}
