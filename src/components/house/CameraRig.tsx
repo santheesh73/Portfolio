@@ -42,6 +42,31 @@ export function CameraRig({
   useFrame((state, delta) => {
     const { camera, size } = state;
     const isMobile = size.width < 768;
+    const aspect = size.width / Math.max(1, size.height);
+    const isPortrait = aspect < 1.0;
+    const isUltrawide = aspect >= 2.0;
+
+    // Dynamically adapt vertical FOV so horizontal coverage remains comfortable across aspect ratios
+    let targetFov = 42;
+    if (isUltrawide) {
+      targetFov = 39;
+    } else if (aspect >= 1.33) {
+      targetFov = 42;
+    } else if (aspect >= 0.85) {
+      targetFov = 46;
+    } else {
+      // Mobile portrait: dynamically widen FOV smoothly without fisheye distortion (clamped at 54°)
+      targetFov = Math.min(54, Math.round(42 / Math.sqrt(Math.max(0.60, aspect))));
+    }
+
+    if (camera instanceof THREE.PerspectiveCamera) {
+      const nextFov = THREE.MathUtils.damp(camera.fov, targetFov, 4.0, delta);
+      if (Math.abs(camera.fov - nextFov) > 0.01) {
+        camera.fov = nextFov;
+        camera.updateProjectionMatrix();
+      }
+    }
+
     elapsedTimeRef.current += delta;
     const t = elapsedTimeRef.current;
 
@@ -61,38 +86,54 @@ export function CameraRig({
 
     // If reduced motion is requested, snap smoothly to discrete stationary frames
     if (reducedMotion) {
-      let restingPos = isMobile
+      let restingPos = isPortrait
+        ? new THREE.Vector3(10.2, 4.0, 18.0)
+        : isMobile
         ? new THREE.Vector3(9.5, 3.8, 16.5)
         : new THREE.Vector3(8.5, 3.2, 13.5);
       let restingLook = new THREE.Vector3(0.6, 2.0, 1.0);
 
       if (scrollProgress >= 0.94) {
         // Terrace Exit
-        restingPos = new THREE.Vector3(1.7, 1.55, -24.5);
+        restingPos = isPortrait
+          ? new THREE.Vector3(1.7, 1.6, -23.8)
+          : new THREE.Vector3(1.7, 1.55, -24.5);
         restingLook = new THREE.Vector3(1.7, 1.6, -30.0);
       } else if (scrollProgress >= 0.86) {
         // Contact Pavilion
-        restingPos = new THREE.Vector3(1.7, 1.5, -17.2);
+        restingPos = isPortrait
+          ? new THREE.Vector3(1.7, 1.5, -16.5)
+          : new THREE.Vector3(1.7, 1.5, -17.2);
         restingLook = new THREE.Vector3(1.7, 1.25, -18.8);
       } else if (scrollProgress >= 0.74) {
         // Private Study
-        restingPos = new THREE.Vector3(5.2, 1.45, -13.6);
+        restingPos = isPortrait
+          ? new THREE.Vector3(4.8, 1.48, -12.9)
+          : new THREE.Vector3(5.2, 1.45, -13.6);
         restingLook = new THREE.Vector3(6.8, 1.35, -15.5);
       } else if (scrollProgress >= 0.6) {
         // Archive Room
-        restingPos = new THREE.Vector3(-3.8, 1.45, -11.5);
+        restingPos = isPortrait
+          ? new THREE.Vector3(-3.4, 1.48, -10.8)
+          : new THREE.Vector3(-3.8, 1.45, -11.5);
         restingLook = new THREE.Vector3(-4.2, 1.4, -14.3);
       } else if (scrollProgress >= 0.46) {
         // Engineering Lab
-        restingPos = new THREE.Vector3(5.2, 1.45, -8.2);
+        restingPos = isPortrait
+          ? new THREE.Vector3(4.8, 1.48, -7.6)
+          : new THREE.Vector3(5.2, 1.45, -8.2);
         restingLook = new THREE.Vector3(6.6, 1.25, -9.4);
       } else if (scrollProgress >= 0.32) {
         // Project Studio
-        restingPos = new THREE.Vector3(-3.2, 1.45, -5.2);
+        restingPos = isPortrait
+          ? new THREE.Vector3(-2.8, 1.48, -4.6)
+          : new THREE.Vector3(-3.2, 1.45, -5.2);
         restingLook = new THREE.Vector3(-4.5, 1.25, -6.5);
       } else if (scrollProgress >= 0.2) {
         // Foyer Residence
-        restingPos = new THREE.Vector3(1.65, 1.5, -1.2);
+        restingPos = isPortrait
+          ? new THREE.Vector3(1.65, 1.5, -0.6)
+          : new THREE.Vector3(1.65, 1.5, -1.2);
         restingLook = new THREE.Vector3(1.5, 1.5, -4.0);
       }
 
@@ -106,12 +147,16 @@ export function CameraRig({
     const easeIntro = 1 - Math.pow(1 - introProgress, 3);
 
     // Far establishing position
-    const farPos = isMobile
+    const farPos = isPortrait
+      ? new THREE.Vector3(14.5, 6.8, 23.5)
+      : isMobile
       ? new THREE.Vector3(13.5, 6.2, 21.0)
       : new THREE.Vector3(12.0, 5.2, 18.0);
 
     // Keyframe 0: Exterior resting position (p = 0.00)
-    const kf0_pos = isMobile
+    const kf0_pos = isPortrait
+      ? new THREE.Vector3(10.2, 4.0, 18.0)
+      : isMobile
       ? new THREE.Vector3(9.5, 3.8, 16.5)
       : new THREE.Vector3(8.5, 3.2, 13.5);
     const kf0_look = new THREE.Vector3(0.6, 2.0, 1.0);
@@ -131,27 +176,39 @@ export function CameraRig({
     const kf2_look = new THREE.Vector3(1.65, 1.55, 1.0);
 
     // Keyframe 3: Foyer Center (p = 0.28)
-    const kf3_pos = new THREE.Vector3(1.65, 1.5, -1.2);
+    const kf3_pos = isPortrait
+      ? new THREE.Vector3(1.65, 1.5, -0.6)
+      : new THREE.Vector3(1.65, 1.5, -1.2);
     const kf3_look = new THREE.Vector3(1.5, 1.5, -4.5);
 
     // Keyframe 4: Project Studio - ORION Centerpiece (p = 0.38)
-    const kf4_pos = new THREE.Vector3(-3.2, 1.45, -5.2);
+    const kf4_pos = isPortrait
+      ? new THREE.Vector3(-2.8, 1.48, -4.6)
+      : new THREE.Vector3(-3.2, 1.45, -5.2);
     const kf4_look = new THREE.Vector3(-4.5, 1.25, -6.5);
 
     // Keyframe 5: Engineering Lab - Skill Telemetry Nodes (p = 0.50)
-    const kf5_pos = new THREE.Vector3(5.2, 1.45, -8.2);
+    const kf5_pos = isPortrait
+      ? new THREE.Vector3(4.8, 1.48, -7.6)
+      : new THREE.Vector3(5.2, 1.45, -8.2);
     const kf5_look = new THREE.Vector3(6.6, 1.25, -9.4);
 
     // Keyframe 6: Archive Room - Timeline Inspection (p = 0.64)
-    const kf6_pos = new THREE.Vector3(-3.8, 1.45, -11.5);
+    const kf6_pos = isPortrait
+      ? new THREE.Vector3(-3.4, 1.48, -10.8)
+      : new THREE.Vector3(-3.8, 1.45, -11.5);
     const kf6_look = new THREE.Vector3(-4.2, 1.4, -14.3);
 
     // Keyframe 7: Private Study - Workstation & Principles (p = 0.78)
-    const kf7_pos = new THREE.Vector3(5.2, 1.45, -13.6);
+    const kf7_pos = isPortrait
+      ? new THREE.Vector3(4.8, 1.48, -12.9)
+      : new THREE.Vector3(5.2, 1.45, -13.6);
     const kf7_look = new THREE.Vector3(6.8, 1.35, -15.5);
 
     // Keyframe 8: Contact Pavilion - Console Framing (p = 0.90)
-    const kf8_pos = new THREE.Vector3(1.7, 1.5, -17.2);
+    const kf8_pos = isPortrait
+      ? new THREE.Vector3(1.7, 1.5, -16.5)
+      : new THREE.Vector3(1.7, 1.5, -17.2);
     const kf8_look = new THREE.Vector3(1.7, 1.25, -18.8);
 
     // Keyframe 9: Terrace Doorway - Step Outside (p = 0.96)
@@ -159,7 +216,9 @@ export function CameraRig({
     const kf9_look = new THREE.Vector3(1.7, 1.5, -25.5);
 
     // Keyframe 10: Night Terrace Observation (p = 1.00)
-    const kf10_pos = new THREE.Vector3(1.7, 1.55, -24.5);
+    const kf10_pos = isPortrait
+      ? new THREE.Vector3(1.7, 1.6, -23.8)
+      : new THREE.Vector3(1.7, 1.55, -24.5);
     const kf10_look = new THREE.Vector3(1.7, 1.6, -30.0);
 
     // 2. Piecewise Smooth Trajectory along scrollProgress (0 to 1)

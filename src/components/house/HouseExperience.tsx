@@ -327,8 +327,8 @@ export function HouseExperience() {
         </nav>
       </div>
 
-      {/* Sticky 100vh 3D Viewport */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
+      {/* Sticky 100vh 3D Viewport with dynamic viewport height support */}
+      <div className="sticky top-0 h-screen h-[100dvh] w-full overflow-hidden">
         {/* Loading Screen Preloader */}
         <LoadingScene isLoading={!sceneReady} />
 

@@ -67,7 +67,7 @@ export function ProofDetailModal({
               duration: reduce ? 0.01 : 0.35,
               ease: [0.16, 1, 0.3, 1],
             }}
-            className="relative w-full max-w-lg overflow-hidden rounded-xl border border-black/[0.08] bg-white/92 backdrop-blur-xl p-6 sm:p-8 shadow-2xl text-text-primary"
+            className="relative w-full max-w-lg max-h-[85dvh] overflow-y-auto rounded-xl border border-black/[0.08] bg-white/92 backdrop-blur-xl p-5 sm:p-8 shadow-2xl text-text-primary scrollbar-thin"
           >
             {/* Subtle atmospheric top hairline */}
             <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent to-transparent opacity-60" />

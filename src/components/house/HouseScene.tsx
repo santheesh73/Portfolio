@@ -54,7 +54,7 @@ export function HouseScene({
   reducedMotion = false,
 }: HouseSceneProps) {
   return (
-    <div className="relative h-full w-full bg-[#F5F4EF]">
+    <div className="relative h-full w-full bg-[#F5F4EF] touch-pan-y">
       <Canvas
         shadows={{ type: THREE.PCFSoftShadowMap }}
         camera={{

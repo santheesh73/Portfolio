@@ -44,7 +44,7 @@ export function CinematicHUD({
 
   return (
     <div
-      className="pointer-events-none absolute inset-0 z-30 flex flex-col justify-between p-4 sm:p-8 lg:p-10 select-none"
+      className="pointer-events-none absolute inset-0 z-30 flex flex-col justify-between p-4 sm:p-8 lg:p-10 pt-[max(1rem,env(safe-area-inset-top))] pb-[max(1rem,env(safe-area-inset-bottom))] pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] select-none"
       aria-label="Cinematic spatial navigation HUD"
     >
       {/* ========================================================
@@ -71,10 +71,10 @@ export function CinematicHUD({
             </h1>
           </div>
           <div className="flex items-center gap-2">
-            <span className="font-mono text-[0.68rem] tracking-[0.14em] text-text-muted uppercase">
+            <span className="hidden sm:inline font-mono text-[0.68rem] tracking-[0.14em] text-text-muted uppercase">
               AI SOFTWARE ENGINEER
             </span>
-            <span className="text-text-muted/40 font-mono text-[0.65rem]">/</span>
+            <span className="hidden sm:inline text-text-muted/40 font-mono text-[0.65rem]">/</span>
             <span className="font-mono text-[0.68rem] tracking-[0.14em] text-accent font-medium uppercase transition-colors duration-300">
               {isProjectFocused && focusedProject
                 ? `${spatialState.name} · ${focusedProject.name.toUpperCase()}`
@@ -214,7 +214,7 @@ export function CinematicHUD({
           </div>
 
           <div
-            className="flex items-center gap-1 rounded-md border border-black/[0.08] bg-white/80 p-1 backdrop-blur-md shadow-xs overflow-x-auto max-w-full"
+            className="flex items-center gap-1 rounded-md border border-black/[0.08] bg-white/80 p-1 backdrop-blur-md shadow-xs overflow-x-auto max-w-[calc(100vw-2rem)] sm:max-w-full touch-pan-x scrollbar-none"
             role="toolbar"
             aria-label="Direct spatial room navigation"
           >
