@@ -78,16 +78,51 @@ export function HouseExperience() {
   const [selectedProof, setSelectedProof] = useState<ProofItem | null>(null);
   const [isStudyModalOpen, setIsStudyModalOpen] = useState(false);
 
-  // Exhibition State transitions
-  const handleSelectProject = useCallback((project: Project) => {
-    setSelectedProject(project);
-    setExhibitionState("SELECTED");
-  }, []);
+  const scrollToRoom = useCallback(
+    (targetRoomId: RoomId) => {
+      if (!containerRef.current) return;
+      const waypoint = ROOM_WAYPOINTS.find((w) => w.id === targetRoomId);
+      if (!waypoint) return;
 
-  const handleSelectSkill = useCallback((group: SkillGroupData) => {
-    setSelectedSkillGroup(group);
-    setExhibitionState("SELECTED");
-  }, []);
+      const rect = containerRef.current.getBoundingClientRect();
+      const totalScrollableDistance = rect.height - window.innerHeight;
+      const targetScrollY =
+        window.scrollY + rect.top + totalScrollableDistance * waypoint.scrollTarget;
+
+      window.scrollTo({
+        top: targetScrollY,
+        behavior: reduce ? "auto" : "smooth",
+      });
+    },
+    [reduce]
+  );
+
+  // Exhibition State transitions
+  const handleSelectProject = useCallback(
+    (project: Project) => {
+      scrollToRoom("projects");
+      setSelectedProject(project);
+      setExhibitionState("SELECTED");
+    },
+    [scrollToRoom]
+  );
+
+  const handleSelectSkill = useCallback(
+    (group: SkillGroupData) => {
+      scrollToRoom("lab");
+      setSelectedSkillGroup(group);
+      setExhibitionState("SELECTED");
+    },
+    [scrollToRoom]
+  );
+
+  const handleSelectProof = useCallback(
+    (item: ProofItem) => {
+      scrollToRoom("archive");
+      setSelectedProof(item);
+    },
+    [scrollToRoom]
+  );
 
   const handleCloseProject = useCallback(() => {
     setExhibitionState("EXITING");
@@ -145,14 +180,23 @@ export function HouseExperience() {
 
       setScrollProgress(progress);
 
-      // Room Departure & Spatial Boundaries: Release modals and project focus on departure
+      // Room Departure & Spatial Boundaries: Release modals and exhibit focus on departure
       if (progress < 0.22 || progress > 0.52) {
         setHoveredProject((prev) => (prev !== null ? null : prev));
-        setSelectedProject((prev) => (prev !== null ? null : prev));
-        setExhibitionState((prev) => (prev !== "IDLE" ? "IDLE" : prev));
+        setSelectedProject((prev) => {
+          if (prev !== null) {
+            setExhibitionState((curr) => (curr !== "IDLE" ? "IDLE" : curr));
+          }
+          return null;
+        });
       }
       if (progress < 0.36 || progress > 0.66) {
-        setSelectedSkillGroup((prev) => (prev !== null ? null : prev));
+        setSelectedSkillGroup((prev) => {
+          if (prev !== null) {
+            setExhibitionState((curr) => (curr !== "IDLE" ? "IDLE" : curr));
+          }
+          return null;
+        });
       }
       if (progress < 0.50 || progress > 0.80) {
         setSelectedProof((prev) => (prev !== null ? null : prev));
@@ -189,21 +233,9 @@ export function HouseExperience() {
       setIsStudyModalOpen(false);
       setHoveredProject(null);
 
-      if (!containerRef.current) return;
-      const waypoint = ROOM_WAYPOINTS.find((w) => w.id === targetRoomId);
-      if (!waypoint) return;
-
-      const rect = containerRef.current.getBoundingClientRect();
-      const totalScrollableDistance = rect.height - window.innerHeight;
-      const targetScrollY =
-        window.scrollY + rect.top + totalScrollableDistance * waypoint.scrollTarget;
-
-      window.scrollTo({
-        top: targetScrollY,
-        behavior: reduce ? "auto" : "smooth",
-      });
+      scrollToRoom(targetRoomId);
     },
-    [reduce]
+    [scrollToRoom]
   );
 
   // Hash listener for deep-linking into specific 3D rooms (#projects, #stack, #proof, #about, #contact)
@@ -339,12 +371,39 @@ export function HouseExperience() {
             </li>
             <li>
               <a href="#projects">Selected Projects</a>
+              <ul>
+                {projects.map((p) => (
+                  <li key={p.id}>
+                    <button type="button" onClick={() => handleSelectProject(p)}>
+                      Inspect {p.name}
+                    </button>
+                  </li>
+                ))}
+              </ul>
             </li>
             <li>
               <a href="#stack">Technical Stack</a>
+              <ul>
+                {SKILL_GROUPS.map((g) => (
+                  <li key={g.id}>
+                    <button type="button" onClick={() => handleSelectSkill(g)}>
+                      Inspect {g.title}
+                    </button>
+                  </li>
+                ))}
+              </ul>
             </li>
             <li>
               <a href="#proof">Proof of Work</a>
+              <ul>
+                {[...PROOF_HACKATHONS, PROOF_OPEN_SOURCE, ...PROOF_MILESTONES].map((item) => (
+                  <li key={item.id}>
+                    <button type="button" onClick={() => handleSelectProof(item)}>
+                      Inspect {item.title}
+                    </button>
+                  </li>
+                ))}
+              </ul>
             </li>
             <li>
               <a href="#about">About & Philosophy</a>
@@ -381,7 +440,7 @@ export function HouseExperience() {
               onSelectProject={handleSelectProject}
               onHoverProject={setHoveredProject}
               onSelectSkill={handleSelectSkill}
-              onSelectProof={setSelectedProof}
+              onSelectProof={handleSelectProof}
               onOpenStudyModal={() => setIsStudyModalOpen(true)}
               onSceneReady={() => setSceneReady(true)}
               reducedMotion={Boolean(reduce)}
@@ -406,7 +465,6 @@ export function HouseExperience() {
         <SkillDetailModal
           group={selectedSkillGroup}
           exhibitionState={exhibitionState}
-          onExhibitionStateChange={handleExhibitionStateChange}
           onClose={() => setExhibitionState("EXITING")}
         />
         <ProofDetailModal

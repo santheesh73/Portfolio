@@ -212,6 +212,8 @@ export function CameraRig({
           transform.maxDistance
         );
         e.preventDefault();
+      } else if (e.touches.length === 1 && isDragging.current) {
+        e.preventDefault();
       }
     };
 
@@ -499,11 +501,26 @@ export function CameraRig({
       const orbitY = center.y + currentRadius.current * cosPhi;
       const orbitZ = center.z + currentRadius.current * sinPhi * cosTheta;
 
-      // Room 02 boundary clamping (X: -8.2 to -0.7, Y: 0.42 to 3.0, Z: -9.2 to -3.7)
-      // Clamps camera strictly inside the room with margin for near-plane clipping
-      const clampedX = THREE.MathUtils.clamp(orbitX, -8.2, -0.7);
+      // Dynamic room boundary clamping:
+      // Room 02 (Projects): X [-8.2, -0.7], Y [0.42, 3.0], Z [-9.2, -3.7]
+      // Room 03 (Skills):   X [3.2, 9.2],   Y [0.42, 3.0], Z [-11.8, -6.2]
+      const isProjectExhibit = [
+        "orion",
+        "hearttune",
+        "nisf",
+        "ahal",
+        "prysm",
+        "bhoomi",
+        "minchal",
+      ].includes(inspectedExhibit.id);
+
+      const clampedX = isProjectExhibit
+        ? THREE.MathUtils.clamp(orbitX, -8.2, -0.7)
+        : THREE.MathUtils.clamp(orbitX, 3.2, 9.2);
       const clampedY = THREE.MathUtils.clamp(orbitY, 0.42, 3.0);
-      const clampedZ = THREE.MathUtils.clamp(orbitZ, -9.2, -3.7);
+      const clampedZ = isProjectExhibit
+        ? THREE.MathUtils.clamp(orbitZ, -9.2, -3.7)
+        : THREE.MathUtils.clamp(orbitZ, -11.8, -6.2);
 
       orbitCamPos = new THREE.Vector3(clampedX, clampedY, clampedZ);
       orbitLookAt = center;

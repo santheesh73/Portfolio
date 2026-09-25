@@ -8,14 +8,12 @@ import { SkillGroupData, ExhibitionState } from "@/types";
 interface SkillDetailModalProps {
   group: SkillGroupData | null;
   exhibitionState?: ExhibitionState;
-  onExhibitionStateChange?: (state: ExhibitionState) => void;
   onClose: () => void;
 }
 
 export function SkillDetailModal({
   group,
   exhibitionState,
-  onExhibitionStateChange,
   onClose,
 }: SkillDetailModalProps) {
   const isVisible = group !== null && exhibitionState !== "EXITING" && exhibitionState !== "IDLE";
