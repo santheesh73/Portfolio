@@ -64,7 +64,7 @@ export function HouseScene({
   return (
     <div
       className={`relative h-full w-full bg-[#F5F4EF] ${
-        selectedProject ? "touch-none" : "touch-pan-y"
+        selectedProject || selectedSkillGroup ? "touch-none" : "touch-pan-y"
       }`}
     >
       <Canvas
@@ -109,7 +109,7 @@ export function HouseScene({
         {/* Interior multi-zone dynamic lighting with exhibition quieting */}
         <InteriorLighting
           scrollProgress={scrollProgress}
-          isInspectingProject={Boolean(selectedProject)}
+          isInspectingExhibit={Boolean(selectedProject || selectedSkillGroup)}
           reducedMotion={reducedMotion}
         />
 
@@ -120,7 +120,7 @@ export function HouseScene({
         />
 
         {/* Ground, modern staggered pavers, framing trees, exterior house, and entrance */}
-        <group visible={scrollProgress <= 0.35}>
+        <group visible={!selectedProject && !selectedSkillGroup && scrollProgress <= 0.35}>
           <Environment />
           <ExteriorHouse />
           <Entrance
@@ -153,7 +153,7 @@ export function HouseScene({
               reducedMotion={reducedMotion}
             />
           </group>
-          <group visible={scrollProgress >= 0.28 && scrollProgress <= 0.76}>
+          <group visible={Boolean(selectedSkillGroup) || (scrollProgress >= 0.28 && scrollProgress <= 0.76)}>
             <EngineeringLab
               onSelectSkill={onSelectSkill}
               reducedMotion={reducedMotion}

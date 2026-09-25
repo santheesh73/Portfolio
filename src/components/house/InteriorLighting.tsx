@@ -8,14 +8,17 @@ import { LIGHTING_TOKENS } from "@/theme/lighting";
 interface InteriorLightingProps {
   scrollProgress: number;
   isInspectingProject?: boolean;
+  isInspectingExhibit?: boolean;
   reducedMotion?: boolean;
 }
 
 export function InteriorLighting({
   scrollProgress,
   isInspectingProject = false,
+  isInspectingExhibit,
   reducedMotion = false,
 }: InteriorLightingProps) {
+  const activeInspection = isInspectingExhibit !== undefined ? isInspectingExhibit : isInspectingProject;
   const { interior, shadow } = LIGHTING_TOKENS;
   const foyerAmbientRef = useRef<THREE.AmbientLight>(null);
   const foyerCoveRef = useRef<THREE.PointLight>(null);
@@ -31,23 +34,20 @@ export function InteriorLighting({
   const contactAmbientRef = useRef<THREE.PointLight>(null);
   const terraceMoonRef = useRef<THREE.DirectionalLight>(null);
 
-  // Interior intensity factor: 0.0 outside, smoothly rises to 1.0 inside (p > 0.18)
-  const targetInteriorFactor = Math.min(
-    1,
-    Math.max(0, (scrollProgress - 0.16) / 0.1)
-  );
+  // Interior intensity factor: 0.0 outside, smoothly rises to 1.0 inside (p > 0.18) or 1.0 when inspecting exhibit
+  const targetInteriorFactor = activeInspection
+    ? 1.0
+    : Math.min(1, Math.max(0, (scrollProgress - 0.16) / 0.1));
 
-  // Studio lighting factor (p: 0.28 to 0.48)
-  const targetStudioFactor = Math.min(
-    1,
-    Math.max(0, (scrollProgress - 0.26) / 0.08)
-  );
+  // Studio lighting factor (p: 0.28 to 0.48) or 1.0 when inspecting project
+  const targetStudioFactor = isInspectingProject
+    ? 1.0
+    : Math.min(1, Math.max(0, (scrollProgress - 0.26) / 0.08));
 
-  // Lab lighting factor (p: 0.42 to 0.62)
-  const targetLabFactor = Math.min(
-    1,
-    Math.max(0, (scrollProgress - 0.4) / 0.08)
-  );
+  // Lab lighting factor (p: 0.42 to 0.62) or 1.0 when inspecting skill
+  const targetLabFactor = activeInspection && !isInspectingProject
+    ? 1.0
+    : Math.min(1, Math.max(0, (scrollProgress - 0.4) / 0.08));
 
   // Archive lighting factor (p: 0.56 to 0.76)
   const targetArchiveFactor = Math.min(
@@ -69,7 +69,7 @@ export function InteriorLighting({
 
   useFrame((_, delta) => {
     const lerpSpeed = reducedMotion ? 1 : delta * 5;
-    const quietFactor = isInspectingProject ? 0.35 : 1.0;
+    const quietFactor = activeInspection ? 0.35 : 1.0;
 
     if (foyerAmbientRef.current) {
       const target = 0.95 * targetInteriorFactor * quietFactor;
