@@ -3,7 +3,7 @@
 Personal portfolio for **Santheesh S — AI Software Engineer, Full-Stack
 Developer, Generative AI Enthusiast**.
 
-Single-page Next.js site: Hero → Projects → About → Technical Stack →
+Single-page Next.js site: Hero → Projects → About → Technical Stack 
 Proof of Work → Contact, in a premium light theme with strict TypeScript,
 server components, and reduced-motion-aware animation.
 
