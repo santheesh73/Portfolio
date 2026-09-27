@@ -70,6 +70,7 @@ src/
 
 <br>
 
+<sub>Developed for the Education purpose</sub><br>
 <sub>Crafted with care by <a href="https://github.com/santheesh73"><b>Santheesh S</b></a></sub>
 
 </div>
