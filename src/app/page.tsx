@@ -1,5 +1,5 @@
 import { ThemeProvider } from "@/theme/ThemeContext";
-import { HouseExperience } from "@/components/house/HouseExperience";
+import { Hero } from "@/components/home/Hero";
 import { IdentityNarrative } from "@/components/home/IdentityNarrative";
 import { ProjectsSection } from "@/components/projects/ProjectsSection";
 import { AboutSection } from "@/components/about/AboutSection";
@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <ThemeProvider>
       <div className="flex flex-col">
-        <HouseExperience />
+        <Hero />
         <IdentityNarrative />
         <ProjectsSection />
         <AboutSection />
