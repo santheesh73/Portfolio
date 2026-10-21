@@ -160,16 +160,6 @@ export const PROJECT_THEMES: Record<string, ProjectTheme> = {
     name: "Amber",
     tokens: deriveAccentTokens("Amber", "#D97706", "#FBBF24"),
   },
-  bhoomi: {
-    id: "bhoomi",
-    name: "Green",
-    tokens: deriveAccentTokens("Green", "#15803D", "#4ADE80"),
-  },
-  minchal: {
-    id: "minchal",
-    name: "Orange",
-    tokens: deriveAccentTokens("Orange", "#EA580C", "#FB923C"),
-  },
 };
 
 export function getProjectTheme(projectId: string): ProjectTheme {

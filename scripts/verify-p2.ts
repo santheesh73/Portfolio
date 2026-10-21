@@ -16,15 +16,13 @@ const expectedProjectIds: ProjectId[] = [
   "nisf",
   "ahal",
   "prysm",
-  "bhoomi",
-  "minchal",
 ];
 
-console.log("\n[Test 1] Verifying 7 Project Source of Truth...");
+console.log("\n[Test 1] Verifying 5 Project Source of Truth...");
 assert.strictEqual(
   projects.length,
-  7,
-  `Expected exactly 7 projects, found ${projects.length}`
+  5,
+  `Expected exactly 5 projects, found ${projects.length}`
 );
 
 const actualIds = projects.map((p) => p.id);
@@ -42,7 +40,7 @@ for (const p of projects) {
     `Unexpected project found: ${p.id}`
   );
 }
-console.log("✓ Exactly 7 projects verified with zero fabricated extra projects.");
+console.log("✓ Exactly 5 projects verified with zero fabricated extra projects.");
 
 // 2. PROJECT VISUAL IDENTITY ACCENTS (Section 4)
 console.log("\n[Test 2] Verifying Visual Identity Color Mappings (Section 4)...");
@@ -52,8 +50,6 @@ const expectedColors: Record<string, string> = {
   nisf: "Blue",
   ahal: "Emerald",
   prysm: "Amber",
-  bhoomi: "Green",
-  minchal: "Orange",
 };
 
 for (const [id, expectedColorName] of Object.entries(expectedColors)) {

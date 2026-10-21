@@ -12,8 +12,6 @@ const SEQUENCE: ProjectId[] = [
   "ahal",
   "prysm",
   "orion",
-  "bhoomi",
-  "minchal",
 ];
 
 interface ProjectShowcaseProps {
@@ -44,6 +42,9 @@ export function ProjectShowcase({ projects }: ProjectShowcaseProps) {
     return found;
   });
 
+  const totalCount = orderedProjects.length;
+  const totalFormatted = String(totalCount).padStart(2, "0");
+
   const activeIndex = activeId ? SEQUENCE.indexOf(activeId) : -1;
   const activeProject = activeIndex >= 0 ? orderedProjects[activeIndex] : null;
   const activeNumber =
@@ -67,11 +68,11 @@ export function ProjectShowcase({ projects }: ProjectShowcaseProps) {
             <span>
               {activeProject
                 ? `Active: ${activeProject.name}`
-                : "Collection: 07 Systems"}
+                : `Collection: ${totalFormatted} Systems`}
             </span>
           </span>
           <span className="tabular-nums">
-            {activeNumber ? `${activeNumber} / 07` : "01 — 07"}
+            {activeNumber ? `${activeNumber} / ${totalFormatted}` : `01 — ${totalFormatted}`}
           </span>
         </div>
 
@@ -81,7 +82,7 @@ export function ProjectShowcase({ projects }: ProjectShowcaseProps) {
           role="progressbar"
           aria-valuenow={activeIndex >= 0 ? activeIndex + 1 : 0}
           aria-valuemin={1}
-          aria-valuemax={7}
+          aria-valuemax={totalCount}
           aria-label="Project collection navigation progress"
         >
           <div
@@ -110,6 +111,7 @@ export function ProjectShowcase({ projects }: ProjectShowcaseProps) {
               key={project.id}
               project={project}
               number={number}
+              total={totalFormatted}
               isActive={isActive}
               isMuted={hasActive && !isActive}
               onActivate={() => handleActivate(project.id)}

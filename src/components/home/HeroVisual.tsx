@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useFinePointer } from "@/lib/useFinePointer";
 import {
   motion,
   useMotionValue,
@@ -68,11 +68,7 @@ const nodeVariants = {
  */
 export function HeroVisual() {
   const reduce = useReducedMotion();
-  const [finePointer, setFinePointer] = useState<boolean>(
-    () =>
-      typeof window !== "undefined" &&
-      window.matchMedia("(pointer: fine)").matches
-  );
+  const finePointer = useFinePointer();
 
   const px = useMotionValue(0);
   const py = useMotionValue(0);
@@ -82,13 +78,6 @@ export function HeroVisual() {
   const cardY = useTransform(sy, [-0.5, 0.5], [-6, 6]);
   const glowX = useTransform(sx, [-0.5, 0.5], [10, -10]);
   const glowY = useTransform(sy, [-0.5, 0.5], [8, -8]);
-
-  useEffect(() => {
-    const query = window.matchMedia("(pointer: fine)");
-    const onChange = (e: MediaQueryListEvent) => setFinePointer(e.matches);
-    query.addEventListener("change", onChange);
-    return () => query.removeEventListener("change", onChange);
-  }, []);
 
   const parallaxEnabled = finePointer && !reduce;
 
@@ -106,7 +95,7 @@ export function HeroVisual() {
 
   return (
     <div
-      className="relative mx-auto w-full max-w-[520px]"
+      className="relative mx-auto w-full max-w-[420px] xl:max-w-[460px]"
       onPointerMove={parallaxEnabled ? handlePointerMove : undefined}
       onPointerLeave={parallaxEnabled ? handlePointerLeave : undefined}
     >

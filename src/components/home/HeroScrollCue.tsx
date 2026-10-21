@@ -19,7 +19,7 @@ export function HeroScrollCue() {
           ? { duration: 0.01 }
           : { delay: 1.2, duration: 0.5, ease: [0.22, 1, 0.36, 1] }
       }
-      className="mt-12 flex flex-col items-center justify-center pt-4"
+      className="mt-6 sm:mt-8 flex flex-col items-center justify-center"
     >
       <a
         href="#projects"

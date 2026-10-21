@@ -90,32 +90,6 @@ export const EXHIBIT_TRANSFORMS: Record<string, ExhibitTransform> = {
     maxPhi: Math.PI / 2.3,
     initialTheta: -(3 * Math.PI) / 4,
   },
-  bhoomi: {
-    id: "bhoomi",
-    position: [-4.5, 0.14, -4.6],
-    rotation: [0, 0, 0],
-    centerOffset: [0, 1.12, 0],
-    defaultDistance: 1.65,
-    minDistance: 1.0,
-    maxDistance: 2.0,
-    defaultPhi: Math.PI / 2.7,
-    minPhi: Math.PI / 8,
-    maxPhi: Math.PI / 2.3,
-    initialTheta: 0,
-  },
-  minchal: {
-    id: "minchal",
-    position: [-4.5, 0.14, -8.4],
-    rotation: [0, Math.PI, 0],
-    centerOffset: [0, 1.12, 0],
-    defaultDistance: 1.65,
-    minDistance: 1.0,
-    maxDistance: 2.0,
-    defaultPhi: Math.PI / 2.7,
-    minPhi: Math.PI / 8,
-    maxPhi: Math.PI / 2.3,
-    initialTheta: Math.PI,
-  },
   
   // Skill Group Transforms (P3)
   ai: {

@@ -72,24 +72,6 @@ export const projects: Project[] = [
     category: "",
     technologies: [],
   },
-  {
-    id: "bhoomi",
-    name: "BHOOMI",
-    tagline: "Farmer advisory ecosystem with outbreak and crop intelligence.",
-    description:
-      "BHOOMI is an agricultural intelligence platform and farmer advisory ecosystem. It combines an agronomist portal and official dashboard with hotspot maps, outbreak counts, region/crop visualization, and a confirmation queue.",
-    category: "Agricultural Technology",
-    technologies: ["React", "Leaflet", "Outbreak Tracking", "Geo Visualization"],
-  },
-  {
-    id: "minchal",
-    name: "MINCHAL",
-    tagline: "Understand your electricity bill — down to the appliance.",
-    description:
-      "MINCHAL helps households understand electricity bill increases by analyzing appliance-level usage to identify which appliance may have caused the change.",
-    category: "Energy Intelligence",
-    technologies: ["Bill Analysis", "Appliance Insights"],
-  },
 ];
 
 export function getProject(id: ProjectId): Project {

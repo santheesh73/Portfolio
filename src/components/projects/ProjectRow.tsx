@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import {
   motion,
   useMotionValue,
@@ -14,10 +14,12 @@ import { Button } from "@/components/ui/Button";
 import { ProjectVisual } from "@/components/projects/ProjectVisual";
 import type { Project } from "@/types";
 import { cn } from "@/lib/utils";
+import { useFinePointer } from "@/lib/useFinePointer";
 
 interface ProjectRowProps {
   project: Project;
   number: string;
+  total?: string;
   isActive: boolean;
   isMuted: boolean;
   onActivate: () => void;
@@ -28,6 +30,7 @@ interface ProjectRowProps {
 export function ProjectRow({
   project,
   number,
+  total = "05",
   isActive,
   isMuted,
   onActivate,
@@ -36,19 +39,7 @@ export function ProjectRow({
 }: ProjectRowProps) {
   const reduce = useReducedMotion();
   const rowRef = useRef<HTMLElement>(null);
-  const [finePointer, setFinePointer] = useState<boolean>(
-    () =>
-      typeof window !== "undefined" &&
-      window.matchMedia("(pointer: fine)").matches
-  );
-
-  // Fine pointer query for tactile micro-interaction (desktop only)
-  useEffect(() => {
-    const query = window.matchMedia("(pointer: fine)");
-    const onChange = (e: MediaQueryListEvent) => setFinePointer(e.matches);
-    query.addEventListener("change", onChange);
-    return () => query.removeEventListener("change", onChange);
-  }, []);
+  const finePointer = useFinePointer();
 
   // Mobile/touch viewport tracking: gently activate project as it scrolls into center view
   useEffect(() => {
@@ -155,7 +146,7 @@ export function ProjectRow({
                 isActive ? "text-accent translate-x-0.5" : "text-text-muted"
               )}
             >
-              {number} / 07
+              {number} / {total}
             </span>
             <span
               aria-hidden="true"

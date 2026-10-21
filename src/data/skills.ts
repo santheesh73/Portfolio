@@ -80,7 +80,7 @@ export const SKILL_GROUPS: SkillGroupData[] = [
         name: "React",
         description: "Component-driven interfaces with clear state flow.",
         icon: "atom",
-        projects: ["HeartTune", "BHOOMI"],
+        projects: ["HeartTune"],
       },
       {
         id: "nextjs",
@@ -108,7 +108,6 @@ export const SKILL_GROUPS: SkillGroupData[] = [
         name: "Leaflet",
         description: "Map rendering for geospatial product views.",
         icon: "map",
-        projects: ["BHOOMI"],
       },
     ],
   },
@@ -124,7 +123,7 @@ export const SKILL_GROUPS: SkillGroupData[] = [
         description: "AI, automation, backend, and data-driven applications.",
         icon: "code",
         featured: true,
-        projects: ["MINCHAL"],
+        projects: ["ORION", "NISF"],
       },
       {
         id: "fastapi",

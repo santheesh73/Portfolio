@@ -120,77 +120,12 @@ function PrysmArt() {
   );
 }
 
-function BhoomiArt() {
-  return (
-    <svg viewBox="0 0 400 240" className="h-full w-full" aria-hidden="true">
-      {/* dotted field grid */}
-      {Array.from({ length: 9 }).map((_, r) =>
-        Array.from({ length: 15 }).map((_, c) => (
-          <circle key={`${r}-${c}`} cx={52 + c * 22} cy={40 + r * 20} r={1.4} fill={FAINT} />
-        ))
-      )}
-      {/* region outline */}
-      <path
-        d="M110 70 L190 52 L268 74 L282 140 L232 188 L142 182 L96 132 Z"
-        fill="none"
-        stroke={INK}
-        strokeWidth={1.5}
-        strokeDasharray="5 4"
-      />
-      {/* hotspots */}
-      <circle cx={170} cy={110} r={7} fill={ACCENT} opacity={0.85} />
-      <circle cx={170} cy={110} r={13} fill="none" stroke={ACCENT} opacity={0.35} />
-      <circle cx={228} cy={140} r={5} fill="var(--warning)" opacity={0.9} />
-      <circle cx={140} cy={152} r={4} fill="var(--surface)" stroke={INK} strokeWidth={1.5} />
-      <text x={200} y={216} textAnchor="middle" fontSize={10} fontFamily="monospace" letterSpacing="0.12em" fill="var(--text-muted)">
-        HOTSPOT · REGION · CROP
-      </text>
-    </svg>
-  );
-}
-
-function MinchalArt() {
-  const bars = [
-    { h: 44, accent: false },
-    { h: 62, accent: false },
-    { h: 52, accent: false },
-    { h: 96, accent: true },
-    { h: 70, accent: false },
-  ];
-  return (
-    <svg viewBox="0 0 400 240" className="h-full w-full" aria-hidden="true">
-      <line x1={48} y1={200} x2={352} y2={200} stroke={INK} strokeWidth={1.5} />
-      {bars.map((b, i) => (
-        <rect
-          key={i}
-          x={76 + i * 52}
-          y={200 - b.h}
-          width={30}
-          height={b.h}
-          rx={4}
-          fill={b.accent ? ACCENT : "var(--surface)"}
-          stroke={b.accent ? ACCENT : INK}
-          strokeWidth={1.4}
-          opacity={b.accent ? 0.9 : 1}
-        />
-      ))}
-      {/* bolt over the spike */}
-      <path d="M238 52 l-14 26 h12 l-6 20 20 -30 h-12 l8 -16 Z" fill="none" stroke={ACCENT} strokeWidth={1.8} strokeLinejoin="round" />
-      <text x={232} y={200 - 96 - 12} textAnchor="middle" fontSize={10} fontFamily="monospace" letterSpacing="0.08em" fill="var(--text-muted)">
-        +SPIKE
-      </text>
-    </svg>
-  );
-}
-
 const ART: Record<ProjectId, () => React.JSX.Element> = {
   orion: OrionArt,
   hearttune: HeartTuneArt,
   nisf: NisfArt,
   ahal: AhalArt,
   prysm: PrysmArt,
-  bhoomi: BhoomiArt,
-  minchal: MinchalArt,
 };
 
 interface ProjectVisualProps {

@@ -510,8 +510,6 @@ export function CameraRig({
         "nisf",
         "ahal",
         "prysm",
-        "bhoomi",
-        "minchal",
       ].includes(inspectedExhibit.id);
 
       const clampedX = isProjectExhibit
