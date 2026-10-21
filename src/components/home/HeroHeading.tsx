@@ -12,7 +12,7 @@ export function HeroHeading() {
   return (
     <h1
       id="hero-heading"
-      className="type-display mt-5 text-text-primary"
+      className="mt-3.5 sm:mt-4 text-3xl sm:text-4xl md:text-[2.65rem] lg:text-[3rem] xl:text-[3.35rem] font-semibold tracking-[-0.035em] leading-[1.12] text-text-primary"
     >
       <span className="block overflow-hidden pb-1">
         <motion.span

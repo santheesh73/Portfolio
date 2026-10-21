@@ -43,9 +43,9 @@ export function Hero() {
         <div className="absolute inset-0 atmosphere-grid atmosphere-grid-fade opacity-35" />
       </div>
 
-      <Container className="relative flex flex-1 flex-col justify-center py-10 sm:py-16 lg:py-20">
+      <Container className="relative flex flex-1 flex-col justify-center py-6 sm:py-8 lg:py-10 max-w-7xl">
         <HeroScrollWrapper>
-          <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-[1.12fr_0.88fr] lg:gap-12 xl:gap-16">
+          <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[1.14fr_0.86fr] lg:gap-10 xl:gap-14">
             {/* ---- Editorial Identity & Headline ---- */}
             <div className="flex max-w-2xl flex-col lg:max-w-none">
               {/* Identity Eyebrow */}
@@ -74,8 +74,8 @@ export function Hero() {
               <HeroHeading />
 
               {/* Supporting Statement */}
-              <FadeIn delay={0.7} y={12}>
-                <p className="type-body-large mt-6 max-w-xl text-pretty text-text-secondary">
+              <FadeIn delay={0.7} y={10}>
+                <p className="mt-4 max-w-xl text-base sm:text-[1.05rem] leading-relaxed text-text-secondary text-pretty">
                   I build AI-powered and full-stack software products with a
                   focus on intelligent systems, modern interfaces, and
                   meaningful user experiences.
@@ -83,8 +83,8 @@ export function Hero() {
               </FadeIn>
 
               {/* Primary & Secondary Actions */}
-              <FadeIn delay={0.88} y={12}>
-                <div className="mt-8 flex flex-wrap items-center gap-3.5">
+              <FadeIn delay={0.88} y={10}>
+                <div className="mt-6 flex flex-wrap items-center gap-3">
                   <Button href="/#projects" className="group">
                     Explore Work
                     <ArrowDown
@@ -111,13 +111,13 @@ export function Hero() {
 
               {/* Supporting Focus Badges */}
               <FadeIn delay={1.02} y={10}>
-                <div className="mt-8 flex flex-col gap-2.5">
-                  <span className="type-label text-[0.68rem] uppercase tracking-[0.14em] text-text-muted">
-                    Core Focus
+                <div className="mt-6 flex flex-wrap items-center gap-2 sm:gap-2.5">
+                  <span className="type-label text-[0.68rem] uppercase tracking-[0.14em] text-text-muted mr-1">
+                    Core Focus:
                   </span>
                   <ul
                     aria-label="Core technologies"
-                    className="flex flex-wrap gap-2"
+                    className="flex flex-wrap items-center gap-1.5 sm:gap-2"
                   >
                     {HERO_TECHNOLOGIES.map((tech) => (
                       <li key={tech}>
@@ -136,8 +136,8 @@ export function Hero() {
             </div>
 
             {/* ---- Technical Blueprint Visual (Desktop Only) ---- */}
-            <div className="hidden lg:flex justify-center xl:justify-end">
-              <FadeIn delay={0.35} y={18}>
+            <div className="hidden lg:flex items-center justify-center xl:justify-end w-full">
+              <FadeIn delay={0.35} y={18} className="w-full flex justify-center xl:justify-end">
                 <HeroVisual />
               </FadeIn>
             </div>

@@ -13,22 +13,20 @@ console.log("=================================================================="
 
 // TEST 1: CONTENT SOURCE OF TRUTH VERIFICATION
 console.log("\n[Test 1] Auditing Project Source of Truth...");
-assert.strictEqual(projects.length, 7, "Must contain exactly 7 projects");
+assert.strictEqual(projects.length, 5, "Must contain exactly 5 projects");
 const expectedProjectNames = [
   "ORION",
   "HeartTune",
   "NISF",
   "AHAL AI",
   "PRYSM",
-  "BHOOMI",
-  "MINCHAL",
 ];
 for (const p of projects) {
   assert(expectedProjectNames.includes(p.name), `Unexpected project name: ${p.name}`);
   assert(p.id, `Project ${p.name} must have an id`);
   assert(p.technologies && Array.isArray(p.technologies), `Project ${p.name} must have technologies array`);
 }
-console.log(`✓ All 7 projects verified authentic with accurate metadata.`);
+console.log(`✓ All 5 projects verified authentic with accurate metadata.`);
 
 // TEST 2: TECH STACK SOURCE OF TRUTH VERIFICATION
 console.log("\n[Test 2] Auditing Engineering Stack Categories...");

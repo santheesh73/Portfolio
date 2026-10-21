@@ -139,6 +139,7 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -195,11 +196,10 @@ body::after {
    Display type does the visual work: large, tight, confident.
    Uppercase tracking is reserved for labels/metadata/eyebrows. */
 .type-display {
-  font-size: clamp(3rem, 8vw, 6rem);
-  line-height: 1;
-  letter-spacing: -0.04em;
+  font-size: clamp(2.25rem, 4.2vw, 3.5rem);
+  line-height: 1.08;
+  letter-spacing: -0.035em;
   font-weight: 650;
-  text-wrap: balance;
 }
 
 .type-h1 {
@@ -207,7 +207,6 @@ body::after {
   line-height: 1.05;
   letter-spacing: -0.032em;
   font-weight: 650;
-  text-wrap: balance;
 }
 
 .type-h2 {
@@ -215,7 +214,6 @@ body::after {
   line-height: 1.12;
   letter-spacing: -0.024em;
   font-weight: 620;
-  text-wrap: balance;
 }
 
 .type-h3 {
@@ -282,7 +280,6 @@ body::after {
   line-height: 1.1;
   letter-spacing: -0.028em;
   font-weight: 620;
-  text-wrap: balance;
 }
 
 .type-subheading {
@@ -314,8 +311,8 @@ body::after {
 
 .surface-glass {
   background-color: var(--surface);
-  backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-soft);
 }

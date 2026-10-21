@@ -24,14 +24,14 @@ export function ProjectsSection() {
                 02 — Selected work
               </span>
               <span className="font-mono text-[0.68rem] tracking-[0.16em] uppercase px-2.5 py-0.5 rounded-full border border-border-subtle bg-surface-muted/60 text-accent">
-                07 Projects
+                {String(projects.length).padStart(2, "0")} Projects
               </span>
             </div>
             <h2 className="type-h1 font-semibold text-text-primary tracking-tight">
               Things I&apos;ve built
             </h2>
             <p className="type-body max-w-2xl text-pretty text-text-secondary leading-relaxed">
-              Seven products. Different problems. One engineering mindset —
+              Five products. Different problems. One engineering mindset —
               spanning on-device intelligence, creative AI, streaming
               architecture, and full-stack systems.
             </p>
@@ -57,7 +57,7 @@ export function ProjectsSection() {
                   className="size-1.5 rounded-full bg-accent"
                 />
                 <p className="font-mono text-xs tracking-[0.14em] uppercase text-text-muted">
-                  07 / 07 Projects Complete
+                  {String(projects.length).padStart(2, "0")} / {String(projects.length).padStart(2, "0")} Projects Complete
                 </p>
               </div>
 

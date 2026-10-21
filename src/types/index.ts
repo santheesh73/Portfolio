@@ -21,9 +21,7 @@ export type ProjectId =
   | "hearttune"
   | "nisf"
   | "ahal"
-  | "prysm"
-  | "bhoomi"
-  | "minchal";
+  | "prysm";
 
 export interface ProjectLinks {
   github?: string;
